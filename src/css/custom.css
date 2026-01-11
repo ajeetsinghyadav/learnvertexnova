@@ -93,28 +93,77 @@
 
 .button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .button--primary {
-  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-light) 100%);
-  border: none;
+  background: #2d3748;
+  border: 1px solid #2d3748;
+  color: white;
+}
+
+.button--primary:hover {
+  background: #1a202c;
+  border-color: #1a202c;
+  color: white;
+}
+
+[data-theme='dark'] .button--primary {
+  background: white;
+  border: 1px solid white;
+  color: #1a202c;
+}
+
+[data-theme='dark'] .button--primary:hover {
+  background: #e2e8f0;
+  border-color: #e2e8f0;
+  color: #1a202c;
 }
 
 .button--secondary {
-  background: var(--ifm-color-primary);
-  border: none;
+  background: #2d3748;
+  border: 1px solid #2d3748;
   color: white;
+}
+
+.button--secondary:hover {
+  background: #1a202c;
+  border-color: #1a202c;
+  color: white;
+}
+
+[data-theme='dark'] .button--secondary {
+  background: white;
+  border: 1px solid white;
+  color: #1a202c;
+}
+
+[data-theme='dark'] .button--secondary:hover {
+  background: #e2e8f0;
+  border-color: #e2e8f0;
+  color: #1a202c;
 }
 
 .button--outline {
-  border: 2px solid var(--ifm-color-primary);
+  border: 2px solid #2d3748;
   background: transparent;
+  color: #2d3748;
 }
 
 .button--outline:hover {
-  background: var(--ifm-color-primary);
+  background: #2d3748;
   color: white;
+}
+
+[data-theme='dark'] .button--outline {
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+}
+
+[data-theme='dark'] .button--outline:hover {
+  background: white;
+  color: #1a202c;
 }
 
 /* Enhanced Features Section */
