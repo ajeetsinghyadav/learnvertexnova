@@ -4,6 +4,10 @@
  * work well for content-centric websites.
  */
 
+/* Import modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #ff6b35;
@@ -21,12 +25,14 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-heading-font-weight: 700;
-  --ifm-font-size-base: 17px;
-  --ifm-line-height-base: 1.75;
+  --ifm-font-size-base: 18px;
+  --ifm-line-height-base: 1.8;
   --ifm-navbar-height: 70px;
   --ifm-navbar-padding-horizontal: 1.5rem;
-  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --ifm-font-family-monospace: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', 'Consolas', 'Courier New', monospace;
+  /* Modern, readable font stack */
+  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  /* Professional monospace font stack */
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', 'Consolas', 'Courier New', monospace;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -301,17 +307,19 @@ article {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  font-family: var(--ifm-font-family-base);
 }
 
 article p {
-  font-size: 1.0625rem;
+  font-size: 1.125rem; /* 18px base * 1.125 = ~20px */
   line-height: 1.85;
   color: var(--ifm-color-content);
   margin-bottom: 1.5rem;
+  font-weight: 400;
 }
 
 article li {
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   line-height: 1.85;
   margin-bottom: 0.75rem;
 }
@@ -391,31 +399,39 @@ pre {
   background: var(--ifm-code-background);
   border-radius: 12px;
   overflow-x: auto;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.95rem; /* Larger code font */
+  line-height: 1.6;
 }
 
 pre code {
   background: transparent;
   border: none;
   padding: 0;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 code {
   background: var(--ifm-code-background);
   border: 1px solid var(--ifm-color-emphasis-200);
   font-family: var(--ifm-font-family-monospace);
-  font-size: 0.9em;
+  font-size: 0.9rem; /* Slightly larger inline code */
+  font-weight: 500;
 }
 
 /* Inline code in paragraphs */
 article p code,
 article li code {
   background: var(--ifm-code-background);
-  padding: 0.2rem 0.5rem;
+  padding: 0.25rem 0.6rem;
   border-radius: 4px;
-  font-size: 0.9em;
+  font-size: 0.9rem; /* Larger inline code */
   border: 1px solid var(--ifm-color-emphasis-200);
   color: var(--ifm-color-primary-dark);
   font-weight: 500;
+  font-family: var(--ifm-font-family-monospace);
 }
 
 /* Enhanced Table Styling */
@@ -429,6 +445,7 @@ table {
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+  table-layout: auto; /* Allow columns to adjust based on content */
 }
 
 table th {
@@ -441,6 +458,7 @@ table th {
   letter-spacing: 0.01em;
   border: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  white-space: nowrap; /* Prevent header text from wrapping */
 }
 
 table td {
@@ -449,6 +467,8 @@ table td {
   border-right: 1px solid var(--ifm-color-emphasis-200);
   font-size: 0.95rem;
   background: var(--ifm-background-color);
+  word-wrap: break-word; /* Allow long content to wrap */
+  overflow-wrap: break-word;
 }
 
 table td:last-child {
@@ -469,6 +489,44 @@ table code {
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-size: 0.85em;
+  white-space: nowrap; /* Keep code inline from breaking */
+}
+
+/* Table column width adjustments - flexible based on content */
+/* First column - typically narrower for labels/names */
+table th:first-child,
+table td:first-child {
+  width: auto;
+  min-width: 120px;
+  max-width: 35%;
+}
+
+/* Second column - flexible */
+table th:nth-child(2),
+table td:nth-child(2) {
+  width: auto;
+  min-width: 150px;
+}
+
+/* Third column - flexible */
+table th:nth-child(3),
+table td:nth-child(3) {
+  width: auto;
+  min-width: 150px;
+}
+
+/* Fourth column and beyond - flexible */
+table th:nth-child(n+4),
+table td:nth-child(n+4) {
+  width: auto;
+  min-width: 120px;
+}
+
+/* Last column - takes remaining space */
+table th:last-child,
+table td:last-child {
+  width: auto;
+  min-width: 150px;
 }
 
 /* Ensure table fits within container - no overflow */
@@ -485,6 +543,11 @@ article table {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+  
+  table th,
+  table td {
+    min-width: 100px; /* Smaller min-width on mobile */
   }
 }
 
@@ -552,12 +615,15 @@ article table {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--ifm-color-emphasis-200);
   margin: 1.5rem 0;
+  font-family: var(--ifm-font-family-monospace);
 }
 
 .prism-code code {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  padding: 1.25rem;
+  font-size: 0.95rem; /* Larger code font */
+  line-height: 1.7;
+  padding: 1.5rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-weight: 400;
 }
 
 /* Code block titles */
@@ -702,6 +768,8 @@ article blockquote {
 .theme-doc-markdown p {
   margin-bottom: 1.5rem;
   line-height: 1.85;
+  font-size: 1.125rem; /* ~20px */
+  font-weight: 400;
 }
 
 /* Better list styling */
@@ -715,6 +783,7 @@ article blockquote {
 .theme-doc-markdown ol li {
   margin-bottom: 0.75rem;
   line-height: 1.85;
+  font-size: 1.125rem; /* Match paragraph size */
 }
 
 .theme-doc-markdown ul li::marker {
