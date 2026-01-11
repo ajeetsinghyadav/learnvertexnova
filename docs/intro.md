@@ -39,12 +39,19 @@ cmake ..
 cmake --build .
 ```
 
-### Running Examples
+### Running Samples
 
 ```bash
-# After building, run examples
-./bin/example_name
+# After building, navigate to build directory
+cd build
+
+# Run a sample (exact path depends on your build configuration)
+./bin/sample_02_triangle
+# or
+./bin/sample_04_cube
 ```
+
+See the [Demos](/docs/docs/demos) page for a complete list of available samples.
 
 ## Architecture Overview
 
@@ -56,10 +63,10 @@ VertexNova is organized into several key components:
 
 ## Next Steps
 
-- [Installation Guide](/docs/installation) - Detailed setup instructions
-- [API Documentation](/docs/api) - Explore the API reference
-- [Examples](/docs/examples) - Learn from sample code
-- [Backend Support](/docs/backends) - Understand backend capabilities
+- [Learn VertexNova](/docs/docs/learn) - Structured learning path
+- [View Demos](/docs/docs/demos) - Runnable examples and proof of concepts
+- [Roadmap](/docs/docs/roadmap) - Current status and future plans
+- [Project Overview](/docs/docs/overview) - Engineering highlights and architecture
 
 ## Resources
 
