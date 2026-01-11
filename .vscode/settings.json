@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.mdx": "markdown"
+  },
+  "markdown.preview.breaks": true,
+  "markdown.preview.linkify": true
+}
