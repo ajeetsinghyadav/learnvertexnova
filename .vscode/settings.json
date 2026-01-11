@@ -3,5 +3,6 @@
     "*.mdx": "markdown"
   },
   "markdown.preview.breaks": true,
-  "markdown.preview.linkify": true
+  "markdown.preview.linkify": true,
+  "vim.enabled": false
 }
