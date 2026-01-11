@@ -8,9 +8,11 @@ import TabItem from '@theme/TabItem';
 
 # Getting Started
 
-Welcome to **LearnVertexNova** — your journey into building a modern, multi-backend graphics renderer from the ground up.
+Welcome to **LearnVertexNova** — a hands-on guide to building a modern, multi-backend renderer in C++.
 
-This is not just another tutorial. This is a **hands-on learning experience** where every concept maps directly to working code, every lesson ends with something you can run, and every step builds toward a deep understanding of graphics engine architecture.
+Every chapter maps to working code, ends with something you can run, and steadily builds the engine foundations: **frame loop → resources → shaders → passes → presentation**.
+
+By the end of this path, you'll not only run demos — you'll understand *why* they work and how to extend them.
 
 ## What is VertexNova?
 
@@ -44,30 +46,15 @@ This is not just another tutorial. This is a **hands-on learning experience** wh
 
 **VertexNova strikes the perfect balance**: enough abstraction to be practical, enough transparency to be educational, and enough structure to build real projects.
 
-## What we're building
+## Core features
 
-Over this learning journey, we'll construct a **production-quality renderer foundation** that works across multiple backends and platforms. This isn't about building "a single demo that happens to render" — it's about creating a **clean, maintainable foundation** you can grow into real projects.
-
-### You'll learn to build
-
-- **A consistent frame loop** — Master the update → render → present cycle that powers every real-time application
-- **A portable resource model** — Design buffers, textures, and samplers that work seamlessly across Vulkan, Metal, and OpenGL
-- **A robust shader workflow** — Implement naming conventions, reflection systems, and include mechanisms that scale
-- **A clear API boundaries** — Separate engine API from backend implementation, making it easy to add new backends
-- **A regression test suite** — Build demos that validate features and catch bugs automatically
-
-### The learning philosophy
-
-**Learn by building, not by reading.** Every concept in VertexNova is backed by:
-
-- ✅ **Working code** you can compile and run
-- ✅ **Clear examples** that demonstrate the concept
-- ✅ **Cross-backend notes** showing how it differs per API
-- ✅ **Real architecture** used in production engines
+- 🧩 **Multi-backend mindset** — Vulkan, Metal, OpenGL (and Web later)
+- 🧠 **Learn by building** — small demos that prove each concept
+- 🛠️ **Engineer-friendly workflow** — CMake, debugging, and clean structure
 
 ## What you need to know
 
-### Essential Skills
+### Essential skills
 
 - **Modern C++ (C++17+)** — We use contemporary C++ features, but we'll explain them as we go
 - **CMake workflows** — Understanding how to build C++ projects is essential
@@ -97,12 +84,10 @@ VertexNova is developed and battle-tested across multiple platforms:
 
 ## Your first milestone
 
-Let's get you up and running. In the next few minutes, you'll:
-
-✅ **Build VertexNova** — Compile the engine from source  
-✅ **Run your first demo** — See a triangle render on your screen  
-✅ **Verify your toolchain** — Confirm everything is working correctly  
-✅ **Establish your workflow** — Set up a repeatable daily development process  
+✅ **Build the engine**  
+✅ **Run your first demo**  
+✅ **Confirm your toolchain**  
+✅ **Set up a repeatable workflow**
 
 This first milestone is crucial. Once you can build and run demos reliably, you have everything you need to start learning and experimenting.
 
@@ -169,7 +154,7 @@ cmake --build . --config Release
 
 **Expected time**: 5-15 minutes depending on your machine and internet connection.
 
-### Step 2: Run your first demo
+### Run your first demo
 
 ```bash
 # After building, navigate to build directory
@@ -184,6 +169,43 @@ cd build
 **What you should see**: A window opens with a rendered triangle or cube. Congratulations — you just ran your first VertexNova demo!
 
 See the [Demos](/docs/docs/demos) page for a complete list of available samples and what each demonstrates.
+
+## Architecture overview
+
+<figure>
+  <img src="/img/diagrams/vertexnova_layers.png" alt="VertexNova architecture layers" />
+  <figcaption>VertexNova layers: platform (xwin) + unified graphics API (xgl) + backend implementations.</figcaption>
+</figure>
+
+VertexNova is organized into clean, focused components:
+
+- **xwin** — Platform and window/input utilities abstracting OS-specific functionality
+- **xgl** — Multi-backend rendering layer providing a unified API across OpenGL, Metal, Vulkan, and WebGL
+- **xviz** — Visualization helpers and utilities for common graphics tasks
+
+This architecture is **intentionally simple**. Each component has a clear responsibility, making the codebase easy to understand, modify, and extend.
+
+## What you'll build
+
+As you progress through LearnVertexNova, you'll build:
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', margin: '2rem 0'}}>
+  <div style={{textAlign: 'center', padding: '1rem', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: '8px'}}>
+    <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>🔺</div>
+    <strong>Triangle</strong>
+    <p style={{fontSize: '0.9rem', margin: '0.5rem 0 0', color: 'var(--ifm-color-content-secondary)'}}>Basic rendering pipeline</p>
+  </div>
+  <div style={{textAlign: 'center', padding: '1rem', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: '8px'}}>
+    <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>🎲</div>
+    <strong>Textured Cube</strong>
+    <p style={{fontSize: '0.9rem', margin: '0.5rem 0 0', color: 'var(--ifm-color-content-secondary)'}}>Textures & materials</p>
+  </div>
+  <div style={{textAlign: 'center', padding: '1rem', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: '8px'}}>
+    <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>🎯</div>
+    <strong>Render Targets</strong>
+    <p style={{fontSize: '0.9rem', margin: '0.5rem 0 0', color: 'var(--ifm-color-content-secondary)'}}>MSAA & offscreen rendering</p>
+  </div>
+</div>
 
 ## What's next
 
@@ -209,16 +231,6 @@ Understand the engineering decisions behind VertexNova. Learn about cross-backen
 
 👉 **[Roadmap](/docs/docs/roadmap)**  
 See what's currently working, what's in progress, and what's planned. This honest status helps you understand the project's current state.
-
-## Architecture overview
-
-VertexNova is organized into clean, focused components:
-
-- **xgl** — Multi-backend rendering layer providing a unified API across OpenGL, Metal, Vulkan, and WebGL
-- **xwin** — Platform and window/input utilities abstracting OS-specific functionality
-- **xviz** — Visualization helpers and utilities for common graphics tasks
-
-This architecture is **intentionally simple**. Each component has a clear responsibility, making the codebase easy to understand, modify, and extend.
 
 ## Resources
 
