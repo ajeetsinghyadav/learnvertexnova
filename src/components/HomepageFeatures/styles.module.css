@@ -9,14 +9,14 @@
 .featureSvg {
   height: 200px;
   width: 200px;
-  filter: drop-shadow(0 10px 25px rgba(249, 115, 22, 0.3));
+  filter: drop-shadow(0 10px 25px rgba(255, 107, 53, 0.25));
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 2rem;
 }
 
 .featureSvg:hover {
   transform: scale(1.1) translateY(-10px);
-  filter: drop-shadow(0 15px 35px rgba(249, 115, 22, 0.4));
+  filter: drop-shadow(0 15px 35px rgba(255, 107, 53, 0.35));
 }
 
 /* Feature card styling */
@@ -43,7 +43,7 @@
 
 .features .col:hover .text--center {
   border-color: var(--ifm-color-primary);
-  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.2);
+  box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
   background: var(--ifm-background-color);
 }
 

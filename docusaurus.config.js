@@ -12,7 +12,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'VertexNova Engine',
   tagline: 'Multi-backend 3D rendering and visualization engine',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -87,6 +87,9 @@ const config = {
         logo: {
           alt: 'VertexNova Engine Logo',
           src: 'img/logo.svg',
+          srcDark: 'img/logo.svg',
+          width: 140,
+          height: 32,
         },
         items: [
           {
