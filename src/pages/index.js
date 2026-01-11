@@ -23,12 +23,12 @@ function HomepageHeader() {
             Get Started →
           </Link>
           <Link
-            className="button button--outline button--secondary button--lg"
+            className="button button--primary button--lg"
             to="/docs/docs/demos">
             View Demos
           </Link>
           <Link
-            className="button button--outline button--secondary button--lg"
+            className="button button--primary button--lg"
             href="https://github.com/ajeetsinghyadav/vertexnova">
             GitHub
           </Link>

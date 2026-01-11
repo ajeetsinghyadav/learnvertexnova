@@ -14,6 +14,13 @@
   justify-content: center;
 }
 
+.heroBanner .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .heroBanner::after {
   content: '';
   position: absolute;
@@ -47,6 +54,30 @@
   gap: 1rem;
   flex-wrap: wrap;
   margin-top: 2rem;
+}
+
+.buttons .button {
+  background: #2d3748;
+  color: white;
+  border: 1px solid #2d3748;
+}
+
+.buttons .button:hover {
+  background: #1a202c;
+  border-color: #1a202c;
+  color: white;
+}
+
+[data-theme='dark'] .buttons .button {
+  background: white;
+  color: #1a202c;
+  border: 1px solid white;
+}
+
+[data-theme='dark'] .buttons .button:hover {
+  background: #e2e8f0;
+  border-color: #e2e8f0;
+  color: #1a202c;
 }
 
 @media screen and (max-width: 768px) {
