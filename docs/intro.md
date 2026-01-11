@@ -21,7 +21,7 @@ VertexNova Engine is a 3D rendering engine designed for clarity, portability, an
 
 - **C++17** or later compiler
 - **CMake** 3.15 or later
-- Platform-specific dependencies (see [Installation Guide](/docs/installation))
+- Platform-specific dependencies (see [Development Setup](https://github.com/ajeetsinghyadav/vertexnova-devsetup))
 
 ### Building VertexNova
 

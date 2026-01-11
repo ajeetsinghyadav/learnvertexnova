@@ -1,19 +1,29 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+announcement:
+  label: Announcement
+  permalink: /blog/tags/announcement
+  description: Project announcements and updates
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+vertexnova:
+  label: VertexNova
+  permalink: /blog/tags/vertexnova
+  description: Posts about VertexNova Engine
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+engine:
+  label: Engine
+  permalink: /blog/tags/engine
+  description: Graphics engine development
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+development:
+  label: Development
+  permalink: /blog/tags/development
+  description: Development updates and progress
+
+graphics:
+  label: Graphics
+  permalink: /blog/tags/graphics
+  description: Computer graphics topics
+
+tutorial:
+  label: Tutorial
+  permalink: /blog/tags/tutorial
+  description: Tutorials and guides
