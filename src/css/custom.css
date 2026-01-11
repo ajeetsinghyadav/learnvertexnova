@@ -436,7 +436,8 @@ article li code {
 
 /* Enhanced Table Styling */
 table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
   margin: 2rem 0;
   border: 1px solid var(--ifm-color-emphasis-200);
@@ -461,6 +462,14 @@ table th {
   white-space: nowrap; /* Prevent header text from wrapping */
 }
 
+table th:first-child {
+  border-top-left-radius: 12px;
+}
+
+table th:last-child {
+  border-top-right-radius: 12px;
+}
+
 table td {
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
@@ -477,6 +486,14 @@ table td:last-child {
 
 table tr:last-child td {
   border-bottom: none;
+}
+
+table tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+
+table tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
 }
 
 table tr:hover td {
