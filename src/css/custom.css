@@ -21,10 +21,12 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-heading-font-weight: 700;
-  --ifm-font-size-base: 16px;
-  --ifm-line-height-base: 1.7;
+  --ifm-font-size-base: 17px;
+  --ifm-line-height-base: 1.75;
   --ifm-navbar-height: 70px;
   --ifm-navbar-padding-horizontal: 1.5rem;
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --ifm-font-family-monospace: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', 'Consolas', 'Courier New', monospace;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -294,6 +296,67 @@ section {
   padding: 4rem 0;
 }
 
+/* Enhanced Typography for Documentation */
+article {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+article p {
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  color: var(--ifm-color-content);
+  margin-bottom: 1.5rem;
+}
+
+article li {
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  margin-bottom: 0.75rem;
+}
+
+article h1 {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--ifm-heading-color);
+}
+
+article h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-heading-color);
+}
+
+article h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-heading-color);
+}
+
+article h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-heading-color);
+}
+
 /* Enhanced typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
@@ -322,44 +385,238 @@ code {
   max-width: 1200px;
 }
 
-/* Code block improvements */
+/* Enhanced Code Block Improvements */
 pre {
   border-left: 4px solid var(--ifm-color-primary);
+  background: var(--ifm-code-background);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 code {
   background: var(--ifm-code-background);
   border: 1px solid var(--ifm-color-emphasis-200);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9em;
 }
 
-/* Table styling */
+/* Inline code in paragraphs */
+article p code,
+article li code {
+  background: var(--ifm-code-background);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-primary-dark);
+  font-weight: 500;
+}
+
+/* Enhanced Table Styling */
 table {
   border-collapse: collapse;
   width: 100%;
-  margin: 1.5rem 0;
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--ifm-color-emphasis-200);
 }
 
 table th {
-  background: var(--ifm-color-primary);
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
   color: white;
   font-weight: 600;
-  padding: 0.75rem;
+  padding: 1rem 1.25rem;
   text-align: left;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
 }
 
 table td {
-  padding: 0.75rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  font-size: 0.95rem;
+}
+
+table tr:last-child td {
+  border-bottom: none;
 }
 
 table tr:hover {
+  background: var(--ifm-color-emphasis-50);
+  transition: background 0.2s ease;
+}
+
+table code {
+  background: var(--ifm-code-background);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* Enhanced Tabs Styling */
+.tabs {
+  margin: 2.5rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tabs__list {
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-color);
+  padding: 0.75rem 0.75rem 0 0.75rem;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tabs__item {
+  border-radius: 8px 8px 0 0;
+  padding: 0.875rem 1.75rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--ifm-color-content-secondary);
+  cursor: pointer;
+  position: relative;
+}
+
+.tabs__item:hover {
   background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-primary);
+  transform: translateY(-1px);
+}
+
+.tabs__item--active {
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+  font-weight: 700;
+}
+
+.tabs__content {
+  padding: 2rem;
+  background: var(--ifm-background-surface-color);
+  border-radius: 0 0 12px 12px;
+}
+
+.tabs__content pre {
+  margin: 0;
+  border-radius: 8px;
+}
+
+/* Enhanced Code Blocks */
+.prism-code {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  margin: 1.5rem 0;
+}
+
+.prism-code code {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 1.25rem;
+}
+
+/* Code block titles */
+.code-block-title {
+  background: var(--ifm-color-emphasis-100);
+  padding: 0.5rem 1rem;
+  border-radius: 8px 8px 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ifm-color-content-secondary);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* Enhanced Lists */
+article ul,
+article ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+}
+
+article ul li,
+article ol li {
+  margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
+}
+
+article ul li::marker {
+  color: var(--ifm-color-primary);
+}
+
+article strong {
+  font-weight: 600;
+  color: var(--ifm-color-content);
+}
+
+article a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+article a:hover {
+  color: var(--ifm-color-primary-dark);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* Blockquotes */
+article blockquote {
+  border-left: 4px solid var(--ifm-color-primary);
+  background: var(--ifm-background-surface-color);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--ifm-color-content-secondary);
 }
 
 /* Alert boxes */
 .alert {
-  border-radius: 8px;
+  border-radius: 12px;
   border-left: 4px solid;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.alert--info {
+  background: rgba(255, 107, 53, 0.08);
+  border-left-color: var(--ifm-color-primary);
+}
+
+.alert--success {
+  background: rgba(34, 197, 94, 0.08);
+  border-left-color: #22c55e;
+}
+
+.alert--warning {
+  background: rgba(251, 191, 36, 0.08);
+  border-left-color: #fbbf24;
+}
+
+.alert--danger {
+  background: rgba(239, 68, 68, 0.08);
+  border-left-color: #ef4444;
 }
 
 /* Responsive improvements */
@@ -377,6 +634,138 @@ table tr:hover {
   }
 }
 
+/* Documentation Page Enhancements */
+.theme-doc-markdown {
+  max-width: 900px;
+  font-size: 1.0625rem;
+  line-height: 1.85;
+}
+
+.theme-doc-markdown h1 {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid var(--ifm-color-emphasis-200);
+}
+
+.theme-doc-markdown h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+}
+
+.theme-doc-markdown h3 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Better spacing for documentation content */
+.theme-doc-markdown > * {
+  margin-bottom: 1.5rem;
+}
+
+.theme-doc-markdown > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Improve paragraph readability */
+.theme-doc-markdown p {
+  margin-bottom: 1.5rem;
+  line-height: 1.85;
+}
+
+/* Better list styling */
+.theme-doc-markdown ul,
+.theme-doc-markdown ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+}
+
+.theme-doc-markdown ul li,
+.theme-doc-markdown ol li {
+  margin-bottom: 0.75rem;
+  line-height: 1.85;
+}
+
+.theme-doc-markdown ul li::marker {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* Horizontal rules */
+.theme-doc-markdown hr {
+  border: none;
+  border-top: 2px solid var(--ifm-color-emphasis-200);
+  margin: 3rem 0;
+  border-radius: 2px;
+}
+
+/* Sidebar enhancements */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.menu__link {
+  border-radius: 6px;
+  margin: 0.25rem 0;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.menu__link:hover {
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-primary);
+}
+
+.menu__link--active {
+  background: rgba(255, 107, 53, 0.1);
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumbs__item {
+  font-size: 0.9rem;
+}
+
+.breadcrumbs__link {
+  color: var(--ifm-color-content-secondary);
+  transition: color 0.2s ease;
+}
+
+.breadcrumbs__link:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* Figure and images */
+figure {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+figure img {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: auto;
+}
+
+figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--ifm-color-content-secondary);
+  font-style: italic;
+}
+
 @media screen and (max-width: 576px) {
   .hero__title {
     font-size: 2rem;
@@ -388,5 +777,21 @@ table tr:hover {
   
   .container {
     padding: 0 1rem;
+  }
+
+  article {
+    padding: 1.5rem 1rem;
+  }
+
+  article h1 {
+    font-size: 2rem;
+  }
+
+  article h2 {
+    font-size: 1.75rem;
+  }
+
+  article p {
+    font-size: 1rem;
   }
 }
