@@ -86,10 +86,10 @@ const config = {
         title: 'VertexNova',
         logo: {
           alt: 'VertexNova Engine Logo',
-          src: 'img/logo.svg',
-          srcDark: 'img/logo.svg',
-          width: 140,
-          height: 32,
+          src: 'img/logo-icon.svg',
+          srcDark: 'img/logo-icon.svg',
+          width: 40,
+          height: 40,
         },
         items: [
           {
