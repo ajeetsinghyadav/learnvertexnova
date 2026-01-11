@@ -78,7 +78,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/logo-icon.svg',
       colorMode: {
         respectPrefersColorScheme: true,
       },
@@ -94,30 +94,18 @@ const config = {
         items: [
           {
             type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            sidebarId: 'mainSidebar',
             position: 'left',
-            label: 'Docs',
+            label: 'Documentation',
           },
+          {to: '/docs/docs/demos', label: 'Demos', position: 'left'},
+          {to: '/docs/docs/roadmap', label: 'Roadmap', position: 'left'},
           {to: '/blog', label: 'Blog', position: 'left'},
-          {
-            type: 'dropdown',
-            label: 'Resources',
-            position: 'left',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/ajeetsinghyadav/vertexnova',
-              },
-              {
-                label: 'Getting Started',
-                to: '/docs/intro',
-              },
-            ],
-          },
           {
             href: 'https://github.com/ajeetsinghyadav/vertexnova',
             label: 'GitHub',
             position: 'right',
+            className: 'header-github-link',
           },
         ],
       },
@@ -127,14 +115,11 @@ const config = {
           {
             title: 'Documentation',
             items: [
-              {
-                label: 'Getting Started',
-                to: '/docs/intro',
-              },
-              {
-                label: 'API Reference',
-                to: '/docs',
-              },
+              { label: 'Getting Started', to: '/docs/intro' },
+              { label: 'Learn', to: '/docs/docs/learn' },
+              { label: 'Demos', to: '/docs/docs/demos' },
+              { label: 'Roadmap', to: '/docs/docs/roadmap' },
+              { label: 'About', to: '/docs/about' },
             ],
           },
           {
@@ -162,8 +147,12 @@ const config = {
                 to: '/blog',
               },
               {
-                label: 'Examples',
-                to: '/docs',
+                label: 'Overview',
+                to: '/docs/docs/overview',
+              },
+              {
+                label: 'Development Setup',
+                href: 'https://github.com/ajeetsinghyadav/vertexnova-devsetup',
               },
             ],
           },

@@ -24,8 +24,13 @@ function HomepageHeader() {
           </Link>
           <Link
             className="button button--outline button--secondary button--lg"
+            to="/docs/docs/demos">
+            View Demos
+          </Link>
+          <Link
+            className="button button--outline button--secondary button--lg"
             href="https://github.com/ajeetsinghyadav/vertexnova">
-            View on GitHub
+            GitHub
           </Link>
         </div>
       </div>
@@ -38,7 +43,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title} - Multi-backend 3D Rendering Engine`}
-      description="VertexNova Engine (VNE) is a modern, multi-platform rendering and visualization engine. Multi-backend support for OpenGL, Metal, Vulkan, and WebGL.">
+      description="VertexNova Engine (VNE) is a modern, multi-platform rendering and visualization engine with unified API support for OpenGL, Metal, Vulkan, and WebGL. Built with C++ for clarity, portability, and performance.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
