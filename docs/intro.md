@@ -2,46 +2,76 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Getting Started with VertexNova
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Welcome to **VertexNova Engine (VNE)** - a modern, multi-platform rendering and visualization engine.
 
-## Getting Started
+## What is VertexNova?
 
-Get started by **creating a new site**.
+VertexNova Engine is a 3D rendering engine designed for clarity, portability, and steady evolution. It provides:
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+- **Multi-backend rendering** - Unified API across OpenGL Desktop, OpenGL ES/WebGL, Metal, and Vulkan (WIP)
+- **Cross-platform support** - macOS, iOS, Windows, Linux, and Web (Emscripten)
+- **Modern C++ design** - Clean architecture with strict ownership and predictable lifetimes
+- **Thin abstractions** - Clear layering with explicit control
 
-### What you'll need
+## Quick Start
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+### Prerequisites
 
-## Generate a new site
+- **C++17** or later compiler
+- **CMake** 3.15 or later
+- Platform-specific dependencies (see [Installation Guide](/docs/installation))
 
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
+### Building VertexNova
 
 ```bash
-cd my-website
-npm run start
+# Clone the repository
+git clone https://github.com/ajeetsinghyadav/vertexnova.git
+cd vertexnova
+
+# Initialize submodules
+git submodule update --init --recursive
+
+# Configure and build
+mkdir build && cd build
+cmake ..
+cmake --build .
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+### Running Examples
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+```bash
+# After building, run examples
+./bin/example_name
+```
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+## Architecture Overview
+
+VertexNova is organized into several key components:
+
+- **xgl** - Multi-backend rendering layer
+- **xwin** - Platform and window/input utilities
+- **xviz** - Visualization helpers and utilities
+
+## Next Steps
+
+- [Installation Guide](/docs/installation) - Detailed setup instructions
+- [API Documentation](/docs/api) - Explore the API reference
+- [Examples](/docs/examples) - Learn from sample code
+- [Backend Support](/docs/backends) - Understand backend capabilities
+
+## Resources
+
+- [GitHub Repository](https://github.com/ajeetsinghyadav/vertexnova)
+- [Development Setup](https://github.com/ajeetsinghyadav/vertexnova-devsetup)
+- [Issues & Bug Reports](https://github.com/ajeetsinghyadav/vertexnova/issues)
+
+## Design Philosophy
+
+VertexNova follows these core principles:
+
+- **Modern C++** with clarity over cleverness
+- **Thin abstractions** and clear layering
+- **Multi-backend design** via unified API
+- **Build to learn** first; scale responsibly later

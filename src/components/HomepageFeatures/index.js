@@ -4,32 +4,33 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    title: 'Multi-Backend Rendering',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        VertexNova provides a unified API across multiple graphics backends:
+        OpenGL Desktop, OpenGL ES/WebGL, Metal, and Vulkan (WIP). Write once,
+        run everywhere.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Cross-Platform',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Built for modern C++ with support for macOS, iOS, Windows, Linux, and Web.
+        Clean architecture with strict ownership and predictable lifetimes.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Modern C++ Design',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Designed for long-term maintainability with simple layering, explicit control,
+        and incremental progress. Focus on clarity, portability, and steady evolution.
       </>
     ),
   },
@@ -40,10 +41,10 @@ function Feature({Svg, title, description}) {
     <div className={clsx('col col--4')}>
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
+        <div className="padding-horiz--md">
+          <Heading as="h3">{title}</Heading>
+          <p>{description}</p>
+        </div>
       </div>
     </div>
   );
