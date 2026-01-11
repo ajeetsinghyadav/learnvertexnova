@@ -6,13 +6,13 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #7c3aed;
-  --ifm-color-primary-dark: #6d28d9;
-  --ifm-color-primary-darker: #5b21b6;
-  --ifm-color-primary-darkest: #4c1d95;
-  --ifm-color-primary-light: #8b5cf6;
-  --ifm-color-primary-lighter: #a78bfa;
-  --ifm-color-primary-lightest: #c4b5fd;
+  --ifm-color-primary: #f97316;
+  --ifm-color-primary-dark: #ea580c;
+  --ifm-color-primary-darker: #dc2626;
+  --ifm-color-primary-darkest: #c2410c;
+  --ifm-color-primary-light: #fb923c;
+  --ifm-color-primary-lighter: #fdba74;
+  --ifm-color-primary-lightest: #fed7aa;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-heading-font-weight: 700;
@@ -24,19 +24,19 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #a78bfa;
-  --ifm-color-primary-dark: #8b5cf6;
-  --ifm-color-primary-darker: #7c3aed;
-  --ifm-color-primary-darkest: #6d28d9;
-  --ifm-color-primary-light: #c4b5fd;
-  --ifm-color-primary-lighter: #ddd6fe;
-  --ifm-color-primary-lightest: #ede9fe;
+  --ifm-color-primary: #fb923c;
+  --ifm-color-primary-dark: #f97316;
+  --ifm-color-primary-darker: #ea580c;
+  --ifm-color-primary-darkest: #dc2626;
+  --ifm-color-primary-light: #fdba74;
+  --ifm-color-primary-lighter: #fed7aa;
+  --ifm-color-primary-lightest: #ffedd5;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
 /* Enhanced Hero Section */
 .hero {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(251, 146, 60, 0.05) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -49,8 +49,8 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+    radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(251, 146, 60, 0.15) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -83,7 +83,7 @@
 
 .button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
 }
 
 .button--primary {
@@ -116,7 +116,7 @@
 .featureSvg {
   height: 200px;
   width: 200px;
-  filter: drop-shadow(0 10px 20px rgba(124, 58, 237, 0.2));
+  filter: drop-shadow(0 10px 20px rgba(249, 115, 22, 0.3));
   transition: transform 0.3s ease;
 }
 
@@ -172,7 +172,7 @@ html {
 
 /* Enhanced Footer */
 .footer {
-  background: linear-gradient(180deg, var(--ifm-background-color) 0%, rgba(124, 58, 237, 0.05) 100%);
+  background: linear-gradient(180deg, var(--ifm-background-color) 0%, rgba(249, 115, 22, 0.05) 100%);
   border-top: 1px solid var(--ifm-color-emphasis-200);
   padding: 3rem 0 2rem;
 }
