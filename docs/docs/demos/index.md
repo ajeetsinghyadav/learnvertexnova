@@ -3,6 +3,9 @@ sidebar_position: 2
 title: Demos
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Demos
 
 This page showcases the **runnable examples** in VertexNova Engine. Each demo validates specific engine features and serves as both proof of concept and learning reference.
@@ -11,13 +14,47 @@ This page showcases the **runnable examples** in VertexNova Engine. Each demo va
 
 After building VertexNova, you can run examples from the build directory:
 
+<Tabs>
+<TabItem value="all" label="All Platforms" default>
+
 ```bash
 # Navigate to build directory
 cd build
 
-# Run examples (exact command depends on your build configuration)
-./bin/example_name
+# Run examples (exact path depends on your build configuration)
+./bin/sample_02_triangle
+./bin/sample_04_cube
 ```
+
+</TabItem>
+<TabItem value="windows" label="Windows">
+
+```powershell
+cd build\Release
+.\bin\sample_02_triangle.exe
+.\bin\sample_04_cube.exe
+```
+
+</TabItem>
+<TabItem value="macos" label="macOS">
+
+```bash
+cd build
+./bin/sample_02_triangle
+./bin/sample_04_cube
+```
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+cd build
+./bin/sample_02_triangle
+./bin/sample_04_cube
+```
+
+</TabItem>
+</Tabs>
 
 For platform-specific build instructions, see the [Getting Started guide](/docs/intro) or check the [VertexNova repository](https://github.com/ajeetsinghyadav/vertexnova).
 
