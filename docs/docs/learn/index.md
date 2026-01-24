@@ -7,28 +7,31 @@ title: Learn
 
 This section provides a structured learning path for VertexNova Engine, similar to LearnOpenGL but with **multi-backend considerations** throughout.
 
-## Getting Started
+Every chapter maps to working code. Every concept ends with something you can run.
 
-Start with the [Getting Started guide](/docs/intro) to set up your development environment and build VertexNova.
+## Start Here
 
-## Learning Path
+| Chapter | What You'll Build |
+|---------|-------------------|
+| [00: Hello VertexNova](./hello-vertexnova) | Minimal CMake project — your engine skeleton |
+| [01: Adding Logging](./adding-logging) | Replace std::cout with vnelogging — colors, timestamps, file output |
 
-The curriculum follows a progressive structure, building from basics to advanced topics:
+## Coming Soon
 
 ### Fundamentals
 
-1. **Window & Platform Setup** (`00_window`, `01_gui`)
+1. **Window & Platform Setup** (`02_window`, `03_gui`)
    - Window creation and management
    - Platform abstraction (`xwin`)
    - ImGui integration for debugging
 
-2. **Basic Rendering** (`02_triangle`, `03_quad`, `04_cube`)
+2. **Basic Rendering** (`04_triangle`, `05_quad`, `06_cube`)
    - Vertex buffers and layouts
    - Shader compilation and usage
    - Basic pipeline setup
    - 3D transforms and depth testing
 
-3. **Textures & Materials** (`08_texturing`)
+3. **Textures & Materials** (`07_texturing`)
    - Texture loading and management
    - Samplers and UV mapping
    - Material systems

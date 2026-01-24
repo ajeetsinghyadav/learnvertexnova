@@ -1,0 +1,192 @@
+---
+sidebar_position: 0
+title: "00: Hello VertexNova"
+description: "Create your first VertexNova project — a minimal CMake setup that will grow into an engine."
+---
+
+# 00: Hello VertexNova
+
+Every journey starts with a single step. Ours starts with a simple C++ project that says hello.
+
+This isn't just a hello world — it's the **skeleton** that will grow into your engine.
+
+## What We're Building
+
+A minimal CMake project structure:
+
+```
+00_HelloVertexNova/
+├── CMakeLists.txt
+├── src/
+│   └── main.cpp
+└── build/           (generated)
+```
+
+Simple. Clean. Ready to grow.
+
+## Step 1: Create the Project Structure
+
+```bash
+mkdir 00_HelloVertexNova
+cd 00_HelloVertexNova
+mkdir src
+```
+
+## Step 2: Write main.cpp
+
+Create `src/main.cpp`:
+
+```cpp
+/* ---------------------------------------------------------------------
+ * 00_HelloVertexNova
+ * 
+ * Your first step into the VertexNova engine journey.
+ * ---------------------------------------------------------------------
+ */
+
+#include <iostream>
+#include <string>
+
+int main(int argc, char* argv[]) {
+    std::cout << "==================================" << std::endl;
+    std::cout << "  Welcome to VertexNova Engine    " << std::endl;
+    std::cout << "==================================" << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << "Hello, VertexNova!" << std::endl;
+    std::cout << "This is where your engine journey begins." << std::endl;
+    
+    // Print some system info
+    std::cout << std::endl;
+    std::cout << "[INFO] Application started successfully" << std::endl;
+    std::cout << "[INFO] Arguments: " << argc << std::endl;
+    
+    for (int i = 0; i < argc; ++i) {
+        std::cout << "[DEBUG]   argv[" << i << "] = " << argv[i] << std::endl;
+    }
+    
+    // Simulate some work
+    std::cout << "[INFO] Initializing subsystems..." << std::endl;
+    std::cout << "[INFO] Loading configuration..." << std::endl;
+    std::cout << "[WARN] No config file found, using defaults" << std::endl;
+    std::cout << "[INFO] Ready!" << std::endl;
+    
+    std::cout << std::endl;
+    std::cout << "[INFO] Shutting down..." << std::endl;
+    std::cout << "[INFO] Goodbye!" << std::endl;
+    
+    return 0;
+}
+```
+
+## Step 3: Create CMakeLists.txt
+
+Create `CMakeLists.txt` in the project root:
+
+```cmake
+cmake_minimum_required(VERSION 3.16)
+
+project(HelloVertexNova
+    VERSION 0.1.0
+    DESCRIPTION "First step into VertexNova"
+    LANGUAGES CXX
+)
+
+# Require C++17 (VertexNova standard)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Output binaries to bin/ folder
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+# Create the executable
+add_executable(HelloVertexNova
+    src/main.cpp
+)
+
+# Enable warnings (good practice from day one)
+if(MSVC)
+    target_compile_options(HelloVertexNova PRIVATE /W4)
+else()
+    target_compile_options(HelloVertexNova PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+```
+
+## Step 4: Build and Run
+
+```bash
+# Configure
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+# Build
+cmake --build build
+
+# Run
+./build/bin/HelloVertexNova
+```
+
+**Output:**
+
+```
+==================================
+  Welcome to VertexNova Engine    
+==================================
+
+Hello, VertexNova!
+This is where your engine journey begins.
+
+[INFO] Application started successfully
+[INFO] Arguments: 1
+[DEBUG]   argv[0] = ./build/bin/HelloVertexNova
+[INFO] Initializing subsystems...
+[INFO] Loading configuration...
+[WARN] No config file found, using defaults
+[INFO] Ready!
+
+[INFO] Shutting down...
+[INFO] Goodbye!
+```
+
+## What's Wrong with This Picture?
+
+Look at those log messages. We're manually typing `[INFO]`, `[DEBUG]`, `[WARN]`. That's going to get old fast.
+
+Problems with `std::cout`:
+
+| Problem | Impact |
+|---------|--------|
+| No log levels | Can't filter debug vs production logs |
+| No timestamps | When did that error happen? |
+| No colors | Errors look the same as info |
+| No file output | Console only, logs vanish when you close terminal |
+| Not thread-safe | Multi-threaded logging = garbled output |
+| Manual formatting | `"[INFO] "` everywhere, typos happen |
+
+In the next chapter, we'll fix all of this by adding **vnelogging** — a proper logging system.
+
+## Project Files Summary
+
+Your project should look like this:
+
+```
+00_HelloVertexNova/
+├── CMakeLists.txt
+├── src/
+│   └── main.cpp
+└── build/
+    └── bin/
+        └── HelloVertexNova
+```
+
+## What's Next?
+
+In the next chapter, we'll:
+
+1. Add **vnelogging** as a dependency
+2. Replace `std::cout` with proper logging
+3. Get colored output, timestamps, and log levels — for free
+
+---
+
+**Checkpoint:** You have a working CMake project. This structure will be the foundation for everything we build.
