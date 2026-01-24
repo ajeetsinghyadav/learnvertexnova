@@ -434,31 +434,36 @@ article li code {
   font-family: var(--ifm-font-family-monospace);
 }
 
-/* Enhanced Table Styling */
+/* Enhanced Table Styling - Clean, no wrapper issues */
 
-/* Remove any wrapper styling */
-.theme-doc-markdown div:has(> table),
-article div:has(> table) {
+/* Remove ALL wrapper styling aggressively */
+.theme-doc-markdown div,
+.markdown div,
+article div,
+.theme-doc-markdown > div,
+.markdown > div {
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
   background: transparent !important;
 }
 
+/* But restore container padding */
+.theme-doc-markdown,
+.markdown,
+article {
+  padding: inherit;
+}
+
 table {
-  border-collapse: collapse;
+  border-collapse: collapse !important;
   width: 100% !important;
-  max-width: 100%;
-  margin: 1.5rem 0;
-  background: var(--ifm-background-color);
+  margin: 1.5rem 0 !important;
+  background: var(--ifm-background-color) !important;
   font-size: 0.95rem;
-  display: table !important;
-  table-layout: auto;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 table th {
@@ -468,19 +473,18 @@ table th {
   padding: 0.875rem 1rem;
   text-align: left;
   border: none !important;
-  border-bottom: 2px solid var(--ifm-color-primary-dark) !important;
 }
 
 table td {
   padding: 0.875rem 1rem;
-  border: none;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  vertical-align: top;
+  border: none !important;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200) !important;
+  vertical-align: middle;
   background: var(--ifm-background-color);
 }
 
 table tr:last-child td {
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  border-bottom: none !important;
 }
 
 table tr:hover td {
@@ -492,27 +496,15 @@ table code {
   padding: 0.15rem 0.4rem;
   border-radius: 4px;
   font-size: 0.85em;
-  white-space: nowrap;
 }
 
 [data-theme='dark'] table code {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Override any Infima table wrapper */
-.markdown table,
-.theme-doc-markdown table,
-article table {
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-}
-
-/* Responsive table scrolling for small screens */
+/* Responsive table */
 @media screen and (max-width: 768px) {
-  .theme-doc-markdown table,
-  article table {
+  table {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -767,16 +759,20 @@ article blockquote {
   border-radius: 2px;
 }
 
-/* Enhanced Sidebar Styling - LearnOpenGL Style */
+/* Enhanced Sidebar Styling */
 .theme-doc-sidebar-container {
   border-right: 1px solid var(--ifm-color-emphasis-200);
   background: var(--ifm-background-surface-color);
-  padding: 1rem 0;
+}
+
+[data-theme='dark'] .theme-doc-sidebar-container {
+  background: #1e2533;
+  border-right-color: #2d3748;
 }
 
 /* Sidebar menu container */
 .menu {
-  padding: 0.5rem 0;
+  padding: 1rem 0.5rem;
 }
 
 /* Sidebar menu items */
@@ -786,96 +782,105 @@ article blockquote {
 }
 
 .menu__list-item {
-  margin: 0.25rem 0;
+  margin: 0.15rem 0;
 }
 
-/* Sidebar links - with background */
+/* Sidebar links */
 .menu__link {
-  border-radius: 8px;
-  margin: 0.125rem 0.5rem;
-  padding: 0.75rem 1rem;
-  transition: all 0.2s ease;
+  border-radius: 6px;
+  margin: 0 0.25rem;
+  padding: 0.6rem 0.875rem;
+  transition: all 0.15s ease;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   background: transparent;
   color: var(--ifm-color-content);
   display: block;
-  width: calc(100% - 1rem);
 }
 
 .menu__link:hover {
   background: var(--ifm-color-emphasis-100);
   color: var(--ifm-color-primary);
-  transform: translateX(2px);
+}
+
+[data-theme='dark'] .menu__link:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .menu__link--active {
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(255, 107, 53, 0.08) 100%);
-  color: var(--ifm-color-primary);
+  background: rgba(255, 107, 53, 0.12) !important;
+  color: var(--ifm-color-primary) !important;
   font-weight: 600;
-  border-left: 4px solid var(--ifm-color-primary);
-  padding-left: calc(1rem - 4px);
+  border-left: 3px solid var(--ifm-color-primary);
+  margin-left: 0;
+  padding-left: calc(0.875rem - 3px);
 }
 
 [data-theme='dark'] .menu__link--active {
-  background: linear-gradient(135deg, rgba(255, 140, 66, 0.2) 0%, rgba(255, 140, 66, 0.1) 100%);
+  background: rgba(255, 140, 66, 0.15) !important;
 }
 
 /* Sidebar category headers (collapsible) */
 .menu__list-item-collapsible {
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 0.25rem;
 }
 
 .menu__list-item-collapsible > .menu__link {
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--ifm-heading-color);
-  background: var(--ifm-color-emphasis-50);
-  border-radius: 8px;
-  margin: 0.25rem 0.5rem;
-  padding: 0.875rem 1rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ifm-color-content-secondary);
+  background: transparent;
+  padding: 0.5rem 0.875rem;
+  margin: 0 0.25rem;
 }
 
 .menu__list-item-collapsible > .menu__link:hover {
-  background: var(--ifm-color-emphasis-100);
+  background: transparent;
   color: var(--ifm-color-primary);
 }
 
 .menu__list-item-collapsible--active > .menu__link {
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(255, 107, 53, 0.1) 100%);
   color: var(--ifm-color-primary);
-  border-left: 4px solid var(--ifm-color-primary);
-  padding-left: calc(1rem - 4px);
+  background: transparent;
 }
 
 /* Nested menu items (subsections) */
 .menu__list-item .menu__list {
-  margin-left: 0.5rem;
-  padding-left: 0.5rem;
-  border-left: 2px solid var(--ifm-color-emphasis-200);
+  margin-left: 0.75rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--ifm-color-emphasis-200);
+  margin-top: 0.25rem;
+}
+
+[data-theme='dark'] .menu__list-item .menu__list {
+  border-left-color: #3d4a5c;
 }
 
 .menu__list-item .menu__list .menu__link {
-  padding-left: 1.25rem;
-  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
-  margin-left: 0.25rem;
 }
 
 .menu__list-item .menu__list .menu__link--active {
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.12) 0%, rgba(255, 107, 53, 0.06) 100%);
-  border-left: 3px solid var(--ifm-color-primary);
-  padding-left: calc(1.25rem - 3px);
+  background: rgba(255, 107, 53, 0.1) !important;
+  border-left: 2px solid var(--ifm-color-primary);
+  padding-left: calc(0.75rem - 2px);
 }
 
-/* Collapsible button */
+/* Collapsible caret */
 .menu__caret {
-  margin-right: 0.5rem;
   color: var(--ifm-color-content-secondary);
 }
 
-.menu__list-item-collapsible--active .menu__caret {
-  color: var(--ifm-color-primary);
+.menu__caret::before {
+  border-color: var(--ifm-color-content-secondary) !important;
+}
+
+.menu__list-item-collapsible--active .menu__caret::before {
+  border-color: var(--ifm-color-primary) !important;
 }
 
 /* Breadcrumbs */
