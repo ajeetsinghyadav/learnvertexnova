@@ -37,13 +37,13 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #ff6b35;
-  --ifm-color-primary-dark: #ff5722;
-  --ifm-color-primary-darker: #ff4500;
-  --ifm-color-primary-darkest: #e63900;
-  --ifm-color-primary-light: #ff8c42;
-  --ifm-color-primary-lighter: #ffa366;
-  --ifm-color-primary-lightest: #ffb88a;
+  --ifm-color-primary: #ff8c42;
+  --ifm-color-primary-dark: #ff6b35;
+  --ifm-color-primary-darker: #ff5722;
+  --ifm-color-primary-darkest: #ff4500;
+  --ifm-color-primary-light: #ffa366;
+  --ifm-color-primary-lighter: #ffb88a;
+  --ifm-color-primary-lightest: #ffccaa;
   --ifm-color-content: #e2e8f0;
   --ifm-color-content-secondary: #cbd5e0;
   --ifm-background-color: #1a202c;
@@ -54,19 +54,9 @@
 
 /* Enhanced Hero Section */
 .hero {
-  background: var(--ifm-background-color);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(247, 250, 252, 0.05) 100%);
   position: relative;
   overflow: hidden;
-}
-
-/* Light mode hero - subtle orange accent */
-[data-theme='light'] .hero {
-  background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
-}
-
-/* Dark mode hero - clean dark gray, no brown tint */
-[data-theme='dark'] .hero {
-  background: linear-gradient(180deg, #1a202c 0%, #171923 100%);
 }
 
 .hero::before {
@@ -76,17 +66,10 @@
   left: 0;
   right: 0;
   bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(226, 232, 240, 0.1) 0%, transparent 50%);
   pointer-events: none;
-}
-
-/* Light mode - subtle orange glow */
-[data-theme='light'] .hero::before {
-  background: radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.08) 0%, transparent 50%);
-}
-
-/* Dark mode - very subtle accent, no brown */
-[data-theme='dark'] .hero::before {
-  background: radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.05) 0%, transparent 40%);
 }
 
 .hero__title {
@@ -263,38 +246,6 @@ html {
   transform: translateY(-1px);
 }
 
-/* Mobile Navbar - minimal styling, let Docusaurus handle behavior */
-.navbar__toggle {
-  color: var(--ifm-color-content);
-  cursor: pointer;
-}
-
-.navbar-sidebar {
-  background: var(--ifm-background-color) !important;
-}
-
-.navbar-sidebar__brand {
-  padding: 1rem;
-  background: var(--ifm-background-surface-color);
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-}
-
-.navbar-sidebar .menu__link {
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.navbar-sidebar .menu__link:hover {
-  background: var(--ifm-color-emphasis-100);
-  color: var(--ifm-color-primary);
-}
-
-.navbar-sidebar .menu__link--active {
-  background: rgba(255, 107, 53, 0.1);
-  color: var(--ifm-color-primary);
-}
-
 .header-github-link:hover {
   opacity: 0.8;
 }
@@ -310,14 +261,9 @@ html {
 
 /* Enhanced Footer */
 .footer {
-  background: var(--ifm-background-color);
+  background: linear-gradient(180deg, var(--ifm-background-color) 0%, rgba(255, 107, 53, 0.04) 100%);
   border-top: 1px solid var(--ifm-color-emphasis-200);
   padding: 3rem 0 2rem;
-}
-
-[data-theme='dark'] .footer {
-  background: #171923;
-  border-top-color: #2d3748;
 }
 
 .footer__link-item {
@@ -488,40 +434,28 @@ article li code {
   font-family: var(--ifm-font-family-monospace);
 }
 
-/* Remove any table wrapper styling from Docusaurus */
-.theme-doc-markdown > div,
-.markdown > div,
-article > div {
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-  overflow: visible !important;
-}
-
 /* Enhanced Table Styling */
 table {
-  border-collapse: separate !important;
-  border-spacing: 0 !important;
-  width: 100% !important;
-  margin: 2rem 0 !important;
-  border: 1px solid var(--ifm-color-emphasis-200) !important;
-  background: var(--ifm-background-color) !important;
-  border-radius: 12px !important;
-  overflow: hidden !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin: 2rem 0;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-size: 0.95rem;
-  table-layout: auto !important;
 }
 
 table th {
-  background: linear-gradient(135deg, #ff6b35 0%, #ff5722 100%) !important;
-  color: white !important;
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+  color: white;
   font-weight: 600;
   padding: 1rem 1.25rem;
   text-align: left;
-  border: none !important;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 table th:first-child {
@@ -534,14 +468,13 @@ table th:last-child {
 
 table td {
   padding: 1rem 1.25rem;
-  border: none !important;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200) !important;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
   vertical-align: top;
   background: var(--ifm-background-color);
 }
 
 table tr:last-child td {
-  border-bottom: none !important;
+  border-bottom: none;
 }
 
 table tr:last-child td:first-child {
