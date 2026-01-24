@@ -37,13 +37,13 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #ff8c42;
-  --ifm-color-primary-dark: #ff6b35;
-  --ifm-color-primary-darker: #ff5722;
-  --ifm-color-primary-darkest: #ff4500;
-  --ifm-color-primary-light: #ffa366;
-  --ifm-color-primary-lighter: #ffb88a;
-  --ifm-color-primary-lightest: #ffccaa;
+  --ifm-color-primary: #ff6b35;
+  --ifm-color-primary-dark: #ff5722;
+  --ifm-color-primary-darker: #ff4500;
+  --ifm-color-primary-darkest: #e63900;
+  --ifm-color-primary-light: #ff8c42;
+  --ifm-color-primary-lighter: #ffa366;
+  --ifm-color-primary-lightest: #ffb88a;
   --ifm-color-content: #e2e8f0;
   --ifm-color-content-secondary: #cbd5e0;
   --ifm-background-color: #1a202c;
@@ -466,29 +466,40 @@ article li code {
   font-family: var(--ifm-font-family-monospace);
 }
 
+/* Remove any table wrapper styling from Docusaurus */
+.theme-doc-markdown > div,
+.markdown > div,
+article > div {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
 /* Enhanced Table Styling */
 table {
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
-  margin: 2rem 0;
-  border: 1px solid var(--ifm-color-emphasis-200);
-  background: var(--ifm-background-color);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+  margin: 2rem 0 !important;
+  border: 1px solid var(--ifm-color-emphasis-200) !important;
+  background: var(--ifm-background-color) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
   font-size: 0.95rem;
-  table-layout: fixed;
+  table-layout: auto !important;
 }
 
 table th {
-  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
-  color: white;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff5722 100%) !important;
+  color: white !important;
   font-weight: 600;
   padding: 1rem 1.25rem;
   text-align: left;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border: none !important;
 }
 
 table th:first-child {
@@ -501,13 +512,14 @@ table th:last-child {
 
 table td {
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  border: none !important;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200) !important;
   vertical-align: top;
   background: var(--ifm-background-color);
 }
 
 table tr:last-child td {
-  border-bottom: none;
+  border-bottom: none !important;
 }
 
 table tr:last-child td:first-child {
