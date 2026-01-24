@@ -246,6 +246,38 @@ html {
   transform: translateY(-1px);
 }
 
+/* Mobile Navbar - minimal styling, let Docusaurus handle behavior */
+.navbar__toggle {
+  color: var(--ifm-color-content);
+  cursor: pointer;
+}
+
+.navbar-sidebar {
+  background: var(--ifm-background-color) !important;
+}
+
+.navbar-sidebar__brand {
+  padding: 1rem;
+  background: var(--ifm-background-surface-color);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.navbar-sidebar .menu__link {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.navbar-sidebar .menu__link:hover {
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-primary);
+}
+
+.navbar-sidebar .menu__link--active {
+  background: rgba(255, 107, 53, 0.1);
+  color: var(--ifm-color-primary);
+}
+
 .header-github-link:hover {
   opacity: 0.8;
 }
