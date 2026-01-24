@@ -685,50 +685,15 @@ article blockquote {
   .navbar {
     padding: 0.5rem 1rem;
   }
-  
-  /* Ensure hamburger menu is visible on mobile */
-  .navbar__toggle {
-    display: flex !important;
-    color: var(--ifm-navbar-link-color);
-  }
-  
-  /* Hide desktop navbar items on mobile */
-  .navbar__items--right > .navbar__item:not(.navbar__toggle) {
-    display: none;
-  }
 }
 
-/* Mobile sidebar menu */
+/* Mobile sidebar - let Docusaurus handle structure, just style it */
 .navbar-sidebar {
   background: var(--ifm-background-color);
 }
 
 [data-theme='dark'] .navbar-sidebar {
   background: #1a202c;
-}
-
-.navbar-sidebar__brand {
-  padding: 1rem;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-}
-
-.navbar-sidebar__items {
-  padding: 1rem 0;
-}
-
-.navbar-sidebar .menu__link {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.navbar-sidebar .menu__link:hover {
-  background: var(--ifm-color-emphasis-100);
-}
-
-.navbar-sidebar .menu__link--active {
-  color: var(--ifm-color-primary);
-  background: rgba(255, 122, 0, 0.1);
 }
 
 /* Documentation Page Enhancements */
