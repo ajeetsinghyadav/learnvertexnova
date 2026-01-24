@@ -435,51 +435,78 @@ article li code {
 }
 
 /* Enhanced Table Styling */
+
+/* Remove any wrapper styling */
+.theme-doc-markdown div:has(> table),
+article div:has(> table) {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
 table {
   border-collapse: collapse;
-  width: 100%;
-  margin: 2rem 0;
+  width: 100% !important;
+  max-width: 100%;
+  margin: 1.5rem 0;
   background: var(--ifm-background-color);
   font-size: 0.95rem;
+  display: table !important;
+  table-layout: auto;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 table th {
-  background: var(--ifm-color-emphasis-100);
-  color: var(--ifm-heading-color);
+  background: var(--ifm-color-primary);
+  color: white;
   font-weight: 600;
   padding: 0.875rem 1rem;
   text-align: left;
-  border-bottom: 2px solid var(--ifm-color-primary);
-}
-
-[data-theme='dark'] table th {
-  background: var(--ifm-color-emphasis-200);
+  border: none;
+  border-bottom: 2px solid var(--ifm-color-primary-dark);
 }
 
 table td {
   padding: 0.875rem 1rem;
+  border: none;
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
   vertical-align: top;
+  background: var(--ifm-background-color);
 }
 
 table tr:last-child td {
-  border-bottom: none;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
 }
 
 table tr:hover td {
-  background: var(--ifm-color-emphasis-50);
-}
-
-[data-theme='dark'] table tr:hover td {
   background: var(--ifm-color-emphasis-100);
 }
 
 table code {
-  background: var(--ifm-code-background);
+  background: rgba(0, 0, 0, 0.1);
   padding: 0.15rem 0.4rem;
   border-radius: 4px;
   font-size: 0.85em;
   white-space: nowrap;
+}
+
+[data-theme='dark'] table code {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Override any Infima table wrapper */
+.markdown table,
+.theme-doc-markdown table,
+article table {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
 }
 
 /* Responsive table scrolling for small screens */
