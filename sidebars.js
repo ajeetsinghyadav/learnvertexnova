@@ -75,7 +75,14 @@ const sidebars = {
       label: 'Overview',
     },
 
-    // 7) About
+    // 7) Coding Guidelines
+    {
+      type: 'doc',
+      id: 'coding-guidelines',
+      label: 'Coding Guidelines',
+    },
+
+    // 8) About
     {
       type: 'doc',
       id: 'about',
