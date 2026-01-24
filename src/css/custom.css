@@ -435,68 +435,61 @@ article li code {
 }
 
 /* Enhanced Table Styling */
+
+/* Remove any wrapper styling */
+.theme-doc-markdown div:has(> table),
+article div:has(> table) {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
 table {
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
-  margin: 2rem 0;
-  border: 1px solid var(--ifm-color-emphasis-200);
+  border-collapse: collapse;
+  width: 100% !important;
+  max-width: 100%;
+  margin: 1.5rem 0;
   background: var(--ifm-background-color);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-size: 0.95rem;
+  display: table !important;
+  table-layout: auto;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 table th {
-  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
-  color: white;
+  background: var(--ifm-color-primary) !important;
+  color: white !important;
   font-weight: 600;
-  padding: 1rem 1.25rem;
+  padding: 0.875rem 1rem;
   text-align: left;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-table th:first-child {
-  border-top-left-radius: 11px;
-}
-
-table th:last-child {
-  border-top-right-radius: 11px;
+  border: none !important;
+  border-bottom: 2px solid var(--ifm-color-primary-dark) !important;
 }
 
 table td {
-  padding: 1rem 1.25rem;
+  padding: 0.875rem 1rem;
+  border: none;
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
   vertical-align: top;
   background: var(--ifm-background-color);
 }
 
 table tr:last-child td {
-  border-bottom: none;
-}
-
-table tr:last-child td:first-child {
-  border-bottom-left-radius: 11px;
-}
-
-table tr:last-child td:last-child {
-  border-bottom-right-radius: 11px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
 }
 
 table tr:hover td {
-  background: var(--ifm-color-emphasis-50);
-  transition: background 0.2s ease;
-}
-
-[data-theme='dark'] table tr:hover td {
   background: var(--ifm-color-emphasis-100);
 }
 
 table code {
-  background: rgba(0, 0, 0, 0.08);
-  padding: 0.2rem 0.4rem;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.15rem 0.4rem;
   border-radius: 4px;
   font-size: 0.85em;
   white-space: nowrap;
@@ -506,9 +499,20 @@ table code {
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Override any Infima table wrapper */
+.markdown table,
+.theme-doc-markdown table,
+article table {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
 /* Responsive table scrolling for small screens */
 @media screen and (max-width: 768px) {
-  table {
+  .theme-doc-markdown table,
+  article table {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
