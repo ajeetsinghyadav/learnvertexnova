@@ -436,135 +436,59 @@ article li code {
 
 /* Enhanced Table Styling */
 table {
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   width: 100%;
   margin: 2rem 0;
-  border: 1px solid var(--ifm-color-emphasis-200);
   background: var(--ifm-background-color);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  box-sizing: border-box;
-  table-layout: auto; /* Allow columns to adjust based on content */
+  font-size: 0.95rem;
 }
 
 table th {
-  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
-  color: white;
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-heading-color);
   font-weight: 600;
-  padding: 1rem 1.25rem;
+  padding: 0.875rem 1rem;
   text-align: left;
-  font-size: 0.95rem;
-  letter-spacing: 0.01em;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  white-space: nowrap; /* Prevent header text from wrapping */
+  border-bottom: 2px solid var(--ifm-color-primary);
 }
 
-table th:first-child {
-  border-top-left-radius: 12px;
-}
-
-table th:last-child {
-  border-top-right-radius: 12px;
+[data-theme='dark'] table th {
+  background: var(--ifm-color-emphasis-200);
 }
 
 table td {
-  padding: 1rem 1.25rem;
+  padding: 0.875rem 1rem;
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  border-right: 1px solid var(--ifm-color-emphasis-200);
-  font-size: 0.95rem;
-  background: var(--ifm-background-color);
-  word-wrap: break-word; /* Allow long content to wrap */
-  overflow-wrap: break-word;
-}
-
-table td:last-child {
-  border-right: none;
+  vertical-align: top;
 }
 
 table tr:last-child td {
   border-bottom: none;
 }
 
-table tr:last-child td:first-child {
-  border-bottom-left-radius: 12px;
-}
-
-table tr:last-child td:last-child {
-  border-bottom-right-radius: 12px;
-}
-
 table tr:hover td {
   background: var(--ifm-color-emphasis-50);
-  transition: background 0.2s ease;
+}
+
+[data-theme='dark'] table tr:hover td {
+  background: var(--ifm-color-emphasis-100);
 }
 
 table code {
   background: var(--ifm-code-background);
-  padding: 0.2rem 0.4rem;
+  padding: 0.15rem 0.4rem;
   border-radius: 4px;
   font-size: 0.85em;
-  white-space: nowrap; /* Keep code inline from breaking */
-}
-
-/* Table column width adjustments - flexible based on content */
-/* First column - typically narrower for labels/names */
-table th:first-child,
-table td:first-child {
-  width: auto;
-  min-width: 120px;
-  max-width: 35%;
-}
-
-/* Second column - flexible */
-table th:nth-child(2),
-table td:nth-child(2) {
-  width: auto;
-  min-width: 150px;
-}
-
-/* Third column - flexible */
-table th:nth-child(3),
-table td:nth-child(3) {
-  width: auto;
-  min-width: 150px;
-}
-
-/* Fourth column and beyond - flexible */
-table th:nth-child(n+4),
-table td:nth-child(n+4) {
-  width: auto;
-  min-width: 120px;
-}
-
-/* Last column - takes remaining space */
-table th:last-child,
-table td:last-child {
-  width: auto;
-  min-width: 150px;
-}
-
-/* Ensure table fits within container - no overflow */
-.theme-doc-markdown table,
-article table {
-  max-width: 100%;
-  box-sizing: border-box;
+  white-space: nowrap;
 }
 
 /* Responsive table scrolling for small screens */
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 768px) {
   .theme-doc-markdown table,
   article table {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-  }
-  
-  table th,
-  table td {
-    min-width: 100px; /* Smaller min-width on mobile */
   }
 }
 
