@@ -1,0 +1,876 @@
+---
+sidebar_position: 7
+title: GLSL Coding Guidelines
+description: GLSL shader coding standards for the VertexNova multi-backend engine
+---
+
+# VertexNova GLSL Coding Guidelines
+
+**Version:** 1.0  
+**Last Updated:** January 2026  
+**GLSL Version:** 4.50 (Vulkan)  
+**Target Backends:** Vulkan, Metal (MSL), OpenGL, OpenGL ES, WebGPU (future)
+
+## Introduction
+
+These guidelines establish standards for writing GLSL shaders in the VertexNova engine. All shaders are authored in **GLSL 4.50 (Vulkan-style)** and cross-compiled to other backends using **SPIRV-Cross**.
+
+### Goals
+
+- **Consistency**: Uniform naming and structure across all shaders
+- **Portability**: Code that translates cleanly to all target backends
+- **Readability**: Easy to compare generated output across backends
+- **Maintainability**: Clear organization and documentation
+
+### Backend Targets
+
+| Backend | Generated Format | Tool |
+|---------|------------------|------|
+| Vulkan | SPIR-V (native) | glslangValidator / shaderc |
+| Metal | MSL | SPIRV-Cross |
+| OpenGL | GLSL 4.10+ | SPIRV-Cross |
+| OpenGL ES | ESSL 3.00+ | SPIRV-Cross |
+| WebGPU | WGSL | SPIRV-Cross (future) |
+
+---
+
+## File Organization
+
+### File Naming
+
+Use **snake_case** for shader files (matching C++ convention):
+
+```
+basic_triangle.vert.glsl
+basic_triangle.frag.glsl
+pbr_lighting.vert.glsl
+pbr_lighting.frag.glsl
+compute_particles.comp.glsl
+fullscreen_quad.vert.glsl
+post_process_bloom.frag.glsl
+```
+
+### File Extensions
+
+| Stage | Extension |
+|-------|-----------|
+| Vertex | `.vert.glsl` |
+| Fragment | `.frag.glsl` |
+| Compute | `.comp.glsl` |
+| Geometry | `.geom.glsl` |
+| Tessellation Control | `.tesc.glsl` |
+| Tessellation Evaluation | `.tese.glsl` |
+
+### Shader Header
+
+Every shader should begin with a standard header:
+
+```glsl
+#version 450
+/*
+ * Shader: basic_triangle.vert
+ * Description: Simple vertex shader for triangle rendering
+ * Author: VertexNova Team
+ * 
+ * Inputs:  position (vec3), color (vec3)
+ * Outputs: v_color (vec3)
+ * Uniforms: u_transform (set=0, binding=0)
+ */
+```
+
+---
+
+## Naming Conventions
+
+### Summary Table
+
+| Construct | Style | Prefix | Example |
+|-----------|-------|--------|---------|
+| Vertex inputs | snake_case | `a_` | `a_position`, `a_normal` |
+| Stage outputs | snake_case | `v_` | `v_color`, `v_tex_coord` |
+| Fragment outputs | snake_case | `o_` | `o_color`, `o_bloom` |
+| Uniform blocks | PascalCase | none | `TransformData`, `LightData` |
+| Uniform block instances | camelCase | `u_` | `u_transform`, `u_light` |
+| Push constants | PascalCase | none | `PushConstants` |
+| Samplers | snake_case | `s_` | `s_albedo`, `s_normal_map` |
+| Images (storage) | snake_case | `i_` | `i_output`, `i_input` |
+| Buffers (SSBO) | PascalCase | none | `VertexBuffer`, `ParticleData` |
+| Buffer instances | camelCase | `b_` | `b_vertices`, `b_particles` |
+| Global variables | snake_case | `g_` | `g_accumulated_light`, `g_total_shadow` |
+| Local variables | snake_case | none | `light_dir`, `view_pos` |
+| Constants | UPPER_CASE | none | `PI`, `MAX_LIGHTS` |
+| Functions | camelCase | none | `calculateLighting()` |
+| Macros | UPPER_CASE | `VNE_` | `VNE_ENABLE_SHADOWS` |
+
+### Vertex Inputs (Attributes)
+
+Use **`a_` prefix** (attribute) with **snake_case**:
+
+```glsl
+// Vertex inputs
+layout(location = 0) in vec3 a_position;
+layout(location = 1) in vec3 a_normal;
+layout(location = 2) in vec2 a_tex_coord;
+layout(location = 3) in vec4 a_color;
+layout(location = 4) in vec4 a_tangent;
+layout(location = 5) in ivec4 a_bone_ids;
+layout(location = 6) in vec4 a_bone_weights;
+```
+
+### Stage Outputs (Varyings)
+
+Use **`v_` prefix** (varying) with **snake_case**:
+
+```glsl
+// Vertex shader outputs / Fragment shader inputs
+layout(location = 0) out vec3 v_world_position;
+layout(location = 1) out vec3 v_normal;
+layout(location = 2) out vec2 v_tex_coord;
+layout(location = 3) out vec4 v_color;
+layout(location = 4) out vec3 v_tangent;
+layout(location = 5) out vec3 v_bitangent;
+```
+
+### Fragment Outputs
+
+Use **`o_` prefix** (output) with **snake_case**:
+
+```glsl
+// Fragment outputs
+layout(location = 0) out vec4 o_color;
+layout(location = 1) out vec4 o_bloom;
+layout(location = 2) out vec4 o_normal;
+layout(location = 3) out vec4 o_velocity;
+```
+
+### Uniform Blocks (UBOs)
+
+Use **PascalCase** for block names, **`u_` prefix** with **camelCase** for instances:
+
+```glsl
+// Camera/View data - set 0 (per-frame)
+layout(set = 0, binding = 0) uniform CameraData {
+    mat4 view;
+    mat4 projection;
+    mat4 view_projection;
+    vec3 camera_position;
+    float near_plane;
+    float far_plane;
+} u_camera;
+
+// Transform data - set 1 (per-object)
+layout(set = 1, binding = 0) uniform TransformData {
+    mat4 model;
+    mat4 normal_matrix;
+} u_transform;
+
+// Material data - set 2 (per-material)
+layout(set = 2, binding = 0) uniform MaterialData {
+    vec4 base_color;
+    float metallic;
+    float roughness;
+    float ao;
+    float emissive_strength;
+} u_material;
+```
+
+### Push Constants
+
+Use **PascalCase** for the block, access members directly:
+
+```glsl
+layout(push_constant) uniform PushConstants {
+    mat4 model;
+    uint material_index;
+    uint object_id;
+} pc;
+
+void main() {
+    mat4 mvp = u_camera.view_projection * pc.model;
+    // ...
+}
+```
+
+### Samplers
+
+Use **`s_` prefix** with **snake_case**:
+
+```glsl
+// Texture samplers - set 2 (per-material)
+layout(set = 2, binding = 1) uniform sampler2D s_albedo;
+layout(set = 2, binding = 2) uniform sampler2D s_normal_map;
+layout(set = 2, binding = 3) uniform sampler2D s_metallic_roughness;
+layout(set = 2, binding = 4) uniform sampler2D s_ao;
+layout(set = 2, binding = 5) uniform sampler2D s_emissive;
+layout(set = 2, binding = 6) uniform samplerCube s_environment;
+layout(set = 2, binding = 7) uniform sampler2D s_brdf_lut;
+```
+
+### Storage Buffers (SSBOs)
+
+Use **PascalCase** for block names, **`b_` prefix** with **camelCase** for instances:
+
+```glsl
+// Vertex buffer (read-only)
+layout(std430, set = 0, binding = 1) readonly buffer VertexBuffer {
+    vec4 positions[];
+} b_vertices;
+
+// Particle buffer (read-write)
+layout(std430, set = 0, binding = 2) buffer ParticleBuffer {
+    vec4 positions[];
+    vec4 velocities[];
+    float lifetimes[];
+} b_particles;
+
+// Indirect draw commands
+layout(std430, set = 0, binding = 3) buffer DrawCommands {
+    uint vertex_count;
+    uint instance_count;
+    uint first_vertex;
+    uint first_instance;
+} b_draw_cmd;
+```
+
+### Storage Images
+
+Use **`i_` prefix** with **snake_case**:
+
+```glsl
+// Storage images for compute shaders
+layout(set = 0, binding = 0, rgba8) uniform readonly image2D i_input;
+layout(set = 0, binding = 1, rgba8) uniform writeonly image2D i_output;
+layout(set = 0, binding = 2, r32f) uniform image2D i_depth;
+```
+
+### Local Variables
+
+Use **snake_case** (matching C++ local variable convention):
+
+```glsl
+void main() {
+    vec3 world_position = (u_transform.model * vec4(a_position, 1.0)).xyz;
+    vec3 view_direction = normalize(u_camera.camera_position - world_position);
+    vec3 light_direction = normalize(u_light.position - world_position);
+    
+    float n_dot_l = max(dot(normal, light_direction), 0.0);
+    float attenuation = 1.0 / (distance * distance);
+    
+    vec3 diffuse_color = base_color.rgb * n_dot_l;
+    vec3 specular_color = calculateSpecular(normal, view_direction, light_direction);
+    
+    vec3 final_color = diffuse_color + specular_color;
+    o_color = vec4(final_color, 1.0);
+}
+```
+
+### Constants
+
+Use **UPPER_CASE** for compile-time constants:
+
+```glsl
+// Mathematical constants
+const float PI = 3.14159265359;
+const float TWO_PI = 6.28318530718;
+const float HALF_PI = 1.57079632679;
+const float INV_PI = 0.31830988618;
+
+// Engine constants
+const int MAX_LIGHTS = 16;
+const int MAX_BONES = 256;
+const int MAX_CASCADES = 4;
+const float EPSILON = 0.0001;
+
+// Material defaults
+const float DEFAULT_ROUGHNESS = 0.5;
+const float DEFAULT_METALLIC = 0.0;
+```
+
+### Global Variables
+
+Use **`g_` prefix** with **snake_case** for file-scope variables shared across functions:
+
+```glsl
+#version 450
+
+// Constants
+const float PI = 3.14159265359;
+const int MAX_LIGHTS = 16;
+
+// Global variables (shared across functions)
+vec3 g_accumulated_light;
+float g_total_shadow;
+int g_visible_light_count;
+vec3 g_world_position;
+vec3 g_view_direction;
+
+void accumulateLight(vec3 light_color, float intensity) {
+    g_accumulated_light += light_color * intensity;
+    g_visible_light_count++;
+}
+
+void calculateShadow(int light_index) {
+    float shadow = sampleShadowMap(light_index, g_world_position);
+    g_total_shadow *= shadow;
+}
+
+void main() {
+    // Initialize globals
+    g_accumulated_light = vec3(0.0);
+    g_total_shadow = 1.0;
+    g_visible_light_count = 0;
+    g_world_position = v_world_position;
+    g_view_direction = normalize(u_camera.position - g_world_position);
+    
+    // Process lights
+    for (int i = 0; i < u_light_count; i++) {
+        accumulateLight(u_lights[i].color, u_lights[i].intensity);
+        calculateShadow(i);
+    }
+    
+    vec3 final_color = g_accumulated_light * g_total_shadow;
+    o_color = vec4(final_color, 1.0);
+}
+```
+
+### Functions
+
+Use **camelCase** for function names:
+
+```glsl
+// Lighting functions
+vec3 calculateDiffuse(vec3 albedo, vec3 light_color, float n_dot_l) {
+    return albedo * light_color * n_dot_l;
+}
+
+vec3 calculateSpecular(vec3 normal, vec3 view_dir, vec3 light_dir, float roughness) {
+    vec3 half_vector = normalize(view_dir + light_dir);
+    float n_dot_h = max(dot(normal, half_vector), 0.0);
+    float spec_power = (1.0 - roughness) * 128.0;
+    return vec3(pow(n_dot_h, spec_power));
+}
+
+float calculateAttenuation(float distance, float range) {
+    float attenuation = 1.0 / (distance * distance);
+    float falloff = saturate(1.0 - pow(distance / range, 4.0));
+    return attenuation * falloff * falloff;
+}
+
+// Utility functions
+float saturate(float x) {
+    return clamp(x, 0.0, 1.0);
+}
+
+vec3 saturate(vec3 x) {
+    return clamp(x, vec3(0.0), vec3(1.0));
+}
+```
+
+---
+
+## Layout Qualifiers
+
+### Descriptor Set Organization
+
+Use a consistent set layout across all shaders:
+
+| Set | Purpose | Update Frequency |
+|-----|---------|------------------|
+| 0 | Global/Frame data | Per frame |
+| 1 | Per-object data | Per draw call |
+| 2 | Per-material data | Per material |
+| 3 | Bindless/Dynamic | As needed |
+
+```glsl
+// Set 0: Per-frame (camera, lights, time)
+layout(set = 0, binding = 0) uniform CameraData { ... } u_camera;
+layout(set = 0, binding = 1) uniform LightData { ... } u_lights;
+layout(set = 0, binding = 2) uniform TimeData { ... } u_time;
+
+// Set 1: Per-object (transform)
+layout(set = 1, binding = 0) uniform TransformData { ... } u_transform;
+
+// Set 2: Per-material (properties, textures)
+layout(set = 2, binding = 0) uniform MaterialData { ... } u_material;
+layout(set = 2, binding = 1) uniform sampler2D s_albedo;
+layout(set = 2, binding = 2) uniform sampler2D s_normal_map;
+```
+
+### Location Assignments
+
+Use explicit locations for all inputs/outputs:
+
+```glsl
+// Vertex inputs - consistent across all vertex shaders
+layout(location = 0) in vec3 a_position;
+layout(location = 1) in vec3 a_normal;
+layout(location = 2) in vec2 a_tex_coord;
+layout(location = 3) in vec4 a_tangent;
+layout(location = 4) in vec4 a_color;
+
+// Vertex outputs - match fragment inputs
+layout(location = 0) out vec3 v_world_position;
+layout(location = 1) out vec3 v_normal;
+layout(location = 2) out vec2 v_tex_coord;
+```
+
+### Standard Vertex Attribute Locations
+
+Maintain consistent attribute locations:
+
+| Location | Attribute | Type |
+|----------|-----------|------|
+| 0 | position | vec3 |
+| 1 | normal | vec3 |
+| 2 | tex_coord | vec2 |
+| 3 | tangent | vec4 |
+| 4 | color | vec4 |
+| 5 | bone_ids | ivec4 |
+| 6 | bone_weights | vec4 |
+
+---
+
+## SPIRV-Cross Portability
+
+### Avoid Platform-Specific Features
+
+Features that may not translate well:
+
+```glsl
+// Avoid: Geometry shaders (limited Metal support)
+// Avoid: Tessellation (complex translation)
+// Avoid: gl_ClipDistance arrays (varies by backend)
+
+// Prefer: Compute shaders for GPU work
+// Prefer: Vertex pulling for complex vertex formats
+```
+
+### Use Standard Types
+
+Stick to types with good cross-platform support:
+
+```glsl
+// Preferred types
+float, vec2, vec3, vec4
+int, ivec2, ivec3, ivec4
+uint, uvec2, uvec3, uvec4
+mat2, mat3, mat4
+
+// Use with caution (check backend support)
+double, dvec2, dvec3, dvec4  // Not all backends
+int8_t, uint8_t              // Extension required
+float16_t                     // Extension required
+```
+
+### Buffer Layout
+
+Use **std140** for uniform blocks (widest compatibility):
+
+```glsl
+// std140 layout - predictable padding, works everywhere
+layout(std140, set = 0, binding = 0) uniform CameraData {
+    mat4 view;           // offset 0
+    mat4 projection;     // offset 64
+    vec4 position;       // offset 128 (vec3 padded to vec4)
+    float near_plane;    // offset 144
+    float far_plane;     // offset 148
+    vec2 _padding;       // offset 152 (explicit padding)
+} u_camera;
+```
+
+Use **std430** for storage buffers:
+
+```glsl
+// std430 layout - tighter packing, SSBOs only
+layout(std430, set = 0, binding = 1) buffer VertexData {
+    vec4 positions[];    // No padding between elements
+} b_vertices;
+```
+
+### Explicit Padding
+
+Add explicit padding for cross-platform consistency:
+
+```glsl
+layout(std140, set = 0, binding = 0) uniform LightData {
+    vec3 position;
+    float _pad0;          // Explicit padding
+    vec3 color;
+    float intensity;
+    vec3 direction;
+    float _pad1;          // Explicit padding
+    int type;
+    float range;
+    float inner_cone;
+    float outer_cone;
+} u_light;
+```
+
+### Sampler Handling
+
+Some backends combine textures and samplers differently:
+
+```glsl
+// Preferred: Combined image sampler (works everywhere)
+layout(set = 2, binding = 0) uniform sampler2D s_albedo;
+
+// Alternative: Separate (more flexible, but check backend)
+layout(set = 2, binding = 0) uniform texture2D t_albedo;
+layout(set = 2, binding = 1) uniform sampler sampler_linear;
+// Usage: texture(sampler2D(t_albedo, sampler_linear), uv)
+```
+
+---
+
+## Code Structure
+
+### Standard Vertex Shader Template
+
+```glsl
+#version 450
+
+// Inputs
+layout(location = 0) in vec3 a_position;
+layout(location = 1) in vec3 a_normal;
+layout(location = 2) in vec2 a_tex_coord;
+
+// Outputs
+layout(location = 0) out vec3 v_world_position;
+layout(location = 1) out vec3 v_normal;
+layout(location = 2) out vec2 v_tex_coord;
+
+// Uniforms
+layout(set = 0, binding = 0) uniform CameraData {
+    mat4 view;
+    mat4 projection;
+    mat4 view_projection;
+    vec3 camera_position;
+} u_camera;
+
+layout(set = 1, binding = 0) uniform TransformData {
+    mat4 model;
+    mat4 normal_matrix;
+} u_transform;
+
+void main() {
+    vec4 world_pos = u_transform.model * vec4(a_position, 1.0);
+    
+    v_world_position = world_pos.xyz;
+    v_normal = mat3(u_transform.normal_matrix) * a_normal;
+    v_tex_coord = a_tex_coord;
+    
+    gl_Position = u_camera.view_projection * world_pos;
+}
+```
+
+### Standard Fragment Shader Template
+
+```glsl
+#version 450
+
+// Inputs
+layout(location = 0) in vec3 v_world_position;
+layout(location = 1) in vec3 v_normal;
+layout(location = 2) in vec2 v_tex_coord;
+
+// Outputs
+layout(location = 0) out vec4 o_color;
+
+// Uniforms
+layout(set = 0, binding = 0) uniform CameraData {
+    mat4 view;
+    mat4 projection;
+    mat4 view_projection;
+    vec3 camera_position;
+} u_camera;
+
+layout(set = 2, binding = 0) uniform MaterialData {
+    vec4 base_color;
+    float metallic;
+    float roughness;
+} u_material;
+
+layout(set = 2, binding = 1) uniform sampler2D s_albedo;
+
+void main() {
+    vec3 normal = normalize(v_normal);
+    vec4 albedo = texture(s_albedo, v_tex_coord) * u_material.base_color;
+    
+    // Simple lighting
+    vec3 light_dir = normalize(vec3(1.0, 1.0, 1.0));
+    float n_dot_l = max(dot(normal, light_dir), 0.0);
+    
+    vec3 ambient = albedo.rgb * 0.1;
+    vec3 diffuse = albedo.rgb * n_dot_l;
+    
+    o_color = vec4(ambient + diffuse, albedo.a);
+}
+```
+
+### Standard Compute Shader Template
+
+```glsl
+#version 450
+
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+
+// Storage images
+layout(set = 0, binding = 0, rgba8) uniform readonly image2D i_input;
+layout(set = 0, binding = 1, rgba8) uniform writeonly image2D i_output;
+
+// Uniforms
+layout(set = 0, binding = 2) uniform ComputeParams {
+    ivec2 image_size;
+    float time;
+} u_params;
+
+void main() {
+    ivec2 pixel_coord = ivec2(gl_GlobalInvocationID.xy);
+    
+    // Bounds check
+    if (pixel_coord.x >= u_params.image_size.x || 
+        pixel_coord.y >= u_params.image_size.y) {
+        return;
+    }
+    
+    vec4 color = imageLoad(i_input, pixel_coord);
+    
+    // Process color
+    color.rgb = pow(color.rgb, vec3(1.0 / 2.2));  // Gamma correction
+    
+    imageStore(i_output, pixel_coord, color);
+}
+```
+
+---
+
+## Common Patterns
+
+### Include System
+
+Use preprocessor for shared code:
+
+```glsl
+// common.glsl - shared definitions
+#ifndef COMMON_GLSL
+#define COMMON_GLSL
+
+const float PI = 3.14159265359;
+const float EPSILON = 0.0001;
+
+float saturate(float x) {
+    return clamp(x, 0.0, 1.0);
+}
+
+vec3 saturate(vec3 x) {
+    return clamp(x, vec3(0.0), vec3(1.0));
+}
+
+#endif // COMMON_GLSL
+```
+
+```glsl
+// pbr_lighting.frag.glsl
+#version 450
+#include "common.glsl"
+#include "pbr_functions.glsl"
+
+void main() {
+    // ...
+}
+```
+
+### Feature Toggles
+
+Use defines for optional features:
+
+```glsl
+#version 450
+
+// Feature defines (set by engine)
+// #define VNE_ENABLE_NORMAL_MAPPING
+// #define VNE_ENABLE_SHADOWS
+// #define VNE_ENABLE_IBL
+
+void main() {
+    vec3 normal = normalize(v_normal);
+    
+    #ifdef VNE_ENABLE_NORMAL_MAPPING
+    vec3 tangent_normal = texture(s_normal_map, v_tex_coord).xyz * 2.0 - 1.0;
+    normal = normalize(tbn * tangent_normal);
+    #endif
+    
+    vec3 lighting = calculateDirectLighting(normal);
+    
+    #ifdef VNE_ENABLE_SHADOWS
+    float shadow = calculateShadow(v_world_position);
+    lighting *= shadow;
+    #endif
+    
+    #ifdef VNE_ENABLE_IBL
+    vec3 ambient = calculateIBL(normal, view_dir, roughness);
+    lighting += ambient;
+    #endif
+    
+    o_color = vec4(lighting, 1.0);
+}
+```
+
+### Multi-Output (MRT)
+
+For deferred rendering or multiple render targets:
+
+```glsl
+// G-Buffer output
+layout(location = 0) out vec4 o_albedo;      // RGB: albedo, A: alpha
+layout(location = 1) out vec4 o_normal;      // RGB: normal (encoded), A: unused
+layout(location = 2) out vec4 o_material;    // R: metallic, G: roughness, B: ao, A: unused
+layout(location = 3) out vec4 o_emissive;    // RGB: emissive, A: unused
+
+void main() {
+    o_albedo = vec4(albedo, alpha);
+    o_normal = vec4(encodeNormal(normal), 0.0);
+    o_material = vec4(metallic, roughness, ao, 0.0);
+    o_emissive = vec4(emissive, 0.0);
+}
+```
+
+---
+
+## Best Practices
+
+### Performance
+
+1. **Minimize texture samples**: Cache results, use mipmaps
+2. **Avoid branching**: Use step/mix instead when possible
+3. **Use half precision**: Where accuracy allows (mobile)
+4. **Vectorize operations**: Operate on vec4 when possible
+5. **Early-out**: Use `discard` sparingly (breaks early-z)
+
+```glsl
+// Prefer: Branchless
+float result = mix(value_a, value_b, step(threshold, x));
+
+// Avoid: Branching (when possible)
+float result = x > threshold ? value_b : value_a;
+```
+
+### Precision
+
+Specify precision hints for mobile/WebGL compatibility:
+
+```glsl
+#version 450
+
+// Precision hints (GLES/WebGL)
+precision highp float;
+precision highp int;
+precision highp sampler2D;
+
+// Or per-variable
+mediump vec3 color;
+lowp float alpha;
+```
+
+### Documentation
+
+Document complex shaders:
+
+```glsl
+/**
+ * PBR Lighting Calculation
+ * 
+ * Implements Cook-Torrance BRDF with GGX distribution
+ * 
+ * @param normal      Surface normal (world space, normalized)
+ * @param view_dir    View direction (world space, normalized)
+ * @param light_dir   Light direction (world space, normalized)
+ * @param albedo      Base color
+ * @param metallic    Metallic factor [0, 1]
+ * @param roughness   Roughness factor [0, 1]
+ * @return            Final lit color
+ */
+vec3 calculatePBR(
+    vec3 normal,
+    vec3 view_dir,
+    vec3 light_dir,
+    vec3 albedo,
+    float metallic,
+    float roughness
+) {
+    // ...
+}
+```
+
+---
+
+## Cross-Backend Comparison
+
+When comparing generated shaders across backends, look for:
+
+### Naming Consistency
+
+| GLSL (Source) | MSL (Metal) | HLSL/WGSL |
+|---------------|-------------|-----------|
+| `a_position` | `a_position` | `a_position` |
+| `v_normal` | `v_normal` | `v_normal` |
+| `u_camera` | `u_camera` | `u_camera` |
+| `s_albedo` | `s_albedo` | `s_albedo` |
+
+### Semantic Mapping
+
+SPIRV-Cross maps Vulkan GLSL to backend equivalents:
+
+| GLSL | Metal | Notes |
+|------|-------|-------|
+| `gl_Position` | `out.position` | Vertex output |
+| `gl_FragCoord` | `in.position` | Fragment input |
+| `gl_VertexIndex` | `vertex_id` | Vertex ID |
+| `gl_InstanceIndex` | `instance_id` | Instance ID |
+| `gl_GlobalInvocationID` | `thread_position_in_grid` | Compute |
+
+---
+
+## Code Review Checklist
+
+### Naming
+- Vertex inputs use `a_` prefix
+- Stage outputs use `v_` prefix
+- Fragment outputs use `o_` prefix
+- Uniform blocks use PascalCase
+- Uniform instances use `u_` prefix
+- Samplers use `s_` prefix
+- Storage buffers use `b_` prefix
+- Storage images use `i_` prefix
+- Global variables use `g_` prefix
+- Local variables use snake_case
+- Constants use UPPER_CASE
+- Functions use camelCase
+
+### Layout
+- Explicit locations on all inputs/outputs
+- Explicit set/binding on all resources
+- Consistent descriptor set organization
+- std140 for uniform blocks
+- std430 for storage buffers
+
+### Portability
+- No platform-specific extensions
+- Explicit padding in uniform blocks
+- Standard types only
+- Combined image samplers preferred
+
+### Performance
+- Minimal texture samples
+- Branchless code where possible
+- Proper precision hints
+- Efficient algorithms
+
+---
+
+## References
+
+- [GLSL 4.50 Specification](https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.50.pdf)
+- [Vulkan GLSL](https://github.com/KhronosGroup/GLSL/blob/master/extensions/khr/GL_KHR_vulkan_glsl.txt)
+- [SPIRV-Cross](https://github.com/KhronosGroup/SPIRV-Cross)
+- [Metal Shading Language Specification](https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf)

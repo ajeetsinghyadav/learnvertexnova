@@ -77,9 +77,21 @@ const sidebars = {
 
     // 7) Coding Guidelines
     {
-      type: 'doc',
-      id: 'coding-guidelines',
+      type: 'category',
       label: 'Coding Guidelines',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'coding-guidelines',
+          label: 'C++ Guidelines',
+        },
+        {
+          type: 'doc',
+          id: 'glsl-coding-guidelines',
+          label: 'GLSL Guidelines',
+        },
+      ],
     },
 
     // 8) About
