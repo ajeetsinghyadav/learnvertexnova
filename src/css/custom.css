@@ -687,16 +687,37 @@ article blockquote {
   }
 }
 
-/* Mobile sidebar - ensure it appears on top of content */
+/* Mobile sidebar - ensure it appears on top of ALL content */
 .navbar-sidebar {
   background: var(--ifm-background-color);
-  z-index: 1000 !important;
+  z-index: 9999 !important;
   position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100vh !important;
+  width: 80vw !important;
+  max-width: 300px !important;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15) !important;
 }
 
 .navbar-sidebar__backdrop {
-  z-index: 999 !important;
+  z-index: 9998 !important;
   position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Ensure navbar itself is also high z-index */
+.navbar {
+  z-index: 9997 !important;
+}
+
+/* Ensure main content doesn't overlap */
+.main-wrapper {
+  z-index: 1;
 }
 
 [data-theme='dark'] .navbar-sidebar {
