@@ -687,9 +687,16 @@ article blockquote {
   }
 }
 
-/* Mobile sidebar - let Docusaurus handle structure, just style it */
+/* Mobile sidebar - ensure it appears on top of content */
 .navbar-sidebar {
   background: var(--ifm-background-color);
+  z-index: 1000 !important;
+  position: fixed !important;
+}
+
+.navbar-sidebar__backdrop {
+  z-index: 999 !important;
+  position: fixed !important;
 }
 
 [data-theme='dark'] .navbar-sidebar {
