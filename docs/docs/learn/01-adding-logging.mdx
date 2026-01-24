@@ -1,0 +1,350 @@
+---
+sidebar_position: 1
+title: "01: Adding Logging"
+description: "Replace std::cout with vnelogging — get colors, timestamps, levels, and file output instantly."
+---
+
+# 01: Adding Logging
+
+In the previous chapter, we wrote logs like this:
+
+```cpp
+std::cout << "[INFO] Application started" << std::endl;
+std::cout << "[WARN] Config not found" << std::endl;
+std::cout << "[ERROR] Failed to load" << std::endl;
+```
+
+Manual. Error-prone. No colors. No timestamps. No file output.
+
+Let's fix that.
+
+## Why Not std::cout?
+
+| Feature | std::cout | vnelogging |
+|---------|-----------|------------|
+| Log levels | Manual `[INFO]` text | Built-in filtering |
+| Timestamps | You write the code | Automatic |
+| Colors | No | Yes (errors are red) |
+| File output | Extra code needed | One config line |
+| Thread safety | No | Yes |
+| Performance | Blocks on every call | Async mode available |
+
+**vnelogging** gives you all of this with zero extra effort.
+
+## Getting vnelogging
+
+The library lives at: `git@github.com:vertexnova/vnelogging.git`
+
+### Option 1: Git Submodule (Recommended)
+
+```bash
+cd 00_HelloVertexNova
+git init  # if not already a git repo
+git submodule add git@github.com:vertexnova/vnelogging.git external/vnelogging
+```
+
+### Option 2: FetchContent (No Submodule)
+
+Add this to your `CMakeLists.txt`:
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    vnelogging
+    GIT_REPOSITORY git@github.com:vertexnova/vnelogging.git
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(vnelogging)
+```
+
+### Option 3: Clone Manually
+
+```bash
+mkdir -p external
+git clone git@github.com:vertexnova/vnelogging.git external/vnelogging
+```
+
+## Update CMakeLists.txt
+
+Here's the updated `CMakeLists.txt`:
+
+```cmake
+cmake_minimum_required(VERSION 3.16)
+
+project(HelloVertexNova
+    VERSION 0.1.0
+    DESCRIPTION "First step into VertexNova"
+    LANGUAGES CXX
+)
+
+# Require C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Output binaries to bin/ folder
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+# Add vnelogging
+add_subdirectory(external/vnelogging)
+
+# Create the executable
+add_executable(HelloVertexNova
+    src/main.cpp
+)
+
+# Link vnelogging
+target_link_libraries(HelloVertexNova PRIVATE vne::logging)
+
+# Enable warnings
+if(MSVC)
+    target_compile_options(HelloVertexNova PRIVATE /W4)
+else()
+    target_compile_options(HelloVertexNova PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+```
+
+Two lines added:
+- `add_subdirectory(external/vnelogging)` — includes the library
+- `target_link_libraries(HelloVertexNova PRIVATE vne::logging)` — links it
+
+## Rewrite main.cpp
+
+Now let's replace all those `std::cout` calls:
+
+```cpp
+/* ---------------------------------------------------------------------
+ * 01_HelloVertexNova with Logging
+ * 
+ * Same program, but now with proper logging.
+ * ---------------------------------------------------------------------
+ */
+
+#include <vertexnova/logging/logging.h>
+#include <filesystem>
+
+// Create a logger category for this file
+namespace {
+CREATE_VNE_LOGGER_CATEGORY("hello")
+}  // namespace
+
+int main(int argc, char* argv[]) {
+    // Create logs directory
+    std::filesystem::create_directories("logs");
+    
+    // Configure the logger
+    vne::log::LoggerConfig config;
+    config.name = vne::log::kDefaultLoggerName;
+    config.sink = vne::log::LogSinkType::eBoth;  // Console + File
+    config.console_pattern = "%x [%l] %v";
+    config.file_pattern = "%x [%l] [%c] %v";
+    config.file_path = "logs/hello.log";
+    config.log_level = vne::log::LogLevel::eDebug;
+    
+    vne::log::Logging::configureLogger(config);
+    
+    // Now we can log properly!
+    VNE_LOG_INFO << "==================================";
+    VNE_LOG_INFO << "  Welcome to VertexNova Engine    ";
+    VNE_LOG_INFO << "==================================";
+    
+    VNE_LOG_INFO << "Hello, VertexNova!";
+    VNE_LOG_INFO << "This is where your engine journey begins.";
+    
+    // Log with variables - just use <<
+    VNE_LOG_INFO << "Application started successfully";
+    VNE_LOG_DEBUG << "Arguments: " << argc;
+    
+    for (int i = 0; i < argc; ++i) {
+        VNE_LOG_DEBUG << "  argv[" << i << "] = " << argv[i];
+    }
+    
+    // Different log levels
+    VNE_LOG_INFO << "Initializing subsystems...";
+    VNE_LOG_INFO << "Loading configuration...";
+    VNE_LOG_WARN << "No config file found, using defaults";
+    VNE_LOG_INFO << "Ready!";
+    
+    // Simulate an error
+    VNE_LOG_ERROR << "This is what an error looks like";
+    
+    VNE_LOG_INFO << "Shutting down...";
+    VNE_LOG_INFO << "Goodbye!";
+    
+    // Always shutdown logging (flushes buffers, closes files)
+    vne::log::Logging::shutdown();
+    
+    return 0;
+}
+```
+
+## Build and Run
+
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+./build/bin/HelloVertexNova
+```
+
+**Console Output (with colors!):**
+
+```
+2026-01-24 10:30:45 [INFO] ==================================
+2026-01-24 10:30:45 [INFO]   Welcome to VertexNova Engine    
+2026-01-24 10:30:45 [INFO] ==================================
+2026-01-24 10:30:45 [INFO] Hello, VertexNova!
+2026-01-24 10:30:45 [INFO] This is where your engine journey begins.
+2026-01-24 10:30:45 [INFO] Application started successfully
+2026-01-24 10:30:45 [DEBUG] Arguments: 1
+2026-01-24 10:30:45 [DEBUG]   argv[0] = ./build/bin/HelloVertexNova
+2026-01-24 10:30:45 [INFO] Initializing subsystems...
+2026-01-24 10:30:45 [INFO] Loading configuration...
+2026-01-24 10:30:45 [WARN] No config file found, using defaults
+2026-01-24 10:30:45 [INFO] Ready!
+2026-01-24 10:30:45 [ERROR] This is what an error looks like
+2026-01-24 10:30:45 [INFO] Shutting down...
+2026-01-24 10:30:45 [INFO] Goodbye!
+```
+
+- `[INFO]` appears in **green**
+- `[WARN]` appears in **yellow**  
+- `[ERROR]` appears in **red**
+- `[DEBUG]` appears in **blue**
+
+**And check your logs/ folder:**
+
+```bash
+cat logs/hello.log
+```
+
+Same messages, saved to disk with the category `[hello]` included.
+
+## What Just Happened?
+
+Let's break down the key parts:
+
+### 1. Logger Category
+
+```cpp
+namespace {
+CREATE_VNE_LOGGER_CATEGORY("hello")
+}  // namespace
+```
+
+This creates a compile-time constant `VNE_LOGGER_CATEGORY` with value `"hello"`. It appears in file logs to help you trace which file generated the message.
+
+### 2. Logger Configuration
+
+```cpp
+vne::log::LoggerConfig config;
+config.name = vne::log::kDefaultLoggerName;  // "vertexnova"
+config.sink = vne::log::LogSinkType::eBoth;  // Console + File
+config.file_path = "logs/hello.log";
+config.log_level = vne::log::LogLevel::eDebug;
+
+vne::log::Logging::configureLogger(config);
+```
+
+| Option | Meaning |
+|--------|---------|
+| `name` | Logger identifier (use `kDefaultLoggerName` for the main one) |
+| `sink` | Where output goes: `eConsole`, `eFile`, or `eBoth` |
+| `file_path` | Log file location |
+| `log_level` | Minimum level to log (eTrace, eDebug, eInfo, eWarn, eError, eFatal) |
+
+### 3. Log Macros
+
+```cpp
+VNE_LOG_INFO << "Message here";
+VNE_LOG_DEBUG << "Value: " << x;
+VNE_LOG_WARN << "Something suspicious";
+VNE_LOG_ERROR << "Something broke";
+```
+
+Stream-style API. Compose your message with `<<`.
+
+### 4. Shutdown
+
+```cpp
+vne::log::Logging::shutdown();
+```
+
+Flushes any pending messages and closes files. Always call this before exiting.
+
+## Log Levels Explained
+
+| Level | When to Use |
+|-------|-------------|
+| `VNE_LOG_TRACE` | Extreme detail (function entry/exit) |
+| `VNE_LOG_DEBUG` | Development debugging |
+| `VNE_LOG_INFO` | Normal operation status |
+| `VNE_LOG_WARN` | Something unusual but not broken |
+| `VNE_LOG_ERROR` | Something failed |
+| `VNE_LOG_FATAL` | Cannot continue |
+
+**Tip:** Set `log_level = LogLevel::eInfo` in production to hide DEBUG/TRACE messages.
+
+## Format Patterns
+
+Customize what appears in your logs:
+
+```cpp
+config.console_pattern = "%x [%l] %v";
+config.file_pattern = "%x [%l] [%c] [%t] %$ %!:%# %v";
+```
+
+| Pattern | Output |
+|---------|--------|
+| `%x` | Timestamp |
+| `%l` | Level (INFO, DEBUG, etc.) |
+| `%n` | Logger name |
+| `%c` | Category |
+| `%t` | Thread ID |
+| `%v` | Your message |
+| `%$` | Source file |
+| `%!` | Function name |
+| `%#` | Line number |
+
+## Project Structure Now
+
+```
+00_HelloVertexNova/
+├── CMakeLists.txt
+├── external/
+│   └── vnelogging/          (git submodule)
+├── src/
+│   └── main.cpp
+├── build/
+│   └── bin/
+│       └── HelloVertexNova
+└── logs/
+    └── hello.log            (generated at runtime)
+```
+
+## More Features
+
+vnelogging has more to offer:
+
+| Feature | Description |
+|---------|-------------|
+| **Async logging** | `config.async = true;` — doesn't block your thread |
+| **Multiple loggers** | Separate loggers for physics, render, audio |
+| **Flush levels** | Auto-flush on errors |
+| **Cross-platform** | Linux, macOS, Windows, iOS, Android, Web |
+
+For the full documentation, see the [vnelogging repository](https://github.com/vertexnova/vnelogging).
+
+## What's Next?
+
+You now have:
+- A proper CMake project structure
+- Production-ready logging with colors, timestamps, and file output
+- A foundation to build on
+
+In the next chapter, we'll create **the window** — the surface where your graphics will appear.
+
+---
+
+**Checkpoint:** Your project now has proper logging. No more `std::cout` for engine messages.
+
+**Source code:** [github.com/vertexnova/vnelogging](https://github.com/vertexnova/vnelogging)
