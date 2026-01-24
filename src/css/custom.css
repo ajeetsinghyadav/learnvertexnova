@@ -199,11 +199,11 @@ html {
 /* Enhanced Navbar */
 .navbar {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
   transition: all 0.3s ease;
   padding: 0.75rem 0;
+  /* Note: backdrop-filter removed to fix mobile sidebar z-index */
 }
 
 [data-theme='dark'] .navbar {
@@ -687,41 +687,18 @@ article blockquote {
   }
 }
 
-/* Mobile sidebar - ensure it appears on top of ALL content */
+/* Mobile sidebar styling */
 .navbar-sidebar {
-  background: var(--ifm-background-color);
-  z-index: 9999 !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  height: 100vh !important;
-  width: 80vw !important;
-  max-width: 300px !important;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15) !important;
+  background: var(--ifm-background-color) !important;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
 }
 
 .navbar-sidebar__backdrop {
-  z-index: 9998 !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
   background: rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Ensure navbar itself is also high z-index */
-.navbar {
-  z-index: 9997 !important;
-}
-
-/* Ensure main content doesn't overlap */
-.main-wrapper {
-  z-index: 1;
-}
-
 [data-theme='dark'] .navbar-sidebar {
-  background: #1a202c;
+  background: #1a202c !important;
 }
 
 /* Documentation Page Enhancements */
