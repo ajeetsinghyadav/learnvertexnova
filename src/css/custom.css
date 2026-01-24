@@ -462,13 +462,13 @@ table {
 }
 
 table th {
-  background: var(--ifm-color-primary);
-  color: white;
+  background: var(--ifm-color-primary) !important;
+  color: white !important;
   font-weight: 600;
   padding: 0.875rem 1rem;
   text-align: left;
-  border: none;
-  border-bottom: 2px solid var(--ifm-color-primary-dark);
+  border: none !important;
+  border-bottom: 2px solid var(--ifm-color-primary-dark) !important;
 }
 
 table td {
