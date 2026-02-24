@@ -3,8 +3,24 @@ import clsx from 'clsx';
 
 export function DemoImage({ src, alt, contain = false }) {
   const [open, setOpen] = useState(false);
-  const openLightbox = useCallback(() => setOpen(true), []);
+  const [ready, setReady] = useState(false);
+
+  const openLightbox = useCallback(() => {
+    setReady(false);
+    setOpen(true);
+  }, []);
+
   const closeLightbox = useCallback(() => setOpen(false), []);
+
+  // Preload then reveal after next frame so image is painted before fade-in (reduces flicker)
+  React.useEffect(() => {
+    if (!open || !src) return;
+    const img = new Image();
+    const show = () => requestAnimationFrame(() => setReady(true));
+    img.onload = show;
+    img.onerror = show;
+    img.src = src;
+  }, [open, src]);
 
   React.useEffect(() => {
     if (open) {
@@ -33,7 +49,7 @@ export function DemoImage({ src, alt, contain = false }) {
       </button>
       {open && (
         <div
-          className="demo-lightbox-backdrop"
+          className={clsx('demo-lightbox-backdrop', ready && 'demo-lightbox-backdrop--visible')}
           onClick={closeLightbox}
           onKeyDown={(e) => e.key === 'Escape' && closeLightbox()}
           role="button"

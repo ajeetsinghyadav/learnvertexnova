@@ -1257,6 +1257,15 @@ figcaption {
   justify-content: center;
   padding: 2rem;
   cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease-out, visibility 0.15s ease-out;
+  contain: strict;
+}
+
+.demo-lightbox-backdrop--visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 .demo-lightbox-content {
