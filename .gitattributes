@@ -1,1 +1,6 @@
+# Demo media — track with Git LFS
+static/img/demos/*.mp4 filter=lfs diff=lfs merge=lfs -text
+static/img/demos/*.mov filter=lfs diff=lfs merge=lfs -text
+static/img/demos/*.png filter=lfs diff=lfs merge=lfs -text
+static/img/demos/*.gif filter=lfs diff=lfs merge=lfs -text
 *.mov filter=lfs diff=lfs merge=lfs -text

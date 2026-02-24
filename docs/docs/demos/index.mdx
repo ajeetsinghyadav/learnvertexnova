@@ -6,6 +6,7 @@ title: Demos
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Link from '@docusaurus/Link';
+import { DemoImage, DemoVideo } from '@site/src/components/DemoMedia';
 
 # Demos
 
@@ -92,28 +93,28 @@ For full setup and manual CMake builds, see the [Getting Started guide](/docs/in
 <div className="demo-grid">
 
 <div className="demo-card">
-  <img src="/img/demos/02_DemoTriangle.png" alt="02 Demo Triangle" className="demo-card-img" onError={(e) => e.target.style.display = 'none'} />
+  <DemoImage src="/img/demos/02_DemoTriangle.png" alt="02 Demo Triangle" />
   <span className="demo-badge metal">Metal</span>
   <h3>Triangle</h3>
   <p><code>02_DemoTriangle</code> — Vertex buffers, shaders, pipeline. The classic starting point.</p>
 </div>
 
 <div className="demo-card">
-  <img src="/img/demos/03_DemoQuad.png" alt="03 Demo Quad" className="demo-card-img" onError={(e) => e.target.style.display = 'none'} />
+  <DemoImage src="/img/demos/03_DemoQuad.png" alt="03 Demo Quad" />
   <span className="demo-badge opengl">OpenGL</span>
   <h3>Quad</h3>
   <p><code>03_DemoQuad</code> — Index buffers, basic geometry.</p>
 </div>
 
 <div className="demo-card">
-  <video src="/img/demos/04_DemoCube.mov" className="demo-card-video" controls loop muted playsInline />
+  <DemoVideo src="/img/demos/04_DemoCube.mp4" />
   <span className="demo-badge vulkan">Vulkan</span>
   <h3>Cube</h3>
   <p><code>04_DemoCube</code> — 3D transforms, depth testing.</p>
 </div>
 
 <div className="demo-card">
-  <video src="/img/demos/05_DemoTwoCubes.mov" className="demo-card-video" controls loop muted playsInline />
+  <DemoVideo src="/img/demos/05_DemoTwoCubes.mp4" />
   <span className="demo-badge metal">Metal</span>
   <h3>Two Cubes</h3>
   <p><code>05_DemoTwoCubes</code> — Multiple draw calls, transforms.</p>
@@ -128,28 +129,28 @@ For full setup and manual CMake builds, see the [Getting Started guide](/docs/in
 <div className="demo-grid">
 
 <div className="demo-card">
-  <video src="/img/demos/08_DemoTexturing.mov" className="demo-card-video" controls loop muted playsInline />
+  <DemoVideo src="/img/demos/08_DemoTexturing.mp4" />
   <span className="demo-badge opengl">OpenGL</span>
   <h3>Texturing</h3>
   <p><code>08_DemoTexturing</code> — Texture loading, sampling, UVs. OpenGL.</p>
 </div>
 
 <div className="demo-card">
-  <video src="/img/demos/10_DemoCameraController.mov" className="demo-card-video" controls loop muted playsInline />
+  <DemoVideo src="/img/demos/10_DemoCameraController.mp4" />
   <span className="demo-badge web">Web · OpenGL ES 3.0</span>
   <h3>Camera Controller</h3>
   <p><code>10_DemoCameraController</code> — Input handling, camera math. Web (OpenGL ES 3.0).</p>
 </div>
 
 <div className="demo-card">
-  <video src="/img/demos/12_DemoLighting.mov" className="demo-card-video" controls loop muted playsInline />
+  <DemoVideo src="/img/demos/12_DemoLighting.mp4" />
   <span className="demo-badge web">Web · OpenGL ES 3.0</span>
   <h3>Lighting</h3>
   <p><code>12_DemoLighting</code> — Normals, materials, Phong lighting. Web (OpenGL ES 3.0).</p>
 </div>
 
 <div className="demo-card">
-  <img src="/img/demos/11_DemoMesh.png" alt="11 Demo Mesh — Utah teapot" className="demo-card-img" onError={(e) => e.target.style.display = 'none'} />
+  <DemoImage src="/img/demos/11_DemoMesh.png" alt="11 Demo Mesh — Utah teapot (Metal iOS)" contain />
   <span className="demo-badge ios">Metal · iOS</span>
   <h3>Mesh</h3>
   <p><code>11_DemoMesh</code> — Utah teapot. Asset loading, complex geometry. Metal on iOS.</p>
