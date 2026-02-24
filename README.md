@@ -1,6 +1,6 @@
 # VertexNova Website
 
-This is the official website for [VertexNova Engine](https://github.com/ajeetsinghyadav/vertexnova), built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+This is the official website for [VertexNova Engine](https://github.com/vertexnova), built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 ## About VertexNova
 
@@ -98,7 +98,7 @@ After building (`npm run build`), you can deploy the `build` directory to any st
 
 ## Contributing
 
-Contributions to the website are welcome! Please see the main [VertexNova repository](https://github.com/ajeetsinghyadav/vertexnova) for contribution guidelines.
+Contributions to the website are welcome! Please see the main [VertexNova repository](https://github.com/vertexnova) for contribution guidelines.
 
 ## License
 

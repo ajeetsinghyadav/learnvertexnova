@@ -34,7 +34,7 @@ function Hero() {
             <Link className="button button--secondary button--lg" to="/docs/demos">
               Run a Demo
             </Link>
-            <Link className="button button--link" to="https://github.com/ajeetsinghyadav/vertexnova">
+            <Link className="button button--link" to="https://github.com/vertexnova">
               GitHub →
             </Link>
           </div>
@@ -147,7 +147,7 @@ function QuickStart() {
           The goal is “clone → build → run a demo”. Keep it boring and repeatable.
         </p>
         <pre className={styles.codeBlock}>
-          <code>{`git clone https://github.com/ajeetsinghyadav/vertexnova.git
+          <code>{`git clone https://github.com/vertexnova.git
 cd vertexnova
 git submodule update --init --recursive
 

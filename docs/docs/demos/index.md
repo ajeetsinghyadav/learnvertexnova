@@ -56,7 +56,7 @@ cd build
 </TabItem>
 </Tabs>
 
-For platform-specific build instructions, see the [Getting Started guide](/docs/intro) or check the [VertexNova repository](https://github.com/ajeetsinghyadav/vertexnova).
+For platform-specific build instructions, see the [Getting Started guide](/docs/intro) or check the [VertexNova repository](https://github.com/vertexnova).
 
 ## Available Samples
 
@@ -106,7 +106,7 @@ Current demo availability across platforms:
 
 ## Contributing Demos
 
-If you'd like to contribute a demo or example, please see the [GitHub repository](https://github.com/ajeetsinghyadav/vertexnova) for contribution guidelines.
+If you'd like to contribute a demo or example, please see the [GitHub repository](https://github.com/vertexnova) for contribution guidelines.
 
 ## Screenshots and Media
 

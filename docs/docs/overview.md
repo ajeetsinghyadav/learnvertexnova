@@ -64,6 +64,6 @@ This is an active learning project. Progress is continuous but deliberate. The c
 
 ## Resources
 
-- [GitHub Repository](https://github.com/ajeetsinghyadav/vertexnova)
+- [GitHub Organization](https://github.com/vertexnova)
 - [Development Setup](https://github.com/ajeetsinghyadav/vertexnova-devsetup)
 - [Issues & Discussions](https://github.com/ajeetsinghyadav/vertexnova/issues)

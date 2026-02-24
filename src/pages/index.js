@@ -24,7 +24,7 @@ function Hero() {
             <Link className={clsx('button button--primary button--lg', styles.ctaButton)} to="/docs/intro">
               Get Started
             </Link>
-            <Link className={clsx('button button--outline button--secondary button--lg', styles.ctaButton)} href="https://github.com/ajeetsinghyadav/vertexnova">
+            <Link className={clsx('button button--outline button--secondary button--lg', styles.ctaButton)} href="https://github.com/vertexnova">
               View on GitHub
             </Link>
           </div>
@@ -141,7 +141,7 @@ function GetAccess() {
             <Link className={clsx('button button--primary button--lg', styles.ctaButton)} to="/docs/intro">
               Get Started
             </Link>
-            <Link className={clsx('button button--outline button--secondary button--lg', styles.ctaButton)} href="https://github.com/ajeetsinghyadav/vertexnova">
+            <Link className={clsx('button button--outline button--secondary button--lg', styles.ctaButton)} href="https://github.com/vertexnova">
               View on GitHub
             </Link>
           </div>
