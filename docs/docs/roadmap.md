@@ -1,63 +1,95 @@
 ---
-sidebar_position: 3
+id: roadmap
 title: Roadmap
+sidebar_label: Roadmap
+sidebar_position: 3
 ---
 
-# Roadmap
+## VertexNova Roadmap
 
-This roadmap reflects the current status and planned development for VertexNova Engine. It's intentionally honest about what works today, what's in progress, and what's planned.
+VertexNova is a multi-backend C++ graphics engine for 6 platforms and 4 graphics APIs. Built to be clean, modular, and educational.
 
-## Feature Support Matrix
+[Connect on GitHub →](https://github.com/vertexnova)
 
-| Feature | OpenGL | Vulkan | Metal | Web (WebGL) |
-|---|:---:|:---:|:---:|:---:|
-| Basic triangle/cube | ✅ | ✅ | ✅ | ✅ |
-| Textures | ✅ | ✅ | ✅ | ✅ |
-| Shaders | ✅ | ✅ | ✅ | ✅ |
-| Depth/Blending | ✅ | ✅ | ✅ | ✅ |
-| MSAA | ✅ | ⚠️ WIP | ✅ | ⚠️ Partial |
-| Render Targets | ✅ | ⚠️ WIP | ✅ | ⚠️ Partial |
-| ImGui Integration | ✅ | ⚠️ WIP | ✅ | ⚠️ Partial |
-| Instancing | ⚠️ Planned | ⚠️ Planned | ⚠️ Planned | ❌ |
-| Picking | ⚠️ Planned | ⚠️ Planned | ⚠️ Planned | ❌ |
+---
 
-**Legend:**
-- ✅ Stable and working
-- ⚠️ In progress or partial support
-- ❌ Not yet implemented
+## At a Glance
 
-## Platform Support
+| Phase | Focus | Status |
+| ----- | ----- | ------ |
+| **Today** | 6 platforms, 4 APIs, core renderer, demos | ✅ Complete |
+| **Phase 1** | Stabilise, test, document, new demos | 🔄 In Progress |
+| **Phase 2** | ECS, scene system, material system, editor | 🔜 Planned |
+| **Future** | Animation, XR, scripting, GPU-driven rendering | 🔭 Exploring |
 
-| Platform | OpenGL | Metal | Vulkan | WebGL |
-|---|---|---|---|---|
-| macOS | ✅ | ✅ | ⚠️ WIP | N/A |
-| iOS | N/A | ✅ | ⚠️ WIP | ✅ |
-| Windows | ✅ | N/A | ⚠️ WIP | N/A |
-| Linux | ✅ | N/A | ⚠️ WIP | N/A |
-| Web (Emscripten) | N/A | N/A | N/A | ✅ |
+---
 
-## Short-term Goals
+## What Works Today
 
-- **Vulkan Backend**: Complete first Vulkan demo and stabilize basic pipeline
-- **Demo Coverage**: Expand demo suite to cover all core features
-- **Documentation**: Complete learning materials and API documentation
-- **Build System**: Improve cross-platform build pipelines and CI/CD
+The engine runs on **Metal, Vulkan, OpenGL, and OpenGL ES**. Current features:
 
-## Mid-term Goals
+- **Rendering:** Meshes, Phong & PBR lighting, texturing, deferred shading
+- **Quality:** MSAA, lights, camera control, shadow maps
+- **Compute:** Compute shaders (e.g. bitonic sort)
+- **Platforms:** macOS, iOS, Linux, Windows, Web, visionOS
 
-- **Backend Parity**: Achieve feature parity across all backends where possible
-- **Performance**: Add profiling tools and optimization guides
-- **Debugging**: Improve validation layers and debugging tooling
-- **Content Pipeline**: Basic asset loading and content management
+Shaders are written once in GLSL and auto-compiled to MSL, GLSL, HLSL, and WGSL.
 
-## Long-term Vision
+---
 
-- **Animation System**: Basic skeletal animation support
-- **Scene Graph**: Hierarchical scene representation
-- **Physics Integration**: Basic physics playground
-- **Editor Tools**: Simple scene editor and tooling
-- **Advanced Rendering**: Shadows, post-processing, advanced lighting
+## Phase 1 — Stabilise · Test · Demo · Document
 
-## Contributing
+Status: In Progress
 
-If you're interested in contributing to any of these goals, check out the [GitHub repository](https://github.com/ajeetsinghyadav/vertexnova) for contribution guidelines.
+Hardening the foundation and adding demos.
+
+- Modular libraries — each buildable and testable on its own
+- Shared CMake build and CI/CD
+- Unit tests and GPU debugging tools
+- Docs and README per module
+- New demos: OIT, object picking, text rendering, line/volume rendering, multi-viewport, multi-window
+
+
+---
+
+## Phase 2 — Scene System · Visualization · Editor
+
+Status: Planned
+
+Higher-level systems above the rendering backend.
+
+- ECS runtime
+- Material system (PBR, Phong, custom)
+- Scene graph with meshes, lights, shadows
+- Multi-pass rendering
+- Visual editor: scene tree, viewport, asset browser
+- Reference demo using the full stack
+
+[Watch the repo →](https://github.com/vertexnova)
+
+---
+
+## Future Horizons
+
+Explored but no fixed timelines:
+
+| Area | Topics |
+| ---- | ------ |
+| **Animation** | Skeletal meshes, blend trees, morph targets, GPU skinning |
+| **XR & Spatial** | OpenXR, visionOS, stereo/foveated rendering, AR passthrough |
+| **Performance** | GPU-driven rendering, LOD, frustum culling, cascaded shadows, ray-traced shadows |
+| **Scripting & Assets** | C# bridge with hot-reload, GLTF importer, texture compression, asset streaming |
+
+---
+
+## Get Involved
+
+Personal project, built on weekends. Star the repo, try a demo, or open a discussion.
+
+- [GitHub](https://github.com/vertexnova) — Source, issues, discussions
+- [Demos](/docs/docs/demos) — Runnable examples
+- [Documentation](/docs/docs/learn) — Learning path
+
+---
+
+Last updated: February 2026
