@@ -1,0 +1,87 @@
+---
+sidebar_position: 2
+title: Build & Run
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Link from '@docusaurus/Link';
+
+# Build & Run
+
+VertexNova provides platform-specific build scripts in the `scripts/` directory. Build from the repository root, then run demos from the output `bin/` folder.
+
+## Build
+
+<Tabs>
+<TabItem value="macos" label="macOS" default>
+
+```bash
+cd vertexnova
+./scripts/build_macos.sh -t Debug -b Metal
+# Demos: build/Debug/build-macos-clang-<version>/bin/
+```
+
+</TabItem>
+<TabItem value="ios" label="iOS">
+
+```bash
+./scripts/build_ios.sh -t Debug -simulator
+```
+
+</TabItem>
+<TabItem value="visionos" label="visionOS">
+
+```bash
+./scripts/build_visionos.sh -t Debug
+```
+
+</TabItem>
+<TabItem value="windows" label="Windows">
+
+```powershell
+.\scripts\build_windows.sh -t Debug -b Vulkan
+# Demos: build\Debug\build-windows-cl-<version>\bin\
+```
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+./scripts/build_linux.sh -t Debug -b Vulkan
+# Demos: build/Debug/build-ubuntu-<compiler>-<version>/bin/
+```
+
+</TabItem>
+<TabItem value="web" label="Web">
+
+```bash
+./scripts/build_web.sh Release
+# Output: build/Release/web/
+```
+
+</TabItem>
+</Tabs>
+
+## Run
+
+After building, run demos from the `bin/` folder. The path depends on your platform and compiler version.
+
+```bash
+# From vertexnova repo root — macOS example
+cd build/Debug/build-macos-clang-17.0.0/bin
+
+./02_DemoTriangle
+./04_DemoCube
+./12_DemoLighting
+```
+
+**Paths by platform:**
+
+| Platform | Example path |
+| -------- | ------------ |
+| macOS | `build/Debug/build-macos-clang-<version>/bin/` |
+| Windows | `build\Debug\build-windows-cl-<version>\bin\` |
+| Linux | `build/Debug/build-ubuntu-<compiler>-<version>/bin/` |
+
+For full setup and manual CMake builds, see the [Getting Started guide](/docs/intro). See [CrossGL Demos](/demos/crossgl-demos) for the full list of demos.
