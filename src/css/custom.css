@@ -1214,3 +1214,119 @@ figcaption {
 .demo-card:has(.demo-card-video) {
   padding-top: 0;
 }
+
+/* iOS / portrait snapshot: contain to show full image */
+.demo-card-img--contain {
+  object-fit: contain;
+  height: 180px;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.demo-card-media-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  margin: -1.25rem -1.5rem 1rem -1.5rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.demo-card-media-trigger .demo-card-img {
+  margin: 0;
+  display: block;
+}
+
+.demo-card:has(.demo-card-media-trigger) {
+  padding-top: 0;
+}
+
+/* Lightbox for images */
+.demo-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.demo-lightbox-content {
+  position: relative;
+  max-width: 95vw;
+  max-height: 95vh;
+  cursor: default;
+}
+
+.demo-lightbox-close {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.demo-lightbox-close:hover {
+  opacity: 0.9;
+}
+
+.demo-lightbox-img {
+  max-width: 95vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Video fullscreen button */
+.demo-card-video-wrap {
+  position: relative;
+  margin: -1.25rem -1.5rem 1rem -1.5rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.demo-card-video-wrap .demo-card-video {
+  margin: 0;
+}
+
+.demo-card-video-expand {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.demo-card-video-expand:hover {
+  background: var(--ifm-color-primary);
+}
