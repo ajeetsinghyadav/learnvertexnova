@@ -70,17 +70,29 @@ This first milestone is crucial. Once you can build and run demos reliably, you 
 ## Quick start
 
 <Tabs>
-<TabItem value="all" label="All Platforms" default>
+<TabItem value="scripts" label="Build scripts (recommended)" default>
 
 ```bash
-# Clone the repository
 git clone https://github.com/ajeetsinghyadav/vertexnova.git
 cd vertexnova
-
-# Initialize submodules (required dependencies)
 git submodule update --init --recursive
 
-# Configure and build
+# Platform-specific scripts (macOS, Linux, Windows, iOS, visionOS, Web)
+./scripts/build_macos.sh -t Debug -b Metal    # macOS
+./scripts/build_linux.sh -t Debug -b Vulkan   # Linux
+./scripts/build_windows.sh -t Debug -b Vulkan # Windows (from VS Developer Prompt)
+```
+
+Demos are in `build/<Type>/build-<platform>-<compiler>-<version>/bin/`. See [Demos](/docs/docs/demos) for run commands.
+
+</TabItem>
+<TabItem value="cmake" label="Manual CMake">
+
+```bash
+git clone https://github.com/ajeetsinghyadav/vertexnova.git
+cd vertexnova
+git submodule update --init --recursive
+
 mkdir build && cd build
 cmake ..
 cmake --build .
@@ -133,13 +145,13 @@ cmake --build . --config Release
 ### Run your first demo
 
 ```bash
-# After building, navigate to build directory
-cd build
+# After building with scripts, navigate to the bin directory
+# Path varies by platform, e.g. build/Debug/build-macos-clang-17.0.0/bin
+cd build/Debug/build-macos-clang-*/bin   # macOS (adjust path for your platform)
 
-# Run a sample (exact path depends on your build configuration)
-./bin/sample_02_triangle
+./02_DemoTriangle
 # or
-./bin/sample_04_cube
+./04_DemoCube
 ```
 
 **What you should see**: A window opens with a rendered triangle or cube. Congratulations — you just ran your first VertexNova demo!

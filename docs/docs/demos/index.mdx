@@ -1,0 +1,359 @@
+---
+sidebar_position: 2
+title: Demos
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Link from '@docusaurus/Link';
+
+# Demos
+
+VertexNova ships with **22+ working demos** spanning Metal, Vulkan, OpenGL, Web, iOS Sim, and visionOS. Each demo is a focused example of a specific rendering technique — with clean, readable source code.
+
+:::tip Browse the source
+All demos are open source. [View on GitHub →](https://github.com/ajeetsinghyadav/vertexnova)
+:::
+
+---
+
+## Building and Running
+
+VertexNova provides platform-specific build scripts in the `scripts/` directory. Build, then run demos from the output `bin/` folder.
+
+### Build
+
+<Tabs>
+<TabItem value="macos" label="macOS" default>
+
+```bash
+cd vertexnova
+./scripts/build_macos.sh -t Debug -b Metal
+# Demos: build/Debug/build-macos-clang-<version>/bin/
+```
+
+</TabItem>
+<TabItem value="ios" label="iOS">
+
+```bash
+./scripts/build_ios.sh -t Debug -simulator
+```
+
+</TabItem>
+<TabItem value="visionos" label="visionOS">
+
+```bash
+./scripts/build_visionos.sh -t Debug
+```
+
+</TabItem>
+<TabItem value="windows" label="Windows">
+
+```powershell
+.\scripts\build_windows.sh -t Debug -b Vulkan
+# Demos: build\Debug\build-windows-cl-<version>\bin\
+```
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+./scripts/build_linux.sh -t Debug -b Vulkan
+# Demos: build/Debug/build-ubuntu-<compiler>-<version>/bin/
+```
+
+</TabItem>
+<TabItem value="web" label="Web">
+
+```bash
+./scripts/build_web.sh Release
+# Output: build/Release/web/
+```
+
+</TabItem>
+</Tabs>
+
+### Run demos
+
+```bash
+# From vertexnova repo root (path varies by platform and compiler version)
+cd build/Debug/build-macos-clang-17.0.0/bin   # macOS example
+./02_DemoTriangle
+./04_DemoCube
+./12_DemoLighting
+```
+
+For full setup and manual CMake builds, see the [Getting Started guide](/docs/intro).
+
+---
+
+## Basic Rendering
+
+<div className="demo-grid">
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>Triangle</h3>
+  <p><code>02_DemoTriangle</code> — Vertex buffers, shaders, pipeline. The classic starting point.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge opengl">OpenGL</span>
+  <h3>Quad</h3>
+  <p><code>03_DemoQuad</code> — Index buffers, basic geometry.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <img src="/img/demos/04_DemoCube.png" alt="04 Demo Cube" className="demo-card-img" onError={(e) => e.target.style.display = 'none'} />
+  <span className="demo-badge vulkan">Vulkan</span>
+  <h3>Cube</h3>
+  <p><code>04_DemoCube</code> — 3D transforms, depth testing.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>Two Cubes</h3>
+  <p><code>05_DemoTwoCubes</code> — Multiple draw calls, transforms.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+</div>
+
+---
+
+## Texturing & Lighting
+
+<div className="demo-grid">
+
+<div className="demo-card">
+  <img src="/img/demos/08_DemoTexturing.png" alt="08 Demo Texturing" className="demo-card-img" onError={(e) => e.target.style.display = 'none'} />
+  <span className="demo-badge web">WebGL</span>
+  <h3>Texturing</h3>
+  <p><code>08_DemoTexturing</code> — Texture loading, sampling, UVs.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge web">WebGL</span>
+  <h3>Camera Controller</h3>
+  <p><code>10_DemoCameraController</code> — Input handling, camera math.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <img src="/img/demos/12_DemoLighting.png" alt="12 Demo Lighting" className="demo-card-img" onError={(e) => e.target.style.display = 'none'} />
+  <span className="demo-badge web">WebGL</span>
+  <h3>Lighting</h3>
+  <p><code>12_DemoLighting</code> — Normals, materials, Phong lighting.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>Mesh</h3>
+  <p><code>11_DemoMesh</code> — Asset loading, complex geometry.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+</div>
+
+---
+
+## Advanced Rendering
+
+<div className="demo-grid">
+
+<div className="demo-card">
+  <span className="demo-badge vulkan">Vulkan</span>
+  <h3>Instancing</h3>
+  <p><code>06_DemoInstancing</code> — Per-instance data, performance.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge opengl">OpenGL</span>
+  <h3>MSAA</h3>
+  <p><code>07_DemoMSAA</code> — Multisample anti-aliasing.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>Shadows</h3>
+  <p><code>14_DemoShadows</code> — Shadow mapping.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>Deferred</h3>
+  <p><code>15_DemoDeferred</code> — Deferred shading pipeline.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>PBR Direct</h3>
+  <p><code>18_DemoPBRDirect</code> — Physically based rendering.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>PBR Textured</h3>
+  <p><code>19_DemoPBRTextured</code> — PBR with textures.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>Wireframe</h3>
+  <p><code>20_DemoWireframe</code> — Wireframe rendering.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+</div>
+
+---
+
+## Compute & Other
+
+<div className="demo-grid">
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>Compute Texture</h3>
+  <p><code>16_ComputeTexture</code> — Compute shader to texture.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>Bitonic Sort</h3>
+  <p><code>17_BitonicSort</code> — GPU compute sort demo.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge metal">Metal</span>
+  <h3>SPIR-V</h3>
+  <p><code>13_DemoSpirv</code> — SPIR-V shader pipeline.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge ios">Metal · iOS</span>
+  <h3>Hello XR</h3>
+  <p><code>58_HelloXR</code> — Extended reality / visionOS.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge web">WebGL</span>
+  <h3>Window</h3>
+  <p><code>00_DemoWindow</code> — Basic window creation.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+<div className="demo-card">
+  <span className="demo-badge web">WebGL</span>
+  <h3>ImGui</h3>
+  <p><code>01_DemoGui</code> — ImGui overlay, debug tooling.</p>
+  <div className="demo-links">
+    <Link href="https://github.com/ajeetsinghyadav/vertexnova" className="demo-source">Source ↗</Link>
+  </div>
+</div>
+
+</div>
+
+---
+
+## All Demos Reference
+
+| Binary | Description |
+| ------ | ----------- |
+| `00_DemoWindow` | Basic window creation |
+| `01_DemoGui` | ImGui integration |
+| `02_DemoTriangle` | Basic triangle |
+| `03_DemoQuad` | Quad rendering |
+| `04_DemoCube` | 3D cube |
+| `05_DemoTwoCubes` | Multiple objects |
+| `06_DemoInstancing` | Instanced rendering |
+| `07_DemoMSAA` | MSAA |
+| `08_DemoTexturing` | Texture mapping |
+| `10_DemoCameraController` | Camera controls |
+| `11_DemoMesh` | Mesh loading |
+| `12_DemoLighting` | Lighting |
+| `13_DemoSpirv` | SPIR-V pipeline |
+| `14_DemoShadows` | Shadow maps |
+| `15_DemoDeferred` | Deferred shading |
+| `16_ComputeTexture` | Compute shader |
+| `17_BitonicSort` | GPU sort |
+| `18_DemoPBRDirect` | PBR |
+| `19_DemoPBRTextured` | PBR textured |
+| `20_DemoWireframe` | Wireframe |
+| `58_HelloXR` | XR / visionOS |
+
+---
+
+## Platform Support
+
+| Platform | Backends |
+| -------- | -------- |
+| **macOS** | Metal, OpenGL |
+| **iOS Sim** | Metal |
+| **visionOS** | Metal |
+| **Windows** | OpenGL, Vulkan |
+| **Linux** | OpenGL, Vulkan |
+| **Web** | WebGL |
+
+---
+
+:::tip Go deeper
+Each demo has inline comments. Clone the repo, run the demo, and read the source alongside the output.
+
+<Link to="/docs/intro">Get started →</Link>
+:::
