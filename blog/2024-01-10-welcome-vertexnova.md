@@ -37,4 +37,4 @@ This project started as a learning journey in computer graphics and engine archi
 
 Check out the [Getting Started guide](/docs/intro) to begin learning with VertexNova, or explore the [Demos](/docs/docs/demos) to see what's currently working.
 
-The project is open source and available on [GitHub](https://github.com/ajeetsinghyadav/vertexnova). Contributions, feedback, and questions are welcome!
+The project is open source and available on [GitHub](https://github.com/vertexnova). Contributions, feedback, and questions are welcome!

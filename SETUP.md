@@ -146,7 +146,7 @@ docs/
 ## 🔗 Links to Update
 
 Make sure to update these in `docusaurus.config.js` if needed:
-- GitHub repository URL (currently: `https://github.com/ajeetsinghyadav/vertexnova`)
+- GitHub repository URL (currently: `https://github.com/vertexnova`)
 - Website URL (currently: `https://vertexnova.com`)
 - Social media links (if you have them)
 
@@ -154,7 +154,7 @@ Make sure to update these in `docusaurus.config.js` if needed:
 
 - [Docusaurus Documentation](https://docusaurus.io/docs)
 - [Docusaurus Blog](https://docusaurus.io/blog)
-- [VertexNova Repository](https://github.com/ajeetsinghyadav/vertexnova)
+- [VertexNova Repository](https://github.com/vertexnova)
 
 ## ✨ Inspiration
 
