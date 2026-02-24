@@ -5,15 +5,21 @@ sidebar_label: Roadmap
 sidebar_position: 3
 ---
 
+import Link from '@docusaurus/Link';
+
 ## VertexNova Roadmap
 
 VertexNova is a multi-backend C++ graphics engine for 6 platforms and 4 graphics APIs. Built to be clean, modular, and educational.
 
-[Connect on GitHub →](https://github.com/vertexnova)
+:::tip Connect
+Interested in contributing, collaborating, or sharing feedback? [Connect on GitHub →](https://github.com/vertexnova)
+:::
 
 ---
 
 ## At a Glance
+
+<div className="roadmap-table-wrapper">
 
 | Phase | Focus | Status |
 | ----- | ----- | ------ |
@@ -21,6 +27,8 @@ VertexNova is a multi-backend C++ graphics engine for 6 platforms and 4 graphics
 | **Phase 1** | Stabilise, test, document, new demos | 🔄 In Progress |
 | **Phase 2** | ECS, scene system, material system, editor | 🔜 Planned |
 | **Future** | Animation, XR, scripting, GPU-driven rendering | 🔭 Exploring |
+
+</div>
 
 ---
 
@@ -33,13 +41,17 @@ The engine runs on **Metal, Vulkan, OpenGL, and OpenGL ES**. Current features:
 - **Compute:** Compute shaders (e.g. bitonic sort)
 - **Platforms:** macOS, iOS, Linux, Windows, Web, visionOS
 
-Shaders are written once in GLSL and auto-compiled to MSL, GLSL, HLSL, and WGSL.
+:::info Shader workflow
+Shaders are written once in GLSL and auto-compiled to MSL, GLSL, HLSL, and WGSL — no manual porting across backends.
+:::
 
 ---
 
 ## Phase 1 — Stabilise · Test · Demo · Document
 
-Status: In Progress
+<div className="roadmap-phase roadmap-phase--active">
+
+<span className="roadmap-status roadmap-status--progress">In Progress</span>
 
 Hardening the foundation and adding demos.
 
@@ -50,13 +62,21 @@ Hardening the foundation and adding demos.
 - New demos: OIT, object picking, text rendering, line/volume rendering, multi-viewport, multi-window
 - Full docs at [learnvertexnova.com](https://learnvertexnova.com)
 
-[Open an issue →](https://github.com/vertexnova/issues)
+<div className="roadmap-cta">
+
+<Link href="https://github.com/vertexnova/issues">Open an issue →</Link>
+
+</div>
+
+</div>
 
 ---
 
 ## Phase 2 — Scene System · Visualization · Editor
 
-Status: Planned
+<div className="roadmap-phase roadmap-phase--planned">
+
+<span className="roadmap-status roadmap-status--planned">Planned</span>
 
 Higher-level systems above the rendering backend.
 
@@ -67,13 +87,21 @@ Higher-level systems above the rendering backend.
 - Visual editor: scene tree, viewport, asset browser
 - Reference demo using the full stack
 
-[Watch the repo →](https://github.com/vertexnova)
+<div className="roadmap-cta">
+
+<Link href="https://github.com/vertexnova">Watch the repo →</Link>
+
+</div>
+
+</div>
 
 ---
 
 ## Future Horizons
 
 Explored but no fixed timelines:
+
+<div className="roadmap-table-wrapper">
 
 | Area | Topics |
 | ---- | ------ |
@@ -82,15 +110,19 @@ Explored but no fixed timelines:
 | **Performance** | GPU-driven rendering, LOD, frustum culling, cascaded shadows, ray-traced shadows |
 | **Scripting & Assets** | C# bridge with hot-reload, GLTF importer, texture compression, asset streaming |
 
+</div>
+
 ---
 
 ## Get Involved
 
-Personal project, built on weekends. Star the repo, try a demo, or open a discussion.
+:::success Support the project
+VertexNova is a personal project — built on weekends and evenings. Star the repo, try a demo, or open a discussion.
+:::
 
-- [GitHub](https://github.com/vertexnova) — Source, issues, discussions
-- [Demos](/docs/docs/demos) — Runnable examples
-- [Documentation](/docs/docs/learn) — Learning path
+- <Link href="https://github.com/vertexnova">GitHub</Link> — Source, issues, discussions
+- <Link to="/docs/docs/demos">Demos</Link> — Runnable examples
+- <Link to="/docs/docs/learn">Documentation</Link> — Learning path
 
 ---
 
