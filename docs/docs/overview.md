@@ -32,6 +32,10 @@ Confirmed features across Metal, Vulkan, OpenGL, and OpenGL ES: mesh rendering, 
 
 Shaders are written **once** in Vulkanized GLSL 4.5. The `vnecrossshader` library compiles to SPIR-V, then SPIRV-Cross generates MSL, GLSL, HLSL, and WGSL. Zero manual porting.
 
+## Graphics Layer (Private)
+
+The core graphics stack — `vnecrossgl`, `vnecrossviz`, and `vnecrossshader` — is developed as private libraries. They provide a unified rendering API, ECS-based visualization, and the single-source shader pipeline that powers VertexNova. The public [vnetestbed](https://github.com/vertexnova/vnetestbed) repository lets you build and run demos that exercise this stack.
+
 ## Project Context
 
 VertexNova is a **personal project** — built on weekends and evenings. Every library is independently buildable, testable, and documented.
