@@ -22,7 +22,7 @@ Most graphics projects pick one API and one platform. VertexNova's premise: **wr
 | visionOS | Metal *(future)* |
 | Windows | Vulkan, OpenGL 4.x |
 | Linux | Vulkan, OpenGL 4.x |
-| Web | WebGL / WebGPU via Emscripten |
+| Web | OpenGL ES 3.0 / WebGPU via Emscripten |
 
 ## What Works Today
 

@@ -63,7 +63,7 @@ function WhatAndWhy() {
           </p>
           <ul className={styles.featureList}>
             <li>Written in <strong>modern C++</strong> with support for Windows, Linux, macOS, iOS, and Web</li>
-            <li><strong>Multi-backend rendering</strong> — Unified API across Vulkan, Metal, OpenGL, and WebGL</li>
+            <li><strong>Multi-backend rendering</strong> — Unified API across Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU</li>
             <li><strong>Cross-platform</strong> — Build once, run everywhere</li>
             <li><strong>Educational focus</strong> — Transparent architecture designed for learning</li>
             <li><strong>Clean abstractions</strong> — Thin layers with explicit control</li>
@@ -81,7 +81,7 @@ function Features() {
   const features = [
     {
       title: 'Multi-Backend Rendering',
-      description: 'A unified API that works across Vulkan, Metal, OpenGL, and WebGL. Learn once, run everywhere.',
+      description: 'A unified API that works across Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU. Learn once, run everywhere.',
     },
     {
       title: 'Cross-Platform',
@@ -114,23 +114,18 @@ function FuturePlans() {
     <section className={styles.section}>
       <div className="container">
         <div className={styles.contentBlock}>
-          <Heading as="h2" className={styles.sectionTitle}>Future plans and direction</Heading>
+          <Heading as="h2" className={styles.sectionTitle}>Roadmap</Heading>
           <p className={styles.sectionText}>
-            We have some serious future plans.
+            <strong>Phase 1</strong> (in progress): Stabilise, test, document — modular libraries, CI/CD, new demos (OIT, picking, text, multi-viewport).
           </p>
           <p className={styles.sectionText}>
-            Firstly, one of our primary motivations for developing VertexNova is using it as a 
-            learning platform and demonstrating modern engine architecture. That means we're 
-            dedicated to ensuring that VertexNova is a well-documented, clean codebase capable 
-            of teaching graphics programming concepts from the ground up.
+            <strong>Phase 2</strong> (planned): ECS runtime, material system, scene graph, visual editor with viewport and asset browser.
           </p>
           <p className={styles.sectionText}>
-            We also see VertexNova as a platform for education, experimentation, and real-time 
-            applications. We regularly use it for visualization, creating interactive demos, and 
-            exploring rendering techniques across different graphics APIs.
+            <strong>Future horizons:</strong> Animation (skeletal meshes, GPU skinning), XR & spatial (OpenXR, visionOS), performance (GPU-driven rendering, LOD, cascaded shadows), scripting & assets (C# bridge, GLTF importer).
           </p>
           <div className={styles.readMore}>
-            <Link to="/docs/docs/roadmap">See the Roadmap →</Link>
+            <Link to="/docs/docs/roadmap">Full Roadmap →</Link>
           </div>
         </div>
       </div>
@@ -168,7 +163,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title} - Multi-backend 3D Rendering Engine`}
-      description="VertexNova Engine (VNE) is a modern, multi-platform rendering and visualization engine with unified API support for OpenGL, Metal, Vulkan, and WebGL. Built with C++ for clarity, portability, and performance.">
+      description="VertexNova Engine (VNE) is a modern, multi-platform rendering and visualization engine with unified API support for Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU. Built with C++ for clarity, portability, and performance.">
       <Hero />
       <main>
         <WhatAndWhy />

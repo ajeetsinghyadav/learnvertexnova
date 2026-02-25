@@ -27,8 +27,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'ajeetsinghyadav', // Usually your GitHub org/user name.
-  projectName: 'vertexnova', // Usually your repo name.
+  organizationName: 'ajeetsinghyadav',
+  projectName: 'learnvertexnova',
 
   onBrokenLinks: 'warn',
 
@@ -50,7 +50,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/ajeetsinghyadav/vertexnova/tree/main/docs/',
+            'https://github.com/ajeetsinghyadav/learnvertexnova/tree/main/docs/',
         },
         blog: {
           showReadingTime: true,
@@ -61,7 +61,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/ajeetsinghyadav/vertexnova/tree/main/',
+            'https://github.com/ajeetsinghyadav/learnvertexnova/tree/main/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -102,7 +102,7 @@ const config = {
           {to: '/docs/docs/roadmap', label: 'Roadmap', position: 'left'},
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/ajeetsinghyadav/vertexnova',
+            href: 'https://github.com/vertexnova',
             label: 'GitHub',
             position: 'right',
             className: 'header-github-link',
@@ -127,15 +127,15 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/ajeetsinghyadav/vertexnova',
+                href: 'https://github.com/vertexnova',
               },
               {
                 label: 'Issues',
-                href: 'https://github.com/ajeetsinghyadav/vertexnova/issues',
+                href: 'https://github.com/vertexnova/vnetestbed/issues',
               },
               {
                 label: 'Contributing',
-                href: 'https://github.com/ajeetsinghyadav/vertexnova',
+                href: 'https://github.com/vertexnova',
               },
             ],
           },
@@ -152,7 +152,7 @@ const config = {
               },
               {
                 label: 'Development Setup',
-                href: 'https://github.com/ajeetsinghyadav/vertexnova-devsetup',
+                href: 'https://github.com/vertexnova',
               },
             ],
           },
