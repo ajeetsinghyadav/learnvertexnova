@@ -11,11 +11,22 @@ import Link from '@docusaurus/Link';
 
 ## Run something in 5 minutes
 
+**1. Clone**
+
 ```bash
 git clone --recursive https://github.com/vertexnova/vnetestbed.git
+```
+
+**2. Build**
+
+```bash
 cd vnetestbed
 ./scripts/build_macos.sh -t Debug -b Metal   # or build_linux.sh, build_windows.sh
+```
 
+**3. Run**
+
+```bash
 cd build/Debug/build-*/bin
 ./04_DemoCube
 ```
