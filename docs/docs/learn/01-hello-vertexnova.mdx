@@ -101,11 +101,88 @@ In [02: Adding Logging](./02-adding-logging) we'll use the **logging that's alre
 
 ## Optional: Build from Scratch
 
-If you prefer to see every line of a minimal project instead of using the template:
+If you prefer to see every line of a minimal project instead of using the template, follow these steps. Each one is self-contained so you can copy and adapt as needed.
 
-1. Create a folder and `src/main.cpp` with `std::cout << "Hello, VertexNova!" << std::endl;`
-2. Create a minimal `CMakeLists.txt`: `cmake_minimum_required(VERSION 3.16)`, `project(HelloVertexNova LANGUAGES CXX)`, `set(CMAKE_CXX_STANDARD 17)`, `add_executable(HelloVertexNova src/main.cpp)`
-3. Build: `cmake -B build -DCMAKE_BUILD_TYPE=Release` then `cmake --build build`
-4. Run: `./build/HelloVertexNova` (or `./build/bin/HelloVertexNova` if you set `CMAKE_RUNTIME_OUTPUT_DIRECTORY`)
+:::info Step 1 — Create the project folder and main file
+
+Create a project directory (e.g. `HelloVertexNova`) and a source file at `src/main.cpp`.
+
+**Create the folder:**
+
+```bash
+mkdir -p HelloVertexNova/src
+cd HelloVertexNova
+```
+
+**Add `src/main.cpp`** with a minimal C++ program:
+
+```cpp
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, VertexNova!" << std::endl;
+    return 0;
+}
+```
+
+:::
+
+:::info Step 2 — Add a minimal CMakeLists.txt
+
+In the project root (same folder as `src/`), create `CMakeLists.txt` with at least:
+
+- `cmake_minimum_required(VERSION 3.16)` — required CMake version
+- `project(HelloVertexNova LANGUAGES CXX)` — project name and C++ only
+- `set(CMAKE_CXX_STANDARD 17)` — use C++17
+- `add_executable(HelloVertexNova src/main.cpp)` — build one executable from `main.cpp`
+
+**Example `CMakeLists.txt`:**
+
+```cmake
+cmake_minimum_required(VERSION 3.16)
+project(HelloVertexNova LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+add_executable(HelloVertexNova src/main.cpp)
+```
+
+Optional: to put the binary in `build/bin/`, add  
+`set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)` before `add_executable`.
+
+:::
+
+:::info Step 3 — Configure and build
+
+From the project root, configure and build in a separate `build` directory:
+
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
+- **`cmake -B build`** — configure the project and generate build files into `build/`.
+- **`-DCMAKE_BUILD_TYPE=Release`** — build optimized (use `Debug` for debugging).
+- **`cmake --build build`** — compile the executable.
+
+:::
+
+:::info Step 4 — Run the executable
+
+Run the program. The executable name matches the first argument to `add_executable` (here, `HelloVertexNova`).
+
+**If you did not set `CMAKE_RUNTIME_OUTPUT_DIRECTORY`:**
+
+```bash
+./build/HelloVertexNova
+```
+
+**If you put the binary in `build/bin/`:**
+
+```bash
+./build/bin/HelloVertexNova
+```
+
+You should see: `Hello, VertexNova!`
+
+:::
 
 If you built from scratch, [02: Adding Logging](./02-adding-logging) has an optional section on adding vnelogging to that project (submodule or FetchContent).

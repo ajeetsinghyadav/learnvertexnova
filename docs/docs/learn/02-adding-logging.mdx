@@ -200,12 +200,59 @@ Next chapters will add **windowing** and then **rendering**. You'll keep using t
 
 ## If You Built from Scratch Instead
 
-If you followed the optional "Build from scratch" path in 01 and have a minimal project **without** vnetemplate:
+If you followed the optional [Build from scratch](./01-hello-vertexnova#optional-build-from-scratch) path in 01 and have a minimal project **without** vnetemplate, you can add vnelogging in a few steps. Each step below is in its own box so you can follow them in order.
 
-1. **Add vnelogging** as a submodule or via FetchContent:
-   - Submodule: `git submodule add https://github.com/vertexnova/vnelogging.git external/vnelogging` then `add_subdirectory(external/vnelogging)` in CMake.
-   - FetchContent: see [vnelogging README — FetchContent](https://github.com/vertexnova/vnelogging#option-2-fetchcontent).
-2. **Link** your executable: `target_link_libraries(your_target PRIVATE vne::logging)`.
-3. Use the same API as above: `#include <vertexnova/logging/logging.h>`, `CREATE_VNE_LOGGER_CATEGORY`, `LoggerConfig`, `configureLogger`, `VNE_LOG_*`, `Logging::shutdown()`.
+:::info Step 1 — Add vnelogging to your project
 
-For full details and options, see the [vnelogging README](https://github.com/vertexnova/vnelogging).
+Choose one way to bring vnelogging into your repo.
+
+**Option A — Git submodule (clone lives in your repo):**
+
+From your project root:
+
+```bash
+mkdir -p external
+git submodule add https://github.com/vertexnova/vnelogging.git external/vnelogging
+git submodule update --init --recursive
+```
+
+Then in your **`CMakeLists.txt`**, before `add_executable`, add:
+
+```cmake
+add_subdirectory(external/vnelogging)
+```
+
+**Option B — FetchContent (CMake downloads at configure time):**
+
+See the [vnelogging README — FetchContent](https://github.com/vertexnova/vnelogging#option-2-fetchcontent) section. You add a `FetchContent_Declare` / `FetchContent_MakeAvailable` block and then `add_subdirectory` on the populated source dir. No git submodule required.
+
+:::
+
+:::info Step 2 — Link your executable to vnelogging
+
+After `add_executable(YourTargetName src/main.cpp)` (or whatever your target is), link the logging library:
+
+```cmake
+add_executable(HelloVertexNova src/main.cpp)
+target_link_libraries(HelloVertexNova PRIVATE vne::logging)
+```
+
+Use your actual target name in place of `HelloVertexNova`. Re-run CMake and build; your target will have the vnelogging headers and library.
+
+:::
+
+:::info Step 3 — Use the logging API in your code
+
+From here on, use the same API as in the rest of this chapter:
+
+1. **Include** the header and **create a category** (e.g. in `main.cpp`):  
+   `#include <vertexnova/logging/logging.h>` and `CREATE_VNE_LOGGER_CATEGORY("app")` in an anonymous namespace.
+2. **Configure** once at startup: set up `vne::log::LoggerConfig` (name, sink, log_level, etc.) and call `vne::log::Logging::configureLogger(config)`.
+3. **Log** with the stream macros: `VNE_LOG_INFO << "message";`, `VNE_LOG_DEBUG`, `VNE_LOG_ERROR`, etc.
+4. **Shutdown** before exit: `vne::log::Logging::shutdown();` — or use a [LoggingGuard](#alternatively-loggingguard) so shutdown runs automatically.
+
+Rebuild and run; you should see the same colored, timestamped output (and optional file logging) as in the template.
+
+:::
+
+For full details, options, and advanced usage, see the [vnelogging README](https://github.com/vertexnova/vnelogging).
