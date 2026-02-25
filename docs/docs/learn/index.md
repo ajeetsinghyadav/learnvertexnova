@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 0
 title: Learn
 ---
 
@@ -11,8 +11,9 @@ Every chapter maps to working code. Every concept ends with something you can ru
 
 ## Start Here
 
-| Chapter | What You'll Build |
-|---------|-------------------|
+| Chapter | What You'll Do |
+|---------|----------------|
+| [00: Dev Environment Setup](./dev-environment-setup) | Set up Linux, Windows, or macOS — compilers, Vulkan SDK, MoltenVK, IDEs, tools |
 | [00: Hello VertexNova](./hello-vertexnova) | Minimal CMake project — your engine skeleton |
 | [01: Adding Logging](./adding-logging) | Replace std::cout with vnelogging — colors, timestamps, file output |
 

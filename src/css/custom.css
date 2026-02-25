@@ -512,6 +512,24 @@ table code {
 }
 
 /* Quick links table - orange links */
+.quick-links-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.quick-links-table th,
+.quick-links-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  text-align: left;
+}
+
+.quick-links-table th {
+  background: var(--ifm-color-primary);
+  color: white;
+  font-weight: 600;
+}
+
 .quick-links-table a {
   color: var(--ifm-color-primary) !important;
   font-weight: 600;

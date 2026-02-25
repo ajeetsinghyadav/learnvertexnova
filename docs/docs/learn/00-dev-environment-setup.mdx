@@ -1,0 +1,69 @@
+---
+sidebar_position: 1
+title: "00: Dev Environment Setup"
+description: "Set up your machine for VertexNova development — compilers, Vulkan SDK, MoltenVK, IDEs, and tools on Linux, Windows, and macOS."
+---
+
+# 00: Dev Environment Setup
+
+Before you build a single demo or write a line of engine code, you need a working development environment. This page summarizes what you need and points you to **platform-specific setup guides**.
+
+The canonical setup repository is **[vertexnova-devsetup](https://github.com/ajeetsinghyadav/vertexnova-devsetup)** — a guide to setting up your laptop for VertexNova engine development. Use it for step-by-step instructions per OS.
+
+## What You Need (Summary)
+
+| Category | Linux (Ubuntu 22.04 / 24.04) | Windows | macOS |
+|----------|------------------------------|---------|--------|
+| **Compiler** | GCC ≥ 11 or Clang ≥ 13 | MSVC (Visual Studio) | Xcode / Apple Clang |
+| **Build** | CMake ≥ 3.20, Git | CMake, Git | CMake, Xcode CLI tools, Git |
+| **Graphics (Vulkan)** | Vulkan SDK, drivers | Vulkan SDK, GPU drivers | MoltenVK (Vulkan on Metal) |
+| **Graphics (Metal)** | — | — | Built into Xcode |
+| **Graphics (OpenGL)** | Mesa / GPU drivers | GPU drivers | Built-in |
+| **IDE (optional)** | VS Code, Qt Creator | Visual Studio, VS Code, Qt Creator | Xcode, VS Code, Qt Creator |
+| **Tools** | Python ≥ 3.8, Doxygen (optional) | Python, Doxygen | Python, Doxygen |
+| **Optional** | MeshLab, clang-format, clang-tidy | MeshLab, clang-format | MeshLab, clang-format |
+
+Details (versions, install commands, driver links) are in the devsetup repo for each platform.
+
+## Platform-Specific Guides
+
+Follow **one** of these according to your OS:
+
+| Platform | Guide | Repo link |
+|----------|--------|-----------|
+| **Linux** (Ubuntu 22.04 / 24.04) | [LINUX_SETUP.md](https://github.com/ajeetsinghyadav/vertexnova-devsetup/blob/main/LINUX_SETUP.md) | [vertexnova-devsetup](https://github.com/ajeetsinghyadav/vertexnova-devsetup) |
+| **Windows** | [WINDOWS_SETUP.md](https://github.com/ajeetsinghyadav/vertexnova-devsetup/blob/main/WINDOWS_SETUP.md) | [vertexnova-devsetup](https://github.com/ajeetsinghyadav/vertexnova-devsetup) |
+| **macOS** | [MAC_SETUP.md](https://github.com/ajeetsinghyadav/vertexnova-devsetup/blob/main/MAC_SETUP.md) | [vertexnova-devsetup](https://github.com/ajeetsinghyadav/vertexnova-devsetup) |
+
+**Overview (all platforms):** [SETUP.md](https://github.com/ajeetsinghyadav/vertexnova-devsetup/blob/main/SETUP.md)
+
+## What Each Guide Covers
+
+The devsetup repo is meant to get you from a clean machine to a working build. Typical topics:
+
+- **Compilers** — GCC/Clang (Linux, macOS), MSVC (Windows), minimum versions
+- **Vulkan SDK** — Install and environment (PATH, layers)
+- **MoltenVK** — Using Vulkan on macOS (via MoltenVK)
+- **IDEs** — Visual Studio (Windows), VS Code, Qt Creator, Xcode (macOS)
+- **Python** — For scripts and tooling (e.g. ≥ 3.8)
+- **MeshLab** — Optional, for inspecting/processing meshes
+- **Doxygen** — Optional, for generating API docs
+- **clang-format / clang-tidy** — Optional, for code style and static analysis
+- **Drivers** — GPU drivers where needed (especially Linux and Windows)
+
+Content in the repo may be updated over time; if something here is out of date, the [vertexnova-devsetup](https://github.com/ajeetsinghyadav/vertexnova-devsetup) README and the linked docs are the source of truth.
+
+## After Setup
+
+Once your environment is ready:
+
+1. **[Hello VertexNova](./hello-vertexnova)** — Create a minimal CMake project.
+2. **[Adding Logging](./adding-logging)** — Add vnelogging to that project.
+
+Then follow the rest of [Learn by Building](/docs/docs/learn) and the [Build & Run](/docs/docs/demos/build) instructions for vnetestbed/demos.
+
+## Quick Links
+
+- **Devsetup repo:** [github.com/ajeetsinghyadav/vertexnova-devsetup](https://github.com/ajeetsinghyadav/vertexnova-devsetup)
+- **Dependencies:** [DEPENDENCIES.md](https://github.com/ajeetsinghyadav/vertexnova-devsetup/blob/main/DEPENDENCIES.md)
+- **CMake options:** [CMAKE_OPTIONS.md](https://github.com/ajeetsinghyadav/vertexnova-devsetup/blob/main/CMAKE_OPTIONS.md)
