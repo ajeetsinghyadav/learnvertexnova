@@ -86,6 +86,7 @@ const sidebars = {
       collapsed: true,
       items: [
         { type: 'doc', id: 'docs/misc/color-palette', label: 'Color Palette' },
+        { type: 'doc', id: 'docs/misc/glossary', label: 'Glossary' },
       ],
     },
 

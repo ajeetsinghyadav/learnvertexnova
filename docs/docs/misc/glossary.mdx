@@ -1,0 +1,55 @@
+---
+sidebar_position: 2
+title: Glossary
+description: "Terms and abbreviations used across VertexNova docs and code."
+slug: glossary
+---
+
+# Glossary
+
+Short definitions for terms you'll see in the docs, architecture, and code. Alphabetical order.
+
+**A–D**
+
+- **Backend** — A concrete implementation of a graphics (or other) API. In VertexNova, the **graphics backends** are Vulkan, Metal, OpenGL, and OpenGL ES. The engine exposes a unified API; each backend implements it for one of these APIs.
+- **Buffer** — A GPU resource holding linear data (vertices, indices, uniforms, storage). VertexNova’s unified API abstracts buffer creation and binding across backends.
+- **Device** — In the graphics API sense, the **logical device** you use to create resources (buffers, textures, pipelines) and submit work. Distinct from the **physical device** (the GPU/adapter).
+
+**E–L**
+
+- **Encoder** — Object used to record GPU commands (draw, dispatch, copy). VertexNova uses this term in its unified API instead of backend-specific names (e.g. command buffer, render encoder).
+- **Graphics factory** — Entry point in VertexNova’s graphics layer to create backend-specific objects (device, queue, buffer, pipeline, etc.).
+- **HLSL** — High-Level Shading Language (Microsoft/DirectX). One of the targets produced from the single shader source via SPIRV-Cross.
+- **L1 (Platform)** — Bottom layer: Vulkan, Metal, OpenGL, SPIRV-Cross, GLM, GLFW, and other external dependencies and platform APIs.
+- **L2 (Core)** — Platform-independent utilities: math, logging, events, I/O, scene, input. No graphics APIs.
+- **L3 (Graphics)** — Multi-backend rendering, windowing, shaders, visualisation: `vnecrossgl`, `vnecrosswin`, `vnecrossviz`, `vnecrossshader`. Depends on Core and L1.
+- **L4 (Application)** — Top layer: editor, demos, tests, viewer — applications that use the engine.
+
+**M–R**
+
+- **Metal** — Apple’s low-level graphics and compute API (macOS, iOS). One of VertexNova’s graphics backends.
+- **MoltenVK** — Layer that implements Vulkan on top of Metal on Apple platforms. Lets you use the Vulkan SDK and Vulkan code on macOS/iOS.
+- **MSL** — Metal Shading Language. Shaders for Metal; generated from the single Vulkan/GLSL-style source by SPIRV-Cross.
+- **Multi-backend** — Supporting more than one underlying API (e.g. Vulkan, Metal, OpenGL) from the same application code and abstractions.
+- **OpenGL** — Cross-platform graphics API. One of VertexNova’s backends; often used for compatibility or learning.
+- **OpenGL ES** — OpenGL for Embedded Systems (mobile, WebGL). Another backend option.
+- **Physical device** — The GPU or adapter. Used to query capabilities and create a logical **device**.
+- **Pipeline** — In graphics, the full state for a draw or compute pass: shaders, vertex layout, blend/depth/stencil, etc. VertexNova exposes a unified pipeline concept; each backend implements it (e.g. VkPipeline, MTLRenderPipelineState).
+- **Queue** — Submission point for GPU work (graphics, compute, transfer). You submit encoded commands to a queue.
+
+**S–Z**
+
+- **SPIR-V** — Standard Portable Intermediate Representation for Vulkan. Shaders are compiled to SPIR-V, then translated per backend.
+- **SPIRV-Cross** — Tool that converts SPIR-V to MSL, GLSL, HLSL, WGSL. Used in the VertexNova shader pipeline so you write one shader source.
+- **vnecommon** — VertexNova common utilities library. Often pulled in as a submodule (e.g. in vnetemplate) in `deps/internal/`.
+- **vnecrossgl** — VertexNova’s multi-backend graphics abstraction. Unified API over Vulkan, Metal, OpenGL, OpenGL ES.
+- **vnecrossshader** — VertexNova shader tooling: compile to SPIR-V, run SPIRV-Cross for backend-specific shaders.
+- **vnecrossviz** — VertexNova visualisation/helper layer (e.g. debugging, overlays).
+- **vnecrosswin** — VertexNova window and platform abstraction (e.g. window creation, input).
+- **vnelogging** — VertexNova logging library. Used for `VNE_LOG_*`, `LoggerConfig`, and categories. Lives in `deps/internal/vnelogging` in the template.
+- **vnetemplate** — Official VertexNova project template. Clone it to start a new app or library; it includes vnelogging, vnecommon, and build setup.
+- **vnetestbed** — Repository that provides demos and samples using the VertexNova stack (L3/L4). Public-facing demos live here.
+- **VertexNova** — The overall engine and ecosystem: multi-backend C++17/20 rendering engine and its libraries (vnelogging, vnecrossgl, etc.).
+- **VNE** — Prefix used in VertexNova code and repo names (e.g. `VNE_LOG_INFO`, `vnelogging`). Stands for VertexNova Engine.
+- **Vulkan** — Khronos low-level graphics API. One of VertexNova’s primary backends; used with the Vulkan SDK (and MoltenVK on macOS).
+- **WGSL** — WebGPU Shading Language. Optional target from SPIRV-Cross for web or WebGPU backends.
