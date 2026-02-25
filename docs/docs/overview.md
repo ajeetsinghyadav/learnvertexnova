@@ -34,7 +34,7 @@ Shaders are written **once** in Vulkanized GLSL 4.5. The `vnecrossshader` librar
 
 ## Graphics Layer (Private)
 
-The core graphics stack — `vnecrossgl`, `vnecrossviz`, and `vnecrossshader` — is developed as private libraries. They provide a unified rendering API, ECS-based visualization, and the single-source shader pipeline that powers VertexNova. The public [vnetestbed](https://github.com/vertexnova/vnetestbed) repository lets you build and run demos that exercise this stack.
+The core graphics stack — `vnecrossgl`, `vnecrosswin`, `vnecrossviz`, and `vnecrossshader` — is developed as private libraries. They provide a unified rendering API, cross-platform windowing, ECS-based visualization, and the single-source shader pipeline that powers VertexNova. The public [vnetestbed](https://github.com/vertexnova/vnetestbed) repository lets you build and run demos that exercise this stack.
 
 ## Project Context
 

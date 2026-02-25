@@ -18,12 +18,12 @@ VertexNova is organized as a **modular C++20 stack** — each layer is independe
 | Layer | Responsibility |
 |-------|-----------------|
 | **L4 Application** | Editor, demos, tests, viewer — programs that use the engine |
-| **L3 Graphics** | `vnecrossgl`, `vnecrossviz`, `vnecrossshader` — multi-backend rendering, windowing, shaders, visualisation *(private)* |
+| **L3 Graphics** | `vnecrossgl`, `vnecrosswin`, `vnecrossviz`, `vnecrossshader` — multi-backend rendering, windowing, shaders, visualisation *(private)* |
 | **L2 Core** | Math, logging, events, I/O, scene, input — platform-independent utilities |
 | **L1 Platform** | Vulkan, Metal, OpenGL, SPIRV-Cross, GLM, GLFW — external deps and targets |
 
 :::info Public vs private
-The Graphics layer (`vnecrossgl`, `vnecrossviz`, `vnecrossshader`) is developed as private libraries. The public [vnetestbed](https://github.com/vertexnova/vnetestbed) repository provides demos and samples that use this stack.
+The Graphics layer (`vnecrossgl`, `vnecrosswin`, `vnecrossviz`, `vnecrossshader`) is developed as private libraries. The public [vnetestbed](https://github.com/vertexnova/vnetestbed) repository provides demos and samples that use this stack.
 :::
 
 ## Dependency Rule
