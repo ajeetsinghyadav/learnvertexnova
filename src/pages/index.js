@@ -9,9 +9,20 @@ import styles from './index.module.css';
 
 function Hero() {
   const {siteConfig} = useDocusaurusContext();
+  const demoVideo = useBaseUrl('/img/demos/hero_montage.mp4');
 
   return (
     <header className={clsx('hero', styles.heroBanner)}>
+      <video
+        className={styles.heroVideo}
+        src={demoVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden
+      />
+      <div className={styles.heroOverlay} />
       <div className="container">
         <div className={styles.heroContent}>
           <Heading as="h1" className={styles.heroTitle}>
