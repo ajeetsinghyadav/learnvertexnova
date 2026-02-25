@@ -31,11 +31,30 @@
   color: var(--ifm-heading-color);
 }
 
-.bio {
+.pointList {
   font-size: 0.95rem;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--ifm-font-color-base);
   margin: 0 0 1rem 0;
+  padding-left: 1.25rem;
+}
+
+.pointList li {
+  margin-bottom: 0.35rem;
+}
+
+.pointList li:last-of-type {
+  margin-bottom: 0;
+}
+
+.pointList a {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.pointList a:hover {
+  color: var(--ifm-color-primary-dark);
+  text-decoration: underline;
 }
 
 .links {
