@@ -143,8 +143,7 @@ function GetAccess() {
         <div className={styles.ctaBlock}>
           <Heading as="h2" className={styles.ctaTitle}>Get Started with VertexNova</Heading>
           <p className={styles.ctaText}>
-            VertexNova is <strong>open source</strong> and available on GitHub. Clone the repository, 
-            build the engine, and start learning graphics programming today.
+            VertexNova is under active development. Several libraries are <strong>open source</strong> on GitHub; others are still private. Clone the public repos, build, and start learning graphics programming today.
           </p>
           <div className={styles.ctaButtons}>
             <Link className={clsx('button button--primary button--lg', styles.ctaButton)} to="/docs/intro">
