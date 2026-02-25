@@ -18,14 +18,30 @@ Running a build script without `-b` builds **all available backends** for that p
 <Tabs>
 <TabItem value="macos" label="macOS" default>
 
+**1. Enter repo**
+
 ```bash
 cd vnetestbed
-./scripts/build_macos.sh -t Debug
-# Builds Metal, Vulkan, OpenGL. Demos: build/Debug/build-macos-clang-<version>/bin/
 ```
+
+**2. Build** (Metal, Vulkan, OpenGL)
+
+```bash
+./scripts/build_macos.sh -t Debug
+```
+
+Demos: `build/Debug/build-macos-clang-<version>/bin/`
 
 </TabItem>
 <TabItem value="ios" label="iOS">
+
+**1. Enter repo**
+
+```bash
+cd vnetestbed
+```
+
+**2. Build**
 
 ```bash
 ./scripts/build_ios.sh -t Debug -simulator
@@ -34,6 +50,14 @@ cd vnetestbed
 </TabItem>
 <TabItem value="visionos" label="visionOS">
 
+**1. Enter repo**
+
+```bash
+cd vnetestbed
+```
+
+**2. Build**
+
 ```bash
 ./scripts/build_visionos.sh -t Debug
 ```
@@ -41,26 +65,53 @@ cd vnetestbed
 </TabItem>
 <TabItem value="windows" label="Windows">
 
+**1. Enter repo**
+
+```powershell
+cd vnetestbed
+```
+
+**2. Build**
+
 ```powershell
 .\scripts\build_windows.sh -t Debug
-# Demos: build\Debug\build-windows-cl-<version>\bin\
 ```
+
+Demos: `build\Debug\build-windows-cl-<version>\bin\`
 
 </TabItem>
 <TabItem value="linux" label="Linux">
 
+**1. Enter repo**
+
+```bash
+cd vnetestbed
+```
+
+**2. Build**
+
 ```bash
 ./scripts/build_linux.sh -t Debug
-# Demos: build/Debug/build-ubuntu-<compiler>-<version>/bin/
 ```
+
+Demos: `build/Debug/build-ubuntu-<compiler>-<version>/bin/`
 
 </TabItem>
 <TabItem value="web" label="Web">
 
+**1. Enter repo**
+
+```bash
+cd vnetestbed
+```
+
+**2. Build**
+
 ```bash
 ./scripts/build_web.sh Release
-# Output: build/Release/web/
 ```
+
+Output: `build/Release/web/`
 
 </TabItem>
 </Tabs>
@@ -71,12 +122,25 @@ After building, run demos from the `bin/` folder. The path depends on your platf
 
 **Backend selection:** Use `--backend <api>` to choose the graphics API. Defaults: macOS = Metal, Linux = Vulkan, Windows = OpenGL (for testing). Omit `--backend` to use the default.
 
-```bash
-# From vnetestbed repo root — macOS example
-cd build/Debug/build-macos-clang-17.0.0/bin
+**1. Go to bin folder** (macOS example)
 
-./04_DemoCube                    # Metal (default on macOS)
+```bash
+cd build/Debug/build-macos-clang-17.0.0/bin
+```
+
+**2. Run demo**
+
+```bash
+./04_DemoCube
+```
+
+Metal is default on macOS. To use Vulkan or OpenGL:
+
+```bash
 ./04_DemoCube --backend vulkan
+```
+
+```bash
 ./04_DemoCube --backend opengl
 ```
 
