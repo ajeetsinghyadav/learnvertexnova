@@ -1,291 +1,295 @@
-/* Simplified architecture — 4 layers, strong visible borders */
+/* Architecture Diagram — VertexNova */
 
-.diagramWrapper {
-  background: #f7fafc;
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 3px solid #2d3748;
+.root {
+  --orange: var(--ifm-color-primary);
+  --orange-bg: rgba(255, 107, 53, 0.08);
+  --orange-border: rgba(255, 107, 53, 0.4);
+  --gray-dark: #2d3748;
+  --gray-mid: #4a5568;
+  --gray-light: #e2e8f0;
+  --gray-bg: #f7fafc;
+  --white: #ffffff;
+  --radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   margin: 2rem 0;
-}
-
-[data-theme='dark'] .diagramWrapper {
-  background: #1a202c;
-  border-color: #4a5568;
-}
-
-.flowHint {
-  text-align: center;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #718096;
-  margin-bottom: 1rem;
   font-family: var(--ifm-font-family-monospace);
 }
 
-.diagram {
-  --arch-orange: var(--ifm-color-primary);
-  --arch-border: #2d3748;
-  --arch-border-light: #4a5568;
-  max-width: 100%;
-  margin: 0;
-  font-family: var(--ifm-font-family-monospace);
-  overflow-x: auto;
-}
+/* ── Individual layer row ── */
 
 .layer {
-  margin-bottom: 12px;
-  position: relative;
-  z-index: 1;
+  border-radius: var(--radius);
+  border: 2px solid;
+  overflow: hidden;
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+/* Left label strip */
+.layerLabel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.1rem 1.4rem;
+  min-width: 210px;
+  border-right: 2px solid;
+  flex-shrink: 0;
 }
 
 .layerNum {
-  flex-shrink: 0;
-  width: 2.5rem;
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  color: var(--arch-border);
-  padding-top: 1rem;
-}
-
-.lGraphics .layerNum {
-  color: var(--arch-orange);
-}
-
-.layerBlock {
-  border: 3px solid;
-  border-radius: 10px;
-  overflow: hidden;
-  flex: 1;
-  min-width: 0;
+  letter-spacing: 0.12em;
+  opacity: 0.45;
+  align-self: flex-start;
+  margin-top: 2px;
 }
 
 .layerTitle {
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 1rem 1.5rem;
-  border-bottom: 3px solid;
-}
-
-.layerItems {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 1.2rem 1.5rem;
-}
-
-.itemBlock {
-  padding: 0.8rem 1.2rem;
-  border: 3px solid;
-  border-radius: 8px;
   font-size: 1rem;
-  font-weight: 600;
-  min-width: 100px;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
-/* Application — gray */
-.lApp .layerBlock,
-.lApp .layerTitle {
-  border-color: var(--arch-border);
+.layerSubtitle {
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-top: 2px;
+  opacity: 0.65;
+  font-family: var(--ifm-font-family-base);
 }
 
-.lApp .layerTitle {
-  background: #e2e8f0;
-  color: var(--arch-border);
-}
-
-.lApp .layerBlock {
-  background: #fff;
-}
-
-.lApp .itemBlock {
-  background: #fff;
-  border-color: var(--arch-border);
-  color: var(--arch-border);
-}
-
-/* Graphics — orange */
-.lGraphics .layerBlock,
-.lGraphics .layerTitle {
-  border-color: var(--arch-orange);
-}
-
-.lGraphics .layerTitle {
-  background: rgba(255, 107, 53, 0.15);
-  color: var(--arch-orange);
-}
-
-.lGraphics .layerBlock {
-  background: #fff;
-}
-
-.lGraphics .itemBlock {
-  background: #fff;
-  border-color: var(--arch-orange);
-  color: var(--arch-orange);
-}
-
-/* Core — gray */
-.lCore .layerBlock,
-.lCore .layerTitle {
-  border-color: var(--arch-border);
-}
-
-.lCore .layerTitle {
-  background: #e2e8f0;
-  color: var(--arch-border);
-}
-
-.lCore .layerBlock {
-  background: #fff;
-}
-
-.lCore .itemBlock {
-  background: #fff;
-  border-color: var(--arch-border);
-  color: var(--arch-border);
-}
-
-/* Platform — gray */
-.lPlatform .layerBlock,
-.lPlatform .layerTitle {
-  border-color: var(--arch-border-light);
-}
-
-.lPlatform .layerTitle {
-  background: #edf2f7;
-  color: var(--arch-border);
-}
-
-.lPlatform .layerBlock {
-  background: #fff;
-}
-
-.lPlatform .itemBlock {
-  background: #fff;
-  border-color: var(--arch-border-light);
-  color: var(--arch-border);
-}
-
-.connector {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  height: 36px;
-  color: var(--arch-border-light);
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-left: 2.5rem;
-  border-left: 4px solid var(--arch-orange);
-  padding-left: 1rem;
-}
-
-.connectorArrow {
-  font-size: 1.3rem;
-  color: var(--arch-orange);
-}
-
-.connectorLabel {
-  color: var(--arch-border);
-}
-
-.legend {
+/* Right cards area */
+.layerCards {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.2rem;
-  justify-content: center;
+  gap: 8px;
+  padding: 1rem 1.2rem;
+  flex: 1;
   align-items: center;
-  margin-top: 1.5rem;
-  padding: 1.2rem 1.5rem;
-  background: #fff;
-  border-radius: 10px;
-  border: 3px solid var(--arch-border-light);
 }
 
-.legendItem {
+.card {
   display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.5rem 0.85rem;
+  border-radius: 7px;
+  border: 1.5px solid;
+  min-width: 90px;
+}
+
+.cardLabel {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.cardNote {
+  font-size: 0.68rem;
+  font-weight: 400;
+  opacity: 0.7;
+  font-family: var(--ifm-font-family-base);
+  line-height: 1.3;
+}
+
+/* ── Arrow between layers ── */
+
+.arrow {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 0.95rem;
-  color: var(--arch-border);
-  font-family: var(--ifm-font-family-monospace);
+  gap: 2px;
+  padding: 4px 0;
+  color: var(--gray-mid);
+  font-family: var(--ifm-font-family-base);
 }
 
-.legendDot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.arrowLine {
+  width: 2px;
+  height: 10px;
+  background: var(--gray-light);
+  display: block;
 }
 
-/* Dark mode */
-[data-theme='dark'] .diagramWrapper {
+.arrowHead {
+  font-size: 0.7rem;
+  color: var(--gray-mid);
+  line-height: 1;
+}
+
+.arrowText {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--gray-mid);
+  text-transform: uppercase;
+}
+
+/* ── Layer color themes ── */
+
+/* L4 Application — dark gray */
+.app {
+  border-color: var(--gray-dark);
+  background: var(--white);
+}
+.app .layerLabel {
+  background: var(--gray-dark);
+  border-color: var(--gray-dark);
+  color: #fff;
+}
+.app .layerNum { color: rgba(255,255,255,0.5); }
+.app .layerTitle { color: #fff; }
+.app .layerSubtitle { color: rgba(255,255,255,0.6); }
+.app .card {
+  background: var(--gray-bg);
+  border-color: var(--gray-light);
+  color: var(--gray-dark);
+}
+
+/* L3 Graphics — orange */
+.graphics {
+  border-color: var(--orange);
+  background: var(--white);
+}
+.graphics .layerLabel {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+}
+.graphics .layerNum { color: rgba(255,255,255,0.5); }
+.graphics .layerTitle { color: #fff; }
+.graphics .layerSubtitle { color: rgba(255,255,255,0.7); }
+.graphics .card {
+  background: var(--orange-bg);
+  border-color: var(--orange-border);
+  color: var(--gray-dark);
+}
+.graphics .cardLabel { color: var(--orange); }
+
+/* L2 Core — medium gray */
+.core {
+  border-color: var(--gray-mid);
+  background: var(--white);
+}
+.core .layerLabel {
+  background: var(--gray-mid);
+  border-color: var(--gray-mid);
+  color: #fff;
+}
+.core .layerNum { color: rgba(255,255,255,0.5); }
+.core .layerTitle { color: #fff; }
+.core .layerSubtitle { color: rgba(255,255,255,0.65); }
+.core .card {
+  background: var(--gray-bg);
+  border-color: var(--gray-light);
+  color: var(--gray-dark);
+}
+
+/* L1 Platform — light gray */
+.platform {
+  border-color: #a0aec0;
+  background: var(--white);
+}
+.platform .layerLabel {
+  background: var(--gray-light);
+  border-color: #a0aec0;
+  color: var(--gray-dark);
+}
+.platform .layerNum { color: rgba(45,55,72,0.4); }
+.platform .card {
+  background: #fff;
+  border-color: #cbd5e0;
+  color: var(--gray-mid);
+}
+
+/* ── Dark mode ── */
+
+[data-theme='dark'] .root {
+  --white: #1a202c;
+  --gray-bg: #2d3748;
+  --gray-light: #4a5568;
+  --gray-dark: #e2e8f0;
+  --gray-mid: #a0aec0;
+  --orange-bg: rgba(255, 107, 53, 0.15);
+  --orange-border: rgba(255, 107, 53, 0.5);
+}
+
+[data-theme='dark'] .app {
   border-color: #718096;
-}
-
-[data-theme='dark'] .lApp .layerBlock,
-[data-theme='dark'] .lApp .layerTitle,
-[data-theme='dark'] .lCore .layerBlock,
-[data-theme='dark'] .lCore .layerTitle {
-  border-color: #718096;
-}
-
-[data-theme='dark'] .lApp .layerTitle,
-[data-theme='dark'] .lCore .layerTitle {
-  background: #2d3748;
-  color: #cbd5e0;
-}
-
-[data-theme='dark'] .lApp .layerBlock,
-[data-theme='dark'] .lCore .layerBlock {
   background: #1a202c;
 }
-
-[data-theme='dark'] .lApp .itemBlock,
-[data-theme='dark'] .lCore .itemBlock {
+[data-theme='dark'] .app .layerLabel {
   background: #2d3748;
-  border-color: #718096;
+  border-color: #4a5568;
+  color: #e2e8f0;
+}
+[data-theme='dark'] .app .layerNum { color: rgba(226,232,240,0.4); }
+[data-theme='dark'] .app .layerTitle { color: #e2e8f0; }
+[data-theme='dark'] .app .layerSubtitle { color: rgba(226,232,240,0.55); }
+[data-theme='dark'] .app .card {
+  background: #2d3748;
+  border-color: #4a5568;
   color: #cbd5e0;
 }
 
-[data-theme='dark'] .lGraphics .layerBlock {
+[data-theme='dark'] .graphics {
+  border-color: var(--ifm-color-primary);
   background: #1a202c;
 }
-
-[data-theme='dark'] .lGraphics .itemBlock {
-  background: #2d3748;
-  color: var(--arch-orange);
+[data-theme='dark'] .graphics .card {
+  color: #e2e8f0;
 }
 
-[data-theme='dark'] .lPlatform .layerBlock,
-[data-theme='dark'] .lPlatform .layerTitle {
+[data-theme='dark'] .core {
   border-color: #718096;
-}
-
-[data-theme='dark'] .lPlatform .layerTitle {
-  background: #2d3748;
-  color: #cbd5e0;
-}
-
-[data-theme='dark'] .lPlatform .layerBlock {
   background: #1a202c;
 }
-
-[data-theme='dark'] .lPlatform .itemBlock {
+[data-theme='dark'] .core .layerLabel {
   background: #2d3748;
-  border-color: #718096;
+  border-color: #4a5568;
+  color: #e2e8f0;
+}
+[data-theme='dark'] .core .layerNum { color: rgba(226,232,240,0.4); }
+[data-theme='dark'] .core .layerTitle { color: #e2e8f0; }
+[data-theme='dark'] .core .layerSubtitle { color: rgba(226,232,240,0.55); }
+[data-theme='dark'] .core .card {
+  background: #2d3748;
+  border-color: #4a5568;
   color: #cbd5e0;
 }
 
-[data-theme='dark'] .legend {
+[data-theme='dark'] .platform {
+  border-color: #4a5568;
+  background: #1a202c;
+}
+[data-theme='dark'] .platform .layerLabel {
   background: #2d3748;
-  border-color: #718096;
+  border-color: #4a5568;
+  color: #a0aec0;
+}
+[data-theme='dark'] .platform .card {
+  background: #2d3748;
+  border-color: #4a5568;
+  color: #a0aec0;
 }
 
-[data-theme='dark'] .legendItem {
-  color: #cbd5e0;
+[data-theme='dark'] .arrowLine { background: #4a5568; }
+[data-theme='dark'] .arrowText { color: #718096; }
+[data-theme='dark'] .arrowHead { color: #718096; }
+
+/* ── Responsive: stack label above cards on narrow screens ── */
+@media (max-width: 640px) {
+  .layer {
+    flex-direction: column;
+  }
+  .layerLabel {
+    border-right: none;
+    border-bottom: 2px solid;
+    min-width: unset;
+  }
 }
