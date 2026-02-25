@@ -66,7 +66,7 @@ function WhatAndWhy() {
           </p>
           <ul className={styles.featureList}>
             <li>Written in <strong>modern C++</strong> with support for Windows, Linux, macOS, iOS, and Web</li>
-            <li><strong>Multi-backend rendering</strong> — Unified API across Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU</li>
+            <li><strong>Multi-backend rendering</strong> — Unified API across Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU <em>(future)</em></li>
             <li><strong>Cross-platform</strong> — Build once, run everywhere</li>
             <li><strong>Educational focus</strong> — Transparent architecture designed for learning</li>
             <li><strong>Clean abstractions</strong> — Thin layers with explicit control</li>
@@ -84,7 +84,7 @@ function Features() {
   const features = [
     {
       title: 'Multi-Backend Rendering',
-      description: 'A unified API that works across Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU. Learn once, run everywhere.',
+      description: 'A unified API that works across Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU (future). Learn once, run everywhere.',
     },
     {
       title: 'Cross-Platform',
@@ -165,7 +165,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title} - Multi-backend 3D Rendering Engine`}
-      description="VertexNova Engine (VNE) is a modern, multi-platform rendering and visualization engine with unified API support for Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU. Built with C++ for clarity, portability, and performance.">
+      description="VertexNova Engine (VNE) is a modern, multi-platform rendering and visualization engine with unified API support for Vulkan, Metal, OpenGL, OpenGL ES 3.0, and WebGPU (future). Built with C++ for clarity, portability, and performance.">
       <Hero />
       <main>
         <WhatAndWhy />
