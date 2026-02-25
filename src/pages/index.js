@@ -54,9 +54,12 @@ function WhatAndWhy() {
           <p className={styles.sectionText}>
             VertexNova started as a learning journey in computer graphics and engine architecture. 
             VertexNova is a multi-backend rendering engine that you can use right now to learn, 
-            experiment, and build 3D applications. We created VertexNova because we have a real 
-            passion for understanding how graphics engines work, and we want to create a clean, 
+            experiment, and build 3D applications. I created VertexNova because I have a real 
+            passion for understanding how graphics engines work, and I want to create a clean, 
             educational codebase that demonstrates modern engine design.
+          </p>
+          <p className={styles.sectionText}>
+            Thanks to everyone who supported my growth along the way — mentors, colleagues, and those who believed in the journey.
           </p>
           <p className={styles.sectionText}>
             Some features and tech:
