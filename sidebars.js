@@ -29,15 +29,8 @@ const sidebars = {
         { type: 'doc', id: 'docs/overview', label: 'Overview' },
         { type: 'doc', id: 'docs/overview-architecture', label: 'Architecture' },
         { type: 'doc', id: 'docs/overview-design', label: 'Design' },
-        { type: 'doc', id: 'docs/overview-status', label: 'Status' },
+        { type: 'doc', id: 'docs/roadmap', label: 'Roadmap' },
       ],
-    },
-
-    // 3) Roadmap
-    {
-      type: 'doc',
-      id: 'docs/roadmap',
-      label: 'Roadmap',
     },
 
     // 4) Learn by Building

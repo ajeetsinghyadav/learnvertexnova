@@ -40,5 +40,5 @@ Every `vne*` library is independently buildable, testable, and documented. You c
 ## See Also
 
 - [Architecture](/docs/docs/overview-architecture) — Library structure and dependency rules
-- [Status](/docs/docs/overview-status) — What's built and what's next
+- [Roadmap](/docs/docs/roadmap) — What's built and what's next
 - [Overview](/docs/docs/overview) — What the engine is and why it exists
