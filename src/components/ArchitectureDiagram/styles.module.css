@@ -13,6 +13,15 @@
   border-color: #4a5568;
 }
 
+.flowHint {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #718096;
+  margin-bottom: 1rem;
+  font-family: var(--ifm-font-family-monospace);
+}
+
 .diagram {
   --arch-orange: var(--ifm-color-primary);
   --arch-border: #2d3748;
@@ -25,12 +34,32 @@
 
 .layer {
   margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.layerNum {
+  flex-shrink: 0;
+  width: 2.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--arch-border);
+  padding-top: 1rem;
+}
+
+.lGraphics .layerNum {
+  color: var(--arch-orange);
 }
 
 .layerBlock {
   border: 3px solid;
   border-radius: 10px;
   overflow: hidden;
+  flex: 1;
+  min-width: 0;
 }
 
 .layerTitle {
@@ -144,10 +173,24 @@
 .connector {
   display: flex;
   justify-content: center;
-  height: 24px;
   align-items: center;
+  gap: 0.5rem;
+  height: 36px;
   color: var(--arch-border-light);
-  font-size: 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: 2.5rem;
+  border-left: 4px solid var(--arch-orange);
+  padding-left: 1rem;
+}
+
+.connectorArrow {
+  font-size: 1.3rem;
+  color: var(--arch-orange);
+}
+
+.connectorLabel {
+  color: var(--arch-border);
 }
 
 .legend {
