@@ -1,242 +1,46 @@
 ---
 sidebar_position: 1
-title: Getting Started
+title: Start Here
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Link from '@docusaurus/Link';
 
-# Getting Started
+# Start Here
 
-Welcome to **LearnVertexNova** — a hands-on guide to building a modern, multi-backend renderer in C++.
+**One codebase. Four graphics APIs. Six platforms.** VertexNova is a C++20 rendering engine that runs on Vulkan, Metal, OpenGL, and WebGL — from a single shader source. No magic, no black boxes. Just clean, readable code that teaches you how it works.
 
-Every chapter maps to working code, ends with something you can run, and steadily builds the engine foundations: **frame loop → resources → shaders → passes → presentation**.
-
-By the end of this path, you'll not only run demos — you'll understand *why* they work and how to extend them.
-
-## What is VertexNova?
-
-**VertexNova Engine** is a modern, multi-platform rendering and visualization engine designed for **learning, clarity, and long-term maintainability**. Unlike commercial game engines or high-level graphics libraries, VertexNova provides:
-
-- **Transparent architecture** — See exactly how rendering works, from API calls to frame presentation
-- **Multi-backend support** — Learn how to abstract across Vulkan, Metal, OpenGL, and WebGL with a unified API
-- **Clean C++ design** — Modern C++17+ with strict ownership, predictable lifetimes, and clear abstractions
-- **Educational focus** — Built to teach, not just to ship products
-## Core features
-
-- **Multi-backend mindset** — Vulkan, Metal, OpenGL (and Web later)
-- **Learn by building** — small demos that prove each concept
-- **Engineer-friendly workflow** — CMake, debugging, and clean structure
-
-## What you need to know
-
-### Essential skills
-
-- **Modern C++ (C++17+)** — We use contemporary C++ features, but we'll explain them as we go
-- **CMake workflows** — Understanding how to build C++ projects is essential
-- **Basic graphics concepts** — Familiarity with vertex buffers, shaders, and matrices helps, but we'll build the mental model together
-
-### Nice to have
-
-- Experience with any graphics API (OpenGL, Vulkan, Metal, DirectX)
-- Understanding of computer graphics fundamentals
-- Previous engine or graphics programming experience
-
-**Don't worry if you're new to graphics programming** — we'll explain concepts as we encounter them, and the codebase is designed to be readable and educational.
-
-## Development environment
-
-VertexNova is developed and battle-tested across multiple platforms:
-
-- **Windows 11 / Windows 10** — Full support for Vulkan and OpenGL
-- **Ubuntu 22.04** (Linux) — Vulkan and OpenGL with excellent tooling
-- **macOS** — Native Metal support plus OpenGL and Vulkan (via MoltenVK)
-
-### Recommended tooling
-
-- **Qt Creator / VS Code** — Excellent for everyday development with great CMake integration
-- **Xcode** — Essential for macOS debugging and GPU tools (Instruments, Metal debugger)
-- **CMake 3.15+** — Our build system of choice
-
-## Your first milestone
-
-✅ **Build the engine**  
-✅ **Run your first demo**  
-✅ **Confirm your toolchain**  
-✅ **Set up a repeatable workflow**
-
-This first milestone is crucial. Once you can build and run demos reliably, you have everything you need to start learning and experimenting.
-
-## Quick start
-
-<Tabs>
-<TabItem value="scripts" label="Build scripts (recommended)" default>
+## Run something in 5 minutes
 
 ```bash
-git clone https://github.com/ajeetsinghyadav/vertexnova.git
+git clone --recursive https://github.com/vertexnova/vertexnova.git
 cd vertexnova
-git submodule update --init --recursive
+./scripts/build_macos.sh -t Debug -b Metal   # or build_linux.sh, build_windows.sh
 
-# Platform-specific scripts (macOS, Linux, Windows, iOS, visionOS, Web)
-./scripts/build_macos.sh -t Debug -b Metal    # macOS
-./scripts/build_linux.sh -t Debug -b Vulkan   # Linux
-./scripts/build_windows.sh -t Debug -b Vulkan # Windows (from VS Developer Prompt)
-```
-
-Demos are in `build/<Type>/build-<platform>-<compiler>-<version>/bin/`. See [Demos](/docs/docs/demos) for run commands.
-
-</TabItem>
-<TabItem value="cmake" label="Manual CMake">
-
-```bash
-git clone https://github.com/ajeetsinghyadav/vertexnova.git
-cd vertexnova
-git submodule update --init --recursive
-
-mkdir build && cd build
-cmake ..
-cmake --build .
-```
-
-</TabItem>
-<TabItem value="windows" label="Windows">
-
-```powershell
-# Using Visual Studio
-git clone https://github.com/ajeetsinghyadav/vertexnova.git
-cd vertexnova
-git submodule update --init --recursive
-mkdir build && cd build
-cmake .. -G "Visual Studio 17 2022" -A x64
-cmake --build . --config Release
-```
-
-</TabItem>
-<TabItem value="macos" label="macOS">
-
-```bash
-# Using Xcode
-git clone https://github.com/ajeetsinghyadav/vertexnova.git
-cd vertexnova
-git submodule update --init --recursive
-mkdir build && cd build
-cmake .. -G Xcode
-cmake --build . --config Release
-```
-
-</TabItem>
-<TabItem value="linux" label="Linux">
-
-```bash
-# Using Unix Makefiles
-git clone https://github.com/ajeetsinghyadav/vertexnova.git
-cd vertexnova
-git submodule update --init --recursive
-mkdir build && cd build
-cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
-cmake --build . --config Release
-```
-
-</TabItem>
-</Tabs>
-
-**Expected time**: 5-15 minutes depending on your machine and internet connection.
-
-### Run your first demo
-
-```bash
-# After building with scripts, navigate to the bin directory
-# Path varies by platform, e.g. build/Debug/build-macos-clang-17.0.0/bin
-cd build/Debug/build-macos-clang-*/bin   # macOS (adjust path for your platform)
-
-./02_DemoTriangle
-# or
+cd build/Debug/build-*/bin
 ./04_DemoCube
 ```
 
-**What you should see**: A window opens with a rendered triangle or cube. Congratulations — you just ran your first VertexNova demo!
+A window opens. A cube renders. You just ran your first demo.
 
-See the [Demos](/docs/docs/demos) page for a complete list of available samples and what each demonstrates.
+:::tip Full build guide
+Platform-specific scripts, iOS, visionOS, Web — see [Build & Run](/docs/docs/demos/build).
+:::
 
-## Architecture overview
+## What makes this different?
 
-<figure>
-  <img src="/img/diagrams/vertexnova_layers.png" alt="VertexNova architecture layers" />
-  <figcaption>VertexNova layers: platform (xwin) + unified graphics API (xgl) + backend implementations.</figcaption>
-</figure>
+- **Write once, run everywhere** — Same C++ and GLSL across Metal, Vulkan, OpenGL, Web
+- **Built to learn** — Transparent architecture. Every layer is readable and documented
+- **22+ demos** — Triangle → PBR → deferred → compute. Each proves one concept
 
-VertexNova is organized into clean, focused components:
+## Where to go next
 
-- **xwin** — Platform and window/input utilities abstracting OS-specific functionality
-- **xgl** — Multi-backend rendering layer providing a unified API across OpenGL, Metal, Vulkan, and WebGL
-- **xviz** — Visualization helpers and utilities for common graphics tasks
+| If you want to… | Go here |
+|-----------------|---------|
+| **Learn step by step** | [Learn by Building](/docs/docs/learn) — window → shaders → passes → presentation |
+| **See what it can do** | [CrossGL Demos](/docs/docs/demos/crossgl-demos) — screenshots, videos, backend badges |
+| **Understand the design** | [Overview](/docs/docs/overview) — architecture, platforms, shader strategy |
+| **Check status & roadmap** | [Roadmap](/docs/docs/roadmap) — what works, what's next |
 
-This architecture is **intentionally simple**. Each component has a clear responsibility, making the codebase easy to understand, modify, and extend.
+## Ready?
 
-## What you'll build
-
-As you progress through LearnVertexNova, you'll build:
-
-<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', margin: '2rem 0'}}>
-  <div style={{textAlign: 'center', padding: '1rem', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: '8px'}}>
-    <strong>Triangle</strong>
-    <p style={{fontSize: '0.9rem', margin: '0.5rem 0 0', color: 'var(--ifm-color-content-secondary)'}}>Basic rendering pipeline</p>
-  </div>
-  <div style={{textAlign: 'center', padding: '1rem', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: '8px'}}>
-    <strong>Textured Cube</strong>
-    <p style={{fontSize: '0.9rem', margin: '0.5rem 0 0', color: 'var(--ifm-color-content-secondary)'}}>Textures & materials</p>
-  </div>
-  <div style={{textAlign: 'center', padding: '1rem', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: '8px'}}>
-    <strong>Render Targets</strong>
-    <p style={{fontSize: '0.9rem', margin: '0.5rem 0 0', color: 'var(--ifm-color-content-secondary)'}}>MSAA & offscreen rendering</p>
-  </div>
-</div>
-
-## What's next
-
-Now that you're set up, here's your learning path:
-
-### Immediate next steps
-
-👉 **[Development Environment Setup](https://github.com/ajeetsinghyadav/vertexnova-devsetup)**  
-Get detailed platform-specific setup instructions, install dependencies, and configure your development environment for maximum productivity.
-
-### Learning path
-
-👉 **[Learn VertexNova](/docs/docs/learn)**  
-Follow our structured learning path. Start with window creation, progress through rendering basics, and advance to complex topics like instancing and render targets. Each lesson builds on the previous one.
-
-👉 **[View Demos](/docs/docs/demos)**  
-Explore our demo suite. Each demo is a working example that validates specific engine features. Study the code, run the demos, and understand how they work.
-
-### Deep dive
-
-👉 **[Project Overview](/docs/docs/overview)**  
-Understand the engineering decisions behind VertexNova. Learn about cross-backend challenges, debugging strategies, and performance considerations.
-
-👉 **[Roadmap](/docs/docs/roadmap)**  
-See what's currently working, what's in progress, and what's planned. This honest status helps you understand the project's current state.
-
-## Resources
-
-- **[GitHub Repository](https://github.com/ajeetsinghyadav/vertexnova)** — Source code, issues, and discussions
-- **[Development Setup](https://github.com/ajeetsinghyadav/vertexnova-devsetup)** — Comprehensive environment setup guide
-- **[Project Overview](/docs/docs/overview)** — Engineering highlights and architectural insights
-- **[Roadmap](/docs/docs/roadmap)** — Current status, feature matrix, and future plans
-
-## Design philosophy
-
-VertexNova follows a clear set of principles that guide every design decision:
-
-- **Modern C++ with clarity over cleverness** — Readable code is more valuable than clever code
-- **Thin abstractions and clear layering** — Enough abstraction to be practical, not so much that it's magic
-- **Multi-backend design via unified API** — Learn once, run everywhere
-- **Build to learn first; scale responsibly later** — Education and understanding come before optimization
-
-## Ready to begin?
-
-You're about to embark on a journey that will transform how you think about graphics programming. Every line of code you write, every demo you run, and every concept you master brings you closer to understanding what makes great graphics engines tick.
-
-**Let's build something amazing together.**
-
-Start with the [Development Environment Setup](https://github.com/ajeetsinghyadav/vertexnova-devsetup), then dive into the [Learning Path](/docs/docs/learn). Welcome to LearnVertexNova.
+[Learn by Building →](/docs/docs/learn) · [Demos →](/docs/docs/demos) · [GitHub →](https://github.com/vertexnova)
