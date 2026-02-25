@@ -18,9 +18,19 @@ const sidebars = {
 
     // 2) Overview
     {
-      type: 'doc',
-      id: 'docs/overview',
+      type: 'category',
       label: 'Overview',
+      collapsed: false,
+      link: {
+        type: 'doc',
+        id: 'docs/overview',
+      },
+      items: [
+        { type: 'doc', id: 'docs/overview', label: 'Overview' },
+        { type: 'doc', id: 'docs/overview-architecture', label: 'Architecture' },
+        { type: 'doc', id: 'docs/overview-design', label: 'Design' },
+        { type: 'doc', id: 'docs/overview-status', label: 'Status' },
+      ],
     },
 
     // 3) Roadmap

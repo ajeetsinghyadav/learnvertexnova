@@ -3,67 +3,50 @@ sidebar_position: 4
 title: Overview
 ---
 
-# Project Overview
+# VertexNova Engine — Overview
 
-VertexNova Engine is a personal learning project focused on building a clean, maintainable **multi-backend rendering engine** from the ground up.
+VertexNova is a **modern, multi-backend C++20 rendering engine** built from the ground up to run on every major graphics API and platform from a single codebase.
 
-## Quick Overview
+It targets **6 platforms** and **4 graphics APIs** simultaneously — and is designed to be readable, modular, and educational at every layer.
 
-- **What:** Multi-backend renderer/visualization engine supporting Vulkan, Metal, OpenGL, and WebGL
-- **Why:** Learn engine architecture while building consistent abstractions, real demos, and practical learning material
-- **Approach:** Small, incremental steps with working demos and thorough testing
+## The Problem It Solves
 
-## Project Goals
+Most graphics projects pick one API and one platform. VertexNova's premise: **write it once, run it everywhere.** One unified API surface over Vulkan, Metal, OpenGL, and OpenGL ES. One shader source compiled automatically to MSL, GLSL, HLSL, and WGSL.
 
-1. **Learn by Building**: Understand graphics engine architecture through hands-on implementation
-2. **Multi-Backend Design**: Create clean abstractions that work across different graphics APIs
-3. **Practical Examples**: Provide runnable demos that serve as both proof and learning resources
-4. **Long-term Maintainability**: Build a codebase that can evolve and be maintained over time
+## Platform & API Coverage
 
-## Architecture Highlights
+| Platform | Backends |
+|----------|----------|
+| macOS | Metal, OpenGL 4.x |
+| iOS | Metal, OpenGL ES |
+| visionOS | Metal *(future)* |
+| Windows | Vulkan, OpenGL 4.x |
+| Linux | Vulkan, OpenGL 4.x |
+| Web | WebGL / WebGPU via Emscripten |
 
-### Core Components
+## What Works Today
 
-- **xgl**: Multi-backend rendering layer providing unified API
-- **xwin**: Platform and window/input utilities
-- **xviz**: Visualization helpers and utilities
+Confirmed features across Metal, Vulkan, OpenGL, and OpenGL ES: mesh rendering, Phong and PBR lighting, texturing, deferred shading, MSAA, shadows, compute shaders. See [Demos](/docs/docs/demos) for the full list.
 
-### Design Principles
+## Shader Strategy
 
-- **Modern C++**: C++17+ with clarity over cleverness
-- **Thin Abstractions**: Minimal overhead, explicit control
-- **Strict Ownership**: Predictable lifetimes and resource management
-- **Incremental Progress**: Build to learn, scale responsibly
+Shaders are written **once** in Vulkanized GLSL 4.5. The `vnecrossshader` library compiles to SPIR-V, then SPIRV-Cross generates MSL, GLSL, HLSL, and WGSL. Zero manual porting.
 
-## Engineering Focus Areas
+## Project Context
 
-### Cross-Backend Challenges
+VertexNova is a **personal project** — built on weekends and evenings. Every library is independently buildable, testable, and documented.
 
-- **Resource Binding**: Unified resource binding strategy across Vulkan/Metal/OpenGL
-- **Shader Reflection**: Consistent shader compilation and reflection
-- **Render Targets**: Offscreen rendering and MSAA resolve differences
-- **State Management**: Pipeline state caching and validation
+## Where to Go Next
 
-### Debugging & Performance
-
-- **Validation Layers**: Backend-specific validation and error reporting
-- **Debug Markers**: API-agnostic debugging markers and tools
-- **Performance Profiling**: Pipeline caching, batching, and optimization
-- **Capture Tools**: Integration with graphics debugging tools
-
-## Best Starting Points
-
-- **[Getting Started](/docs/intro)**: Begin here for setup and quick start
-- **[Learn VertexNova](/docs/docs/learn)**: Structured learning path
-- **[Demos](/docs/docs/demos)**: Runnable examples and proof of concepts
-- **[Roadmap](/docs/docs/roadmap)**: Current status and future plans
-
-## Project Status
-
-This is an active learning project. Progress is continuous but deliberate. The codebase aims to be readable, well-documented, and maintainable. For the latest status, see the [Roadmap](/docs/docs/roadmap) page.
+| Page | Description |
+|------|-------------|
+| [Architecture](/docs/docs/overview-architecture) | How the libraries fit together |
+| [Design](/docs/docs/overview-design) | Engineering decisions behind the engine |
+| [Status](/docs/docs/overview-status) | What's done, in progress, and next |
+| [Getting Started](/docs/intro) | Build and run your first demo |
+| [Demos](/docs/docs/demos) | What the engine can render today |
+| [Roadmap](/docs/docs/roadmap) | Where the project is headed |
 
 ## Resources
 
-- [GitHub Organization](https://github.com/vertexnova)
-- [Development Setup](https://github.com/ajeetsinghyadav/vertexnova-devsetup)
-- [Issues & Discussions](https://github.com/ajeetsinghyadav/vertexnova/issues)
+- [GitHub Organization](https://github.com/vertexnova) — Source code, issues, and discussions
