@@ -14,8 +14,8 @@ Every chapter maps to working code. Every concept ends with something you can ru
 | Chapter | What You'll Do |
 |---------|----------------|
 | [00: Dev Environment Setup](./dev-environment-setup) | Set up Linux, Windows, or macOS — compilers, Vulkan SDK, MoltenVK, IDEs, tools |
-| [00: Hello VertexNova](./hello-vertexnova) | Minimal CMake project — your engine skeleton |
-| [01: Adding Logging](./adding-logging) | Replace std::cout with vnelogging — colors, timestamps, file output |
+| [01: Hello VertexNova](./01-hello-vertexnova) | Minimal CMake project — your engine skeleton |
+| [02: Adding Logging](./02-adding-logging) | Replace std::cout with vnelogging — colors, timestamps, file output |
 
 ## Coming Soon
 
