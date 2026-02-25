@@ -58,7 +58,7 @@ const LAYERS = [
     cardCls: styles.cardPlatform,
     rowCls: styles.rowPlatform,
     items: [
-      { label: 'Vulkan', note: 'Windows · Linux' },
+      { label: 'Vulkan', note: 'Windows · Linux · macOS (MoltenVK)' },
       { label: 'Metal', note: 'macOS · iOS · visionOS' },
       { label: 'OpenGL', note: 'Desktop · Web (GLES)' },
       { label: 'SPIRV-Cross · GLM · GLFW · ImGui', note: 'Third-party libraries' },

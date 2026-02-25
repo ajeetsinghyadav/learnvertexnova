@@ -39,7 +39,7 @@ One screenshot per demo from **one platform** (e.g. Metal on macOS) is enough. P
 ## Supported Platforms
 
 - **Metal** — macOS, iOS Sim, visionOS
-- **Vulkan** — Windows, Linux
+- **Vulkan** — Windows, Linux, macOS (MoltenVK)
 - **OpenGL** — Windows, Linux, macOS
 - **Web** — WebGL (browser)
 

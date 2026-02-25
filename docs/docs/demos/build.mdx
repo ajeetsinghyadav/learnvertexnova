@@ -13,7 +13,7 @@ VertexNova provides platform-specific build scripts in the `scripts/` directory.
 
 ## Build
 
-Running a build script without `-b` builds **all available backends** for that platform (e.g. macOS: Metal, Vulkan, OpenGL).
+Running a build script without `-b` builds **all available backends** for that platform (e.g. macOS: Metal, Vulkan via MoltenVK, OpenGL).
 
 <Tabs>
 <TabItem value="macos" label="macOS" default>
@@ -24,7 +24,7 @@ Running a build script without `-b` builds **all available backends** for that p
 cd vnetestbed
 ```
 
-**2. Build** (Metal, Vulkan, OpenGL)
+**2. Build** (Metal, Vulkan/MoltenVK, OpenGL)
 
 ```bash
 ./scripts/build_macos.sh -t Debug
@@ -134,7 +134,7 @@ cd build/Debug/build-macos-clang-17.0.0/bin
 ./04_DemoCube
 ```
 
-Metal is default on macOS. To use Vulkan or OpenGL:
+Metal is default on macOS. To use Vulkan (MoltenVK) or OpenGL:
 
 ```bash
 ./04_DemoCube --backend vulkan

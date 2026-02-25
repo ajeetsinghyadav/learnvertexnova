@@ -17,7 +17,7 @@ Most graphics projects pick one API and one platform. VertexNova's premise: **wr
 
 | Platform | Backends |
 |----------|----------|
-| macOS | Metal, OpenGL 4.x |
+| macOS | Metal, Vulkan (MoltenVK), OpenGL 4.x |
 | iOS | Metal, OpenGL ES |
 | visionOS | Metal *(future)* |
 | Windows | Vulkan, OpenGL 4.x |
