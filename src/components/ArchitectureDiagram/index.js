@@ -118,7 +118,8 @@ function Card({ name, desc }) {
 
 export default function ArchitectureDiagram() {
   return (
-    <div className={styles.diagram} style={{ background: '#1c1c1e', padding: '1.5rem', borderRadius: '12px' }}>
+    <div className={styles.diagramWrapper}>
+    <div className={styles.diagram}>
       {LAYERS.map((layer, i) => (
         <React.Fragment key={layer.id}>
           {i > 0 && <div className={styles.connector}>▲</div>}
@@ -141,23 +142,23 @@ export default function ArchitectureDiagram() {
 
       <div className={styles.legend}>
         <div className={styles.legendItem}>
-          <div className={styles.legendDot} style={{ background: '#f28c5e' }} />
+          <div className={styles.legendDot} style={{ background: '#4a5568' }} />
           Application
         </div>
         <div className={styles.legendItem}>
-          <div className={styles.legendDot} style={{ background: '#e8c07a' }} />
+          <div className={styles.legendDot} style={{ background: 'var(--ifm-color-primary)' }} />
           Graphics
         </div>
         <div className={styles.legendItem}>
-          <div className={styles.legendDot} style={{ background: '#ebebf0' }} />
+          <div className={styles.legendDot} style={{ background: '#4a5568' }} />
           Core
         </div>
         <div className={styles.legendItem}>
-          <div className={styles.legendDot} style={{ background: '#b8b0d8' }} />
+          <div className={styles.legendDot} style={{ background: '#718096' }} />
           External
         </div>
         <div className={styles.legendItem}>
-          <div className={styles.legendDot} style={{ background: '#9acfee' }} />
+          <div className={styles.legendDot} style={{ background: '#718096' }} />
           Hardware
         </div>
         <div className={styles.legendDivider} />
@@ -170,6 +171,7 @@ export default function ArchitectureDiagram() {
           Public
         </div>
       </div>
+    </div>
     </div>
   );
 }

@@ -1,343 +1,515 @@
-/* VertexNova architecture diagram — gray-orange scheme */
-/* Private libs: dashed border; Public: solid */
+/* VertexNova architecture diagram — website gray-orange */
+/* Graphics = orange; others = gray shades; visible borders on every block */
+
+.diagramWrapper {
+  background: #f7fafc;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  margin: 2rem 0;
+}
+
+[data-theme='dark'] .diagramWrapper {
+  background: #1a202c;
+  border-color: #2d3748;
+}
 
 .diagram {
-  --arch-orange: #e8622a;
-  --arch-silver: #aeaeb2;
-  --arch-purple: #8a7fba;
-  --arch-mid: #636366;
-  max-width: 1060px;
-  margin: 2rem auto;
+  --arch-orange: var(--ifm-color-primary);
+  --arch-gray-1: #4a5568;
+  --arch-gray-2: #718096;
+  --arch-gray-3: #a0aec0;
+  --arch-gray-4: #cbd5e0;
+  --arch-gray-5: #e2e8f0;
+  max-width: 100%;
+  margin: 0;
   font-family: var(--ifm-font-family-monospace);
+  overflow-x: auto;
+  padding: 0.5rem 0;
 }
 
 .layer {
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 .layerInner {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 2px solid;
   border-radius: 10px;
   overflow: hidden;
   transition: box-shadow 0.2s ease;
 }
 
 .layerInner:hover {
-  box-shadow: 0 0 0 1px var(--arch-orange), 0 8px 24px rgba(232, 98, 42, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .layerHeader {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 1.2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 1rem;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 2px solid;
 }
 
 .layerNum {
-  font-size: 0.65rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: var(--arch-mid);
   letter-spacing: 0.1em;
-  min-width: 2rem;
+  min-width: 2.5rem;
 }
 
 .layerTitle {
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   flex: 1;
 }
 
 .layerBadge {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
 }
 
 .cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 1rem 1.2rem;
+  gap: 10px;
+  padding: 1.2rem 1.5rem;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 0.5rem 0.8rem;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-  min-width: 100px;
+  gap: 4px;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 2px solid;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  min-width: 120px;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .cardName {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 700;
   white-space: nowrap;
 }
 
 .cardDesc {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   font-weight: 400;
   white-space: nowrap;
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
-/* Private card styling */
 .cardPrivate {
   border-style: dashed;
-  opacity: 0.92;
 }
 
-/* Layer themes — gray-orange palette */
+/* App — gray */
+.lApp .layerInner,
 .lApp .layerHeader {
-  background: linear-gradient(90deg, #2e1a07, #3a2010);
+  border-color: var(--arch-gray-2);
+}
+
+.lApp .layerHeader {
+  background: #f7fafc;
+  color: var(--arch-gray-1);
+}
+
+.lApp .layerNum {
+  color: var(--arch-gray-2);
 }
 
 .lApp .layerTitle {
-  color: var(--arch-orange);
+  color: var(--arch-gray-1);
 }
 
 .lApp .layerBadge {
-  background: rgba(232, 98, 42, 0.15);
-  color: var(--arch-orange);
-  border: 1px solid rgba(232, 98, 42, 0.3);
+  background: rgba(74, 85, 104, 0.15);
+  color: var(--arch-gray-1);
+  border: 2px solid var(--arch-gray-2);
 }
 
 .lApp .layerInner {
-  background: #1e1208;
+  background: #edf2f7;
 }
 
 .lApp .card {
-  background: #2a1a0a;
-  border-color: rgba(232, 98, 42, 0.25);
+  background: #fff;
+  border-color: var(--arch-gray-2);
+  color: var(--arch-gray-1);
 }
 
 .lApp .card:hover {
-  border-color: var(--arch-orange);
+  border-color: var(--arch-gray-1);
 }
 
 .lApp .cardName {
-  color: #f28c5e;
+  color: var(--arch-gray-1);
 }
 
-/* Graphics — gold/amber */
+.lApp .cardDesc {
+  color: var(--arch-gray-2);
+}
+
+/* Graphics — orange (website primary) */
+.lGraphics .layerInner,
 .lGraphics .layerHeader {
-  background: linear-gradient(90deg, #231d12, #2a2212);
+  border-color: var(--arch-orange);
+}
+
+.lGraphics .layerHeader {
+  background: rgba(255, 107, 53, 0.12);
+  color: var(--arch-orange);
+}
+
+.lGraphics .layerNum {
+  color: var(--arch-orange);
 }
 
 .lGraphics .layerTitle {
-  color: #d4a055;
+  color: var(--arch-orange);
 }
 
 .lGraphics .layerBadge {
-  background: rgba(212, 160, 85, 0.15);
-  color: #d4a055;
-  border: 1px solid rgba(212, 160, 85, 0.3);
+  background: rgba(255, 107, 53, 0.2);
+  color: var(--arch-orange);
+  border: 2px solid var(--arch-orange);
 }
 
 .lGraphics .layerInner {
-  background: #1a1610;
+  background: rgba(255, 107, 53, 0.06);
 }
 
 .lGraphics .card {
-  background: #231e13;
-  border-color: rgba(212, 160, 85, 0.2);
+  background: #fff;
+  border-color: var(--arch-orange);
+  color: #2d3748;
 }
 
 .lGraphics .card:hover {
-  border-color: #d4a055;
+  border-color: var(--ifm-color-primary-dark);
+  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.2);
 }
 
 .lGraphics .cardName {
-  color: #e8c07a;
+  color: var(--arch-orange);
 }
 
-/* Core — silver */
+.lGraphics .cardDesc {
+  color: var(--arch-gray-1);
+}
+
+/* Core — gray */
+.lCore .layerInner,
 .lCore .layerHeader {
-  background: linear-gradient(90deg, #1c1c20, #242428);
+  border-color: var(--arch-gray-2);
+}
+
+.lCore .layerHeader {
+  background: #f7fafc;
+  color: var(--arch-gray-1);
+}
+
+.lCore .layerNum {
+  color: var(--arch-gray-2);
 }
 
 .lCore .layerTitle {
-  color: var(--arch-silver);
+  color: var(--arch-gray-1);
 }
 
 .lCore .layerBadge {
-  background: rgba(174, 174, 178, 0.15);
-  color: var(--arch-silver);
-  border: 1px solid rgba(174, 174, 178, 0.3);
+  background: rgba(74, 85, 104, 0.12);
+  color: var(--arch-gray-1);
+  border: 2px solid var(--arch-gray-2);
 }
 
 .lCore .layerInner {
-  background: #161618;
+  background: #edf2f7;
 }
 
 .lCore .card {
-  background: #1e1e22;
-  border-color: rgba(174, 174, 178, 0.2);
+  background: #fff;
+  border-color: var(--arch-gray-2);
+  color: var(--arch-gray-1);
 }
 
 .lCore .card:hover {
-  border-color: var(--arch-silver);
+  border-color: var(--arch-gray-1);
 }
 
 .lCore .cardName {
-  color: #ebebf0;
+  color: var(--arch-gray-1);
 }
 
-/* Shared — silver */
+.lCore .cardDesc {
+  color: var(--arch-gray-2);
+}
+
+/* Shared — gray */
+.lShared .layerInner,
 .lShared .layerHeader {
-  background: linear-gradient(90deg, #1a1a1e, #222226);
+  border-color: var(--arch-gray-3);
+}
+
+.lShared .layerHeader {
+  background: #edf2f7;
+  color: var(--arch-gray-1);
+}
+
+.lShared .layerNum {
+  color: var(--arch-gray-2);
 }
 
 .lShared .layerTitle {
-  color: var(--arch-silver);
+  color: var(--arch-gray-1);
 }
 
 .lShared .layerBadge {
-  background: rgba(174, 174, 178, 0.12);
-  color: var(--arch-silver);
-  border: 1px solid rgba(174, 174, 178, 0.25);
+  background: rgba(113, 128, 150, 0.15);
+  color: var(--arch-gray-2);
+  border: 2px solid var(--arch-gray-3);
 }
 
 .lShared .layerInner {
-  background: #141416;
+  background: #e2e8f0;
 }
 
 .lShared .card {
-  background: #1a1a1e;
-  border-color: rgba(174, 174, 178, 0.18);
+  background: #fff;
+  border-color: var(--arch-gray-3);
+  color: var(--arch-gray-1);
 }
 
 .lShared .card:hover {
-  border-color: var(--arch-silver);
+  border-color: var(--arch-gray-2);
 }
 
 .lShared .cardName {
-  color: #d8d8d8;
+  color: var(--arch-gray-1);
 }
 
-/* External — purple */
+.lShared .cardDesc {
+  color: var(--arch-gray-2);
+}
+
+/* External — gray */
+.lDeps .layerInner,
 .lDeps .layerHeader {
-  background: linear-gradient(90deg, #1a1a24, #20202a);
+  border-color: var(--arch-gray-3);
+}
+
+.lDeps .layerHeader {
+  background: #e2e8f0;
+  color: var(--arch-gray-1);
+}
+
+.lDeps .layerNum {
+  color: var(--arch-gray-2);
 }
 
 .lDeps .layerTitle {
-  color: var(--arch-purple);
+  color: var(--arch-gray-1);
 }
 
 .lDeps .layerBadge {
-  background: rgba(138, 127, 186, 0.15);
-  color: var(--arch-purple);
-  border: 1px solid rgba(138, 127, 186, 0.3);
+  background: rgba(113, 128, 150, 0.12);
+  color: var(--arch-gray-2);
+  border: 2px solid var(--arch-gray-3);
 }
 
 .lDeps .layerInner {
-  background: #131318;
+  background: #e2e8f0;
 }
 
 .lDeps .card {
-  background: #1a1a22;
-  border-color: rgba(138, 127, 186, 0.2);
+  background: #fff;
+  border-color: var(--arch-gray-3);
+  color: var(--arch-gray-1);
 }
 
 .lDeps .card:hover {
-  border-color: var(--arch-purple);
+  border-color: var(--arch-gray-2);
 }
 
 .lDeps .cardName {
-  color: #b8b0d8;
+  color: var(--arch-gray-1);
 }
 
-/* Hardware — blue */
+.lDeps .cardDesc {
+  color: var(--arch-gray-2);
+}
+
+/* Hardware — gray */
+.lHardware .layerInner,
 .lHardware .layerHeader {
-  background: linear-gradient(90deg, #1c2228, #202830);
+  border-color: var(--arch-gray-3);
+}
+
+.lHardware .layerHeader {
+  background: #e2e8f0;
+  color: var(--arch-gray-1);
+}
+
+.lHardware .layerNum {
+  color: var(--arch-gray-2);
 }
 
 .lHardware .layerTitle {
-  color: #6eb4e8;
+  color: var(--arch-gray-1);
 }
 
 .lHardware .layerBadge {
-  background: rgba(110, 180, 232, 0.15);
-  color: #6eb4e8;
-  border: 1px solid rgba(110, 180, 232, 0.3);
+  background: rgba(113, 128, 150, 0.12);
+  color: var(--arch-gray-2);
+  border: 2px solid var(--arch-gray-3);
 }
 
 .lHardware .layerInner {
-  background: #141a22;
+  background: #e2e8f0;
 }
 
 .lHardware .card {
-  background: #1a2030;
-  border-color: rgba(110, 180, 232, 0.2);
+  background: #fff;
+  border-color: var(--arch-gray-3);
+  color: var(--arch-gray-1);
 }
 
 .lHardware .card:hover {
-  border-color: #6eb4e8;
+  border-color: var(--arch-gray-2);
 }
 
 .lHardware .cardName {
-  color: #9acfee;
+  color: var(--arch-gray-1);
+}
+
+.lHardware .cardDesc {
+  color: var(--arch-gray-2);
 }
 
 /* Connector */
 .connector {
   display: flex;
   justify-content: center;
-  height: 18px;
+  height: 22px;
   align-items: center;
-  color: #48484a;
-  font-size: 0.9rem;
+  color: var(--arch-gray-3);
+  font-size: 1.1rem;
 }
 
 /* Legend */
 .legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.2rem;
   justify-content: center;
   align-items: center;
   margin-top: 1.5rem;
-  padding: 1rem 1.5rem;
-  background: #2c2c2e;
+  padding: 1.2rem 1.5rem;
+  background: #f7fafc;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  max-width: 1060px;
-  margin-left: auto;
-  margin-right: auto;
+  border: 2px solid var(--arch-gray-3);
 }
 
 .legendItem {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.7rem;
-  color: #636366;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--arch-gray-1);
   font-family: var(--ifm-font-family-monospace);
 }
 
 .legendDot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .legendDivider {
   width: 1px;
-  height: 1.2rem;
-  background: #3a3a3c;
+  height: 1.4rem;
+  background: var(--arch-gray-3);
   margin: 0 0.25rem;
+}
+
+/* Dark mode */
+[data-theme='dark'] .lApp .layerInner,
+[data-theme='dark'] .lApp .layerHeader,
+[data-theme='dark'] .lCore .layerInner,
+[data-theme='dark'] .lCore .layerHeader {
+  border-color: #4a5568;
+}
+
+[data-theme='dark'] .lApp .layerHeader,
+[data-theme='dark'] .lCore .layerHeader {
+  background: #2d3748;
+  color: #cbd5e0;
+}
+
+[data-theme='dark'] .lApp .layerInner,
+[data-theme='dark'] .lCore .layerInner {
+  background: #2d3748;
+}
+
+[data-theme='dark'] .lApp .card,
+[data-theme='dark'] .lCore .card {
+  background: #1a202c;
+  border-color: #4a5568;
+  color: #cbd5e0;
+}
+
+[data-theme='dark'] .lGraphics .card {
+  background: #1a202c;
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .lShared .layerInner,
+[data-theme='dark'] .lShared .layerHeader,
+[data-theme='dark'] .lDeps .layerInner,
+[data-theme='dark'] .lDeps .layerHeader,
+[data-theme='dark'] .lHardware .layerInner,
+[data-theme='dark'] .lHardware .layerHeader {
+  border-color: #4a5568;
+}
+
+[data-theme='dark'] .lShared .layerHeader,
+[data-theme='dark'] .lDeps .layerHeader,
+[data-theme='dark'] .lHardware .layerHeader {
+  background: #2d3748;
+  color: #cbd5e0;
+}
+
+[data-theme='dark'] .lShared .layerInner,
+[data-theme='dark'] .lDeps .layerInner,
+[data-theme='dark'] .lHardware .layerInner {
+  background: #2d3748;
+}
+
+[data-theme='dark'] .lShared .card,
+[data-theme='dark'] .lDeps .card,
+[data-theme='dark'] .lHardware .card {
+  background: #1a202c;
+  border-color: #4a5568;
+  color: #cbd5e0;
+}
+
+[data-theme='dark'] .legend {
+  background: #2d3748;
+  border-color: #4a5568;
+}
+
+[data-theme='dark'] .legendItem {
+  color: #cbd5e0;
 }
