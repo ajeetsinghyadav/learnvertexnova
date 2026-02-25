@@ -13,9 +13,9 @@ Every chapter maps to working code. Every concept ends with something you can ru
 
 | Chapter | What You'll Do |
 |---------|----------------|
-| [00: Dev Environment Setup](/docs/learn/00-dev-environment-setup) | Set up Linux, Windows, or macOS — compilers, Vulkan SDK, MoltenVK, IDEs, tools |
-| [01: Hello VertexNova](/docs/learn/01-hello-vertexnova) | Clone vnetemplate, build, run your first program |
-| [02: Adding Logging](/docs/learn/02-adding-logging) | Use logging (and optional rename) in the template project |
+| [00: Dev Environment Setup](./dev-environment-setup) | Set up Linux, Windows, or macOS — compilers, Vulkan SDK, MoltenVK, IDEs, tools |
+| [01: Hello VertexNova](./01-hello-vertexnova) | Clone vnetemplate, build, run your first program |
+| [02: Adding Logging](./02-adding-logging) | Use logging (and optional rename) in the template project |
 
 ## Coming Soon
 
