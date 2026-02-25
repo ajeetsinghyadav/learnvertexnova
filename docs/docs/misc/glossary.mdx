@@ -13,6 +13,7 @@ Short definitions for terms you'll see in the docs, architecture, and code. Alph
 
 - **Backend** — A concrete implementation of a graphics (or other) API. In VertexNova, the **graphics backends** are Vulkan, Metal, OpenGL, and OpenGL ES. The engine exposes a unified API; each backend implements it for one of these APIs.
 - **Buffer** — A GPU resource holding linear data (vertices, indices, uniforms, storage). VertexNova’s unified API abstracts buffer creation and binding across backends.
+- **Command buffer** — A recorded list of GPU commands (draw, dispatch, copy). Vulkan uses command buffers; Metal uses encoders. VertexNova’s **encoder** abstraction wraps this idea so you record once and submit to a **queue**.
 - **Device** — In the graphics API sense, the **logical device** you use to create resources (buffers, textures, pipelines) and submit work. Distinct from the **physical device** (the GPU/adapter).
 
 **E–L**
@@ -20,6 +21,7 @@ Short definitions for terms you'll see in the docs, architecture, and code. Alph
 - **ECS** — Entity–component–system: an architecture where game or scene objects are entities, data lives in components, and logic runs in systems. `vnecrossviz` provides ECS-style structure for visualisation and rendering.
 - **Encoder** — Object used to record GPU commands (draw, dispatch, copy). VertexNova uses this term in its unified API instead of backend-specific names (e.g. command buffer, render encoder).
 - **Graphics factory** — Entry point in VertexNova’s graphics layer to create backend-specific objects (device, queue, buffer, pipeline, etc.).
+- **GLM** — [OpenGL Mathematics](https://github.com/g-truc/glm): C++ math library used by **vnemath** as the backend for matrix operations (inverse, determinant, perspective, lookAt, etc.). vnemath wraps it with a unified API and multi-backend projection support.
 - **GLSL** — OpenGL Shading Language. Used for OpenGL and OpenGL ES shaders; OpenGL 4.1 vs 4.5 and OpenGL ES 3.0 use different GLSL versions. VertexNova’s single-source pipeline can target these via Vulkanized GLSL → SPIR-V → SPIRV-Cross.
 - **HLSL** — High-Level Shading Language (Microsoft/DirectX). One of the targets produced from the single shader source via SPIRV-Cross.
 - **L1 (Platform)** — Bottom layer: Vulkan, Metal, OpenGL, SPIRV-Cross, GLM, GLFW, and other external dependencies and platform APIs.
@@ -41,9 +43,11 @@ Short definitions for terms you'll see in the docs, architecture, and code. Alph
 
 **S–Z**
 
+- **Sampler** — GPU object that defines how a **texture** is sampled (filtering, addressing, LOD). VertexNova’s API exposes samplers so shaders can sample textures consistently across backends.
 - **Shaderc** — Google’s shader compilation library (GLSL etc. to SPIR-V). Used in the VertexNova shader pipeline alongside SPIRV-Cross.
 - **SPIR-V** — Standard Portable Intermediate Representation for Vulkan. Shaders are compiled to SPIR-V, then translated per backend.
 - **SPIRV-Cross** — Tool that converts SPIR-V to MSL, GLSL, HLSL, WGSL. Used in the VertexNova shader pipeline so you write one shader source.
+- **Texture** — A GPU resource holding image data (2D, 3D, cubemap, etc.) used as input to shaders (e.g. color, normal maps). Created via the device; bound with a **sampler** for sampling in shaders.
 - **Uniform** — A shader input (constant or per-draw data) passed from CPU to GPU, e.g. matrices, colors. VertexNova’s pipeline supports uniforms via buffers and descriptor sets.
 - **vnecommon** — VertexNova common utilities library. Often pulled in as a submodule (e.g. in vnetemplate) in `deps/internal/`.
 - **vnecrossgl** — VertexNova’s multi-backend graphics abstraction. Unified API over Vulkan, Metal, OpenGL, OpenGL ES.
@@ -51,7 +55,10 @@ Short definitions for terms you'll see in the docs, architecture, and code. Alph
 - **vnecrossviz** — Builds on `vnecrossgl` and other libs to provide ECS (entity–component–system), asset handling, multiple renderers, and custom shader support for rendering. You can author content in GLSL, Vulkanized GLSL, or target OpenGL 4.1, 4.5, OpenGL ES 3.0, etc., with Shaderc and the shared shader/uniform pipeline.
 - **vnecrosswin** — Cross-platform windowing: creates and manages native windows and surfaces on macOS (Cocoa), iOS and visionOS (UIKit), Windows, Linux, and Emscripten. Does not handle input polling; use `vneevents` for that.
 - **vneevents** — Separate library for events and input polling: keyboard, mouse, window events, and touch. Works with `vnecrosswin` for windowing; provides the input side.
+- **vneinteraction** — Library for camera manipulation and picking interaction: camera manipulator (orbit, fly, etc.), ray-based picking, and other interaction patterns. Builds on input and scene/camera data.
 - **vnelogging** — VertexNova logging library. Used for `VNE_LOG_*`, `LoggerConfig`, and categories. Lives in `deps/internal/vnelogging` in the template.
+- **vnemath** — High-performance, cross-platform C++ math library for game engines and 3D apps. Uses [GLM](https://github.com/g-truc/glm) for core matrix math (inverse, determinant, perspective, lookAt, etc.); provides vectors, matrices, quaternions, geometry primitives (ray, plane, AABB, sphere, frustum), intersection algorithms (ray-sphere, ray-triangle, frustum culling), easing/curves/noise, multi-backend projection (OpenGL, Vulkan, Metal, DirectX, WebGPU), and GPU-aligned types for uniform buffers. [vnemath on GitHub](https://github.com/vertexnova/vnemath).
+- **vnescene** — Scene and camera data: scene graph, lighting data, and camera-related structures. Used by higher-level rendering and interaction; feeds into `vnecrossviz` and `vneinteraction`.
 - **vnetemplate** — Official VertexNova project template. Clone it to start a new app or library; it includes vnelogging, vnecommon, and build setup.
 - **vnetestbed** — Test bed for exercising different VertexNova libraries: demos in this repo are used to test and showcase the stack (L3/L4). Clone and run demos to try Vulkan, Metal, OpenGL, windowing, etc.
 - **VertexNova** — The overall engine and ecosystem: multi-backend C++17/20 rendering engine and its libraries (vnelogging, vnecrossgl, etc.).
