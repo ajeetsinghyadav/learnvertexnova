@@ -1,413 +1,155 @@
-/* VertexNova architecture diagram — website gray-orange */
-/* Graphics = orange; others = gray shades; visible borders on every block */
+/* Simplified architecture — 4 layers, strong visible borders */
 
 .diagramWrapper {
   background: #f7fafc;
   padding: 1.5rem;
   border-radius: 12px;
-  border: 2px solid #e2e8f0;
+  border: 3px solid #2d3748;
   margin: 2rem 0;
 }
 
 [data-theme='dark'] .diagramWrapper {
   background: #1a202c;
-  border-color: #2d3748;
+  border-color: #4a5568;
 }
 
 .diagram {
   --arch-orange: var(--ifm-color-primary);
-  --arch-gray-1: #4a5568;
-  --arch-gray-2: #718096;
-  --arch-gray-3: #a0aec0;
-  --arch-gray-4: #cbd5e0;
-  --arch-gray-5: #e2e8f0;
+  --arch-border: #2d3748;
+  --arch-border-light: #4a5568;
   max-width: 100%;
   margin: 0;
   font-family: var(--ifm-font-family-monospace);
   overflow-x: auto;
-  padding: 0.5rem 0;
 }
 
 .layer {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.layerInner {
-  border: 2px solid;
+.layerBlock {
+  border: 3px solid;
   border-radius: 10px;
   overflow: hidden;
-  transition: box-shadow 0.2s ease;
-}
-
-.layerInner:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.layerHeader {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.9rem 1.5rem;
-  border-bottom: 2px solid;
-}
-
-.layerNum {
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  min-width: 2.5rem;
 }
 
 .layerTitle {
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  flex: 1;
-}
-
-.layerBadge {
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  padding: 0.3rem 0.7rem;
-  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  border-bottom: 3px solid;
 }
 
-.cards {
+.layerItems {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   padding: 1.2rem 1.5rem;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0.7rem 1rem;
+.itemBlock {
+  padding: 0.8rem 1.2rem;
+  border: 3px solid;
   border-radius: 8px;
-  border: 2px solid;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  min-width: 120px;
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: 100px;
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-.cardName {
-  font-size: 0.95rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.cardDesc {
-  font-size: 0.8rem;
-  font-weight: 400;
-  white-space: nowrap;
-  opacity: 0.85;
-}
-
-.cardPrivate {
-  border-style: dashed;
-}
-
-/* App — gray */
-.lApp .layerInner,
-.lApp .layerHeader {
-  border-color: var(--arch-gray-2);
-}
-
-.lApp .layerHeader {
-  background: #f7fafc;
-  color: var(--arch-gray-1);
-}
-
-.lApp .layerNum {
-  color: var(--arch-gray-2);
+/* Application — gray */
+.lApp .layerBlock,
+.lApp .layerTitle {
+  border-color: var(--arch-border);
 }
 
 .lApp .layerTitle {
-  color: var(--arch-gray-1);
+  background: #e2e8f0;
+  color: var(--arch-border);
 }
 
-.lApp .layerBadge {
-  background: rgba(74, 85, 104, 0.15);
-  color: var(--arch-gray-1);
-  border: 2px solid var(--arch-gray-2);
-}
-
-.lApp .layerInner {
-  background: #edf2f7;
-}
-
-.lApp .card {
+.lApp .layerBlock {
   background: #fff;
-  border-color: var(--arch-gray-2);
-  color: var(--arch-gray-1);
 }
 
-.lApp .card:hover {
-  border-color: var(--arch-gray-1);
+.lApp .itemBlock {
+  background: #fff;
+  border-color: var(--arch-border);
+  color: var(--arch-border);
 }
 
-.lApp .cardName {
-  color: var(--arch-gray-1);
-}
-
-.lApp .cardDesc {
-  color: var(--arch-gray-2);
-}
-
-/* Graphics — orange (website primary) */
-.lGraphics .layerInner,
-.lGraphics .layerHeader {
+/* Graphics — orange */
+.lGraphics .layerBlock,
+.lGraphics .layerTitle {
   border-color: var(--arch-orange);
-}
-
-.lGraphics .layerHeader {
-  background: rgba(255, 107, 53, 0.12);
-  color: var(--arch-orange);
-}
-
-.lGraphics .layerNum {
-  color: var(--arch-orange);
 }
 
 .lGraphics .layerTitle {
+  background: rgba(255, 107, 53, 0.15);
   color: var(--arch-orange);
 }
 
-.lGraphics .layerBadge {
-  background: rgba(255, 107, 53, 0.2);
-  color: var(--arch-orange);
-  border: 2px solid var(--arch-orange);
+.lGraphics .layerBlock {
+  background: #fff;
 }
 
-.lGraphics .layerInner {
-  background: rgba(255, 107, 53, 0.06);
-}
-
-.lGraphics .card {
+.lGraphics .itemBlock {
   background: #fff;
   border-color: var(--arch-orange);
-  color: #2d3748;
-}
-
-.lGraphics .card:hover {
-  border-color: var(--ifm-color-primary-dark);
-  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.2);
-}
-
-.lGraphics .cardName {
   color: var(--arch-orange);
-}
-
-.lGraphics .cardDesc {
-  color: var(--arch-gray-1);
 }
 
 /* Core — gray */
-.lCore .layerInner,
-.lCore .layerHeader {
-  border-color: var(--arch-gray-2);
-}
-
-.lCore .layerHeader {
-  background: #f7fafc;
-  color: var(--arch-gray-1);
-}
-
-.lCore .layerNum {
-  color: var(--arch-gray-2);
+.lCore .layerBlock,
+.lCore .layerTitle {
+  border-color: var(--arch-border);
 }
 
 .lCore .layerTitle {
-  color: var(--arch-gray-1);
+  background: #e2e8f0;
+  color: var(--arch-border);
 }
 
-.lCore .layerBadge {
-  background: rgba(74, 85, 104, 0.12);
-  color: var(--arch-gray-1);
-  border: 2px solid var(--arch-gray-2);
+.lCore .layerBlock {
+  background: #fff;
 }
 
-.lCore .layerInner {
+.lCore .itemBlock {
+  background: #fff;
+  border-color: var(--arch-border);
+  color: var(--arch-border);
+}
+
+/* Platform — gray */
+.lPlatform .layerBlock,
+.lPlatform .layerTitle {
+  border-color: var(--arch-border-light);
+}
+
+.lPlatform .layerTitle {
   background: #edf2f7;
+  color: var(--arch-border);
 }
 
-.lCore .card {
+.lPlatform .layerBlock {
   background: #fff;
-  border-color: var(--arch-gray-2);
-  color: var(--arch-gray-1);
 }
 
-.lCore .card:hover {
-  border-color: var(--arch-gray-1);
-}
-
-.lCore .cardName {
-  color: var(--arch-gray-1);
-}
-
-.lCore .cardDesc {
-  color: var(--arch-gray-2);
-}
-
-/* Shared — gray */
-.lShared .layerInner,
-.lShared .layerHeader {
-  border-color: var(--arch-gray-3);
-}
-
-.lShared .layerHeader {
-  background: #edf2f7;
-  color: var(--arch-gray-1);
-}
-
-.lShared .layerNum {
-  color: var(--arch-gray-2);
-}
-
-.lShared .layerTitle {
-  color: var(--arch-gray-1);
-}
-
-.lShared .layerBadge {
-  background: rgba(113, 128, 150, 0.15);
-  color: var(--arch-gray-2);
-  border: 2px solid var(--arch-gray-3);
-}
-
-.lShared .layerInner {
-  background: #e2e8f0;
-}
-
-.lShared .card {
+.lPlatform .itemBlock {
   background: #fff;
-  border-color: var(--arch-gray-3);
-  color: var(--arch-gray-1);
+  border-color: var(--arch-border-light);
+  color: var(--arch-border);
 }
 
-.lShared .card:hover {
-  border-color: var(--arch-gray-2);
-}
-
-.lShared .cardName {
-  color: var(--arch-gray-1);
-}
-
-.lShared .cardDesc {
-  color: var(--arch-gray-2);
-}
-
-/* External — gray */
-.lDeps .layerInner,
-.lDeps .layerHeader {
-  border-color: var(--arch-gray-3);
-}
-
-.lDeps .layerHeader {
-  background: #e2e8f0;
-  color: var(--arch-gray-1);
-}
-
-.lDeps .layerNum {
-  color: var(--arch-gray-2);
-}
-
-.lDeps .layerTitle {
-  color: var(--arch-gray-1);
-}
-
-.lDeps .layerBadge {
-  background: rgba(113, 128, 150, 0.12);
-  color: var(--arch-gray-2);
-  border: 2px solid var(--arch-gray-3);
-}
-
-.lDeps .layerInner {
-  background: #e2e8f0;
-}
-
-.lDeps .card {
-  background: #fff;
-  border-color: var(--arch-gray-3);
-  color: var(--arch-gray-1);
-}
-
-.lDeps .card:hover {
-  border-color: var(--arch-gray-2);
-}
-
-.lDeps .cardName {
-  color: var(--arch-gray-1);
-}
-
-.lDeps .cardDesc {
-  color: var(--arch-gray-2);
-}
-
-/* Hardware — gray */
-.lHardware .layerInner,
-.lHardware .layerHeader {
-  border-color: var(--arch-gray-3);
-}
-
-.lHardware .layerHeader {
-  background: #e2e8f0;
-  color: var(--arch-gray-1);
-}
-
-.lHardware .layerNum {
-  color: var(--arch-gray-2);
-}
-
-.lHardware .layerTitle {
-  color: var(--arch-gray-1);
-}
-
-.lHardware .layerBadge {
-  background: rgba(113, 128, 150, 0.12);
-  color: var(--arch-gray-2);
-  border: 2px solid var(--arch-gray-3);
-}
-
-.lHardware .layerInner {
-  background: #e2e8f0;
-}
-
-.lHardware .card {
-  background: #fff;
-  border-color: var(--arch-gray-3);
-  color: var(--arch-gray-1);
-}
-
-.lHardware .card:hover {
-  border-color: var(--arch-gray-2);
-}
-
-.lHardware .cardName {
-  color: var(--arch-gray-1);
-}
-
-.lHardware .cardDesc {
-  color: var(--arch-gray-2);
-}
-
-/* Connector */
 .connector {
   display: flex;
   justify-content: center;
-  height: 22px;
+  height: 24px;
   align-items: center;
-  color: var(--arch-gray-3);
-  font-size: 1.1rem;
+  color: var(--arch-border-light);
+  font-size: 1.2rem;
 }
 
-/* Legend */
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -416,98 +158,89 @@
   align-items: center;
   margin-top: 1.5rem;
   padding: 1.2rem 1.5rem;
-  background: #f7fafc;
+  background: #fff;
   border-radius: 10px;
-  border: 2px solid var(--arch-gray-3);
+  border: 3px solid var(--arch-border-light);
 }
 
 .legendItem {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.9rem;
-  color: var(--arch-gray-1);
+  font-size: 0.95rem;
+  color: var(--arch-border);
   font-family: var(--ifm-font-family-monospace);
 }
 
 .legendDot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.legendDivider {
-  width: 1px;
-  height: 1.4rem;
-  background: var(--arch-gray-3);
-  margin: 0 0.25rem;
-}
-
 /* Dark mode */
-[data-theme='dark'] .lApp .layerInner,
-[data-theme='dark'] .lApp .layerHeader,
-[data-theme='dark'] .lCore .layerInner,
-[data-theme='dark'] .lCore .layerHeader {
-  border-color: #4a5568;
+[data-theme='dark'] .diagramWrapper {
+  border-color: #718096;
 }
 
-[data-theme='dark'] .lApp .layerHeader,
-[data-theme='dark'] .lCore .layerHeader {
+[data-theme='dark'] .lApp .layerBlock,
+[data-theme='dark'] .lApp .layerTitle,
+[data-theme='dark'] .lCore .layerBlock,
+[data-theme='dark'] .lCore .layerTitle {
+  border-color: #718096;
+}
+
+[data-theme='dark'] .lApp .layerTitle,
+[data-theme='dark'] .lCore .layerTitle {
   background: #2d3748;
   color: #cbd5e0;
 }
 
-[data-theme='dark'] .lApp .layerInner,
-[data-theme='dark'] .lCore .layerInner {
-  background: #2d3748;
+[data-theme='dark'] .lApp .layerBlock,
+[data-theme='dark'] .lCore .layerBlock {
+  background: #1a202c;
 }
 
-[data-theme='dark'] .lApp .card,
-[data-theme='dark'] .lCore .card {
-  background: #1a202c;
-  border-color: #4a5568;
+[data-theme='dark'] .lApp .itemBlock,
+[data-theme='dark'] .lCore .itemBlock {
+  background: #2d3748;
+  border-color: #718096;
   color: #cbd5e0;
 }
 
-[data-theme='dark'] .lGraphics .card {
+[data-theme='dark'] .lGraphics .layerBlock {
   background: #1a202c;
-  color: #e2e8f0;
 }
 
-[data-theme='dark'] .lShared .layerInner,
-[data-theme='dark'] .lShared .layerHeader,
-[data-theme='dark'] .lDeps .layerInner,
-[data-theme='dark'] .lDeps .layerHeader,
-[data-theme='dark'] .lHardware .layerInner,
-[data-theme='dark'] .lHardware .layerHeader {
-  border-color: #4a5568;
+[data-theme='dark'] .lGraphics .itemBlock {
+  background: #2d3748;
+  color: var(--arch-orange);
 }
 
-[data-theme='dark'] .lShared .layerHeader,
-[data-theme='dark'] .lDeps .layerHeader,
-[data-theme='dark'] .lHardware .layerHeader {
+[data-theme='dark'] .lPlatform .layerBlock,
+[data-theme='dark'] .lPlatform .layerTitle {
+  border-color: #718096;
+}
+
+[data-theme='dark'] .lPlatform .layerTitle {
   background: #2d3748;
   color: #cbd5e0;
 }
 
-[data-theme='dark'] .lShared .layerInner,
-[data-theme='dark'] .lDeps .layerInner,
-[data-theme='dark'] .lHardware .layerInner {
-  background: #2d3748;
+[data-theme='dark'] .lPlatform .layerBlock {
+  background: #1a202c;
 }
 
-[data-theme='dark'] .lShared .card,
-[data-theme='dark'] .lDeps .card,
-[data-theme='dark'] .lHardware .card {
-  background: #1a202c;
-  border-color: #4a5568;
+[data-theme='dark'] .lPlatform .itemBlock {
+  background: #2d3748;
+  border-color: #718096;
   color: #cbd5e0;
 }
 
 [data-theme='dark'] .legend {
   background: #2d3748;
-  border-color: #4a5568;
+  border-color: #718096;
 }
 
 [data-theme='dark'] .legendItem {
