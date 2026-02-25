@@ -1,193 +1,111 @@
 ---
 sidebar_position: 2
 title: "01: Hello VertexNova"
-description: "Create your first VertexNova project — a minimal CMake setup that will grow into an engine."
+description: "Clone the official project template, build, and run your first VertexNova program."
 slug: 01-hello-vertexnova
 ---
 
 # 01: Hello VertexNova
 
-Every journey starts with a single step. Ours starts with a simple C++ project that says hello.
+Now that your environment is set up (from [00: Dev Environment Setup](./00-dev-environment-setup)), you'll get a runnable VertexNova project by cloning the **official project template**. You don't need to know CMake — we'll use a few commands and explain them in one line.
 
-This isn't just a hello world — it's the **skeleton** that will grow into your engine.
+This is the same template used to create new VertexNova libraries (e.g. [vnelogging](https://github.com/vertexnova/vnelogging)). It already includes vnelogging in `deps/internal/`, so in the next chapter we'll use the logging that's already there.
 
 ## What We're Building
 
-A minimal CMake project structure:
+You will:
 
-```
-00_HelloVertexNova/
-├── CMakeLists.txt
-├── src/
-│   └── main.cpp
-└── build/           (generated)
-```
+1. Clone [vnetemplate](https://github.com/vertexnova/vnetemplate)
+2. Initialize its submodules (vnelogging, vnecommon, etc.)
+3. Build using the template's scripts or CMake
+4. Run the template's example binary
 
-Simple. Clean. Ready to grow.
+Outcome: **you have a real VertexNova project that builds and runs.**
 
-## Step 1: Create the Project Structure
+## Step 1: Clone the Template
 
 ```bash
-mkdir 00_HelloVertexNova
-cd 00_HelloVertexNova
-mkdir src
+git clone https://github.com/vertexnova/vnetemplate.git
+cd vnetemplate
 ```
 
-## Step 2: Write main.cpp
+## Step 2: Initialize Submodules
 
-Create `src/main.cpp`:
-
-```cpp
-/* ---------------------------------------------------------------------
- * 00_HelloVertexNova
- * 
- * Your first step into the VertexNova engine journey.
- * ---------------------------------------------------------------------
- */
-
-#include <iostream>
-#include <string>
-
-int main(int argc, char* argv[]) {
-    std::cout << "==================================" << std::endl;
-    std::cout << "  Welcome to VertexNova Engine    " << std::endl;
-    std::cout << "==================================" << std::endl;
-    std::cout << std::endl;
-    
-    std::cout << "Hello, VertexNova!" << std::endl;
-    std::cout << "This is where your engine journey begins." << std::endl;
-    
-    // Print some system info
-    std::cout << std::endl;
-    std::cout << "[INFO] Application started successfully" << std::endl;
-    std::cout << "[INFO] Arguments: " << argc << std::endl;
-    
-    for (int i = 0; i < argc; ++i) {
-        std::cout << "[DEBUG]   argv[" << i << "] = " << argv[i] << std::endl;
-    }
-    
-    // Simulate some work
-    std::cout << "[INFO] Initializing subsystems..." << std::endl;
-    std::cout << "[INFO] Loading configuration..." << std::endl;
-    std::cout << "[WARN] No config file found, using defaults" << std::endl;
-    std::cout << "[INFO] Ready!" << std::endl;
-    
-    std::cout << std::endl;
-    std::cout << "[INFO] Shutting down..." << std::endl;
-    std::cout << "[INFO] Goodbye!" << std::endl;
-    
-    return 0;
-}
-```
-
-## Step 3: Create CMakeLists.txt
-
-Create `CMakeLists.txt` in the project root:
-
-```cmake
-cmake_minimum_required(VERSION 3.16)
-
-project(HelloVertexNova
-    VERSION 0.1.0
-    DESCRIPTION "First step into VertexNova"
-    LANGUAGES CXX
-)
-
-# Require C++17 (VertexNova standard)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-# Output binaries to bin/ folder
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-# Create the executable
-add_executable(HelloVertexNova
-    src/main.cpp
-)
-
-# Enable warnings (good practice from day one)
-if(MSVC)
-    target_compile_options(HelloVertexNova PRIVATE /W4)
-else()
-    target_compile_options(HelloVertexNova PRIVATE -Wall -Wextra -Wpedantic)
-endif()
-```
-
-## Step 4: Build and Run
+The template uses Git submodules for dependencies (vnelogging, vnecommon, Google Test). Initialize them:
 
 ```bash
-# Configure
+git submodule update --init --recursive
+```
+
+## Step 3: Build
+
+Use the template's build scripts (recommended) or CMake directly.
+
+**Option A — Scripts (macOS / Linux / Windows):**
+
+```bash
+# macOS
+./scripts/build_macos.sh
+
+# Linux
+./scripts/build_linux.sh
+
+# Windows (PowerShell)
+./scripts/build_windows.ps1
+```
+
+**Option B — CMake directly:**
+
+```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release
-
-# Build
 cmake --build build
-
-# Run
-./build/bin/HelloVertexNova
 ```
 
-**Output:**
+- `cmake -B build` configures the project (generates build files).
+- `cmake --build build` compiles the code.
 
-```
-==================================
-  Welcome to VertexNova Engine    
-==================================
+## Step 4: Run the Example
 
-Hello, VertexNova!
-This is where your engine journey begins.
+After a successful build, run the example binary. Typical locations:
 
-[INFO] Application started successfully
-[INFO] Arguments: 1
-[DEBUG]   argv[0] = ./build/bin/HelloVertexNova
-[INFO] Initializing subsystems...
-[INFO] Loading configuration...
-[WARN] No config file found, using defaults
-[INFO] Ready!
-
-[INFO] Shutting down...
-[INFO] Goodbye!
+```bash
+# If the template provides an example executable (path may vary; check build/bin or build/)
+./build/bin/<example_name>
 ```
 
-## What's Wrong with This Picture?
+If the template has a single main example, it might be under `build/bin/` — list the directory to see the exact name, then run it. You should see output from your first VertexNova program.
 
-Look at those log messages. We're manually typing `[INFO]`, `[DEBUG]`, `[WARN]`. That's going to get old fast.
+## What's in the Template?
 
-Problems with `std::cout`:
+| Path | Purpose |
+|------|---------|
+| `cmake/vnecmake/` | Shared CMake helpers (vnecmake) |
+| `deps/internal/` | Optional internal deps: vnelogging, vnecommon |
+| `deps/external/` | External deps (e.g. googletest) |
+| `include/`, `src/` | Your library or app code |
+| `tests/`, `examples/` | Tests and example apps |
+| `scripts/` | Build scripts for macOS, Linux, Windows |
+| `.clang-format`, `.clang-tidy` | Code style and static analysis |
 
-| Problem | Impact |
-|---------|--------|
-| No log levels | Can't filter debug vs production logs |
-| No timestamps | When did that error happen? |
-| No colors | Errors look the same as info |
-| No file output | Console only, logs vanish when you close terminal |
-| Not thread-safe | Multi-threaded logging = garbled output |
-| Manual formatting | `"[INFO] "` everywhere, typos happen |
-
-In the next chapter, we'll fix all of this by adding **vnelogging** — a proper logging system.
-
-## Project Files Summary
-
-Your project should look like this:
-
-```
-00_HelloVertexNova/
-├── CMakeLists.txt
-├── src/
-│   └── main.cpp
-└── build/
-    └── bin/
-        └── HelloVertexNova
-```
+The template is ready for CI (format, tidy, build/test). When you start a **new** VertexNova library, you clone vnetemplate, rename it to your project, and change the code — no hand-written CMake from zero.
 
 ## What's Next?
 
-In the next chapter, we'll:
-
-1. Add **vnelogging** as a dependency
-2. Replace `std::cout` with proper logging
-3. Get colored output, timestamps, and log levels — for free
+In [02: Adding Logging](./02-adding-logging) we'll use the **logging that's already in this project**: where it lives (`deps/internal/vnelogging`), how to call it (`VNE_LOG_*`, `LoggerConfig`), and how to run the hello-logging example.
 
 ---
 
-**Checkpoint:** You have a working CMake project. This structure will be the foundation for everything we build.
+**Checkpoint:** You have a built template project and a runnable binary. Same structure and tools that real VertexNova libraries use.
+
+---
+
+## Optional: Build from Scratch
+
+If you prefer to see every line of a minimal project instead of using the template:
+
+1. Create a folder and `src/main.cpp` with `std::cout << "Hello, VertexNova!" << std::endl;`
+2. Create a minimal `CMakeLists.txt`: `cmake_minimum_required(VERSION 3.16)`, `project(HelloVertexNova LANGUAGES CXX)`, `set(CMAKE_CXX_STANDARD 17)`, `add_executable(HelloVertexNova src/main.cpp)`
+3. Build: `cmake -B build -DCMAKE_BUILD_TYPE=Release` then `cmake --build build`
+4. Run: `./build/HelloVertexNova` (or `./build/bin/HelloVertexNova` if you set `CMAKE_RUNTIME_OUTPUT_DIRECTORY`)
+
+If you built from scratch, [02: Adding Logging](./02-adding-logging) has an optional section on adding vnelogging to that project (submodule or FetchContent).
