@@ -114,6 +114,44 @@ VNE_LOG_ERROR << "Failed to open " << path;
 vne::log::Logging::shutdown();
 ```
 
+Or you can use a **LoggingGuard** to configure logging in its constructor and call `Logging::shutdown()` in its destructor, so you don't have to do it in main.
+
+### Alternatively: LoggingGuard
+
+Define a guard that configures on construction and shuts down on destruction:
+
+```cpp
+class LoggingGuard {
+ public:
+  LoggingGuard() {
+    vne::log::LoggerConfig config;
+    config.name = vne::log::kDefaultLoggerName;
+    config.sink = vne::log::LogSinkType::eConsole;
+    config.console_pattern = "[%l] [%n] %v";
+    config.log_level = vne::log::LogLevel::eInfo;
+    config.async = false;
+
+    vne::log::Logging::configureLogger(config);
+  }
+
+  ~LoggingGuard() { vne::log::Logging::shutdown(); }
+
+  LoggingGuard(const LoggingGuard&) = delete;
+  LoggingGuard& operator=(const LoggingGuard&) = delete;
+};
+```
+
+Then in `main()` create a guard at scope and use logging as usual; shutdown runs automatically when the guard goes out of scope:
+
+```cpp
+int main() {
+  LoggingGuard guard;
+  VNE_LOG_INFO << "Application started";
+  // ... rest of app; shutdown() called when guard is destroyed
+  return 0;
+}
+```
+
 Rebuild your template project and run — you'll get timestamps, colors in the console, and the same messages in the log file.
 
 ## Log Levels
