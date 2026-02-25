@@ -7,13 +7,24 @@ title: Design
 
 VertexNova is built around a small set of deliberate engineering decisions that shape how every library is written.
 
-## C++20
+## C++ Standard
 
-The engine is written in **C++20** throughout — concepts, ranges, designated initializers, `std::span` where appropriate. The philosophy: **clarity over cleverness**. If a simpler solution exists, it wins.
+The engine requires **C++17** as a minimum and uses **C++20** where it adds clarity (e.g. concepts, ranges, designated initializers, `std::span`). The philosophy: **clarity over cleverness**. If a simpler solution exists, it wins.
 
-## Thin Abstractions
+## Thin Abstractions (vnecrossgl)
 
-`vnecrossgl` doesn't hide the GPU — it unifies access to it. You still reason about pipelines, render passes, and resource binding. The abstraction removes backend-specific syntax, not the mental model. Heavy abstractions hide GPU details; VertexNova prioritizes learning how GPUs work.
+`vnecrossgl` doesn't hide the GPU — it unifies access to it with a common abstraction and backend-specific implementations. You still reason about devices, queues, buffers, and pipelines.
+
+**Unified API concepts:**
+- **Graphics factory** — entry point to create backend-specific objects
+- **Physical device** — GPU/adapter selection and capabilities
+- **Device** — logical device, resource creation
+- **Queue** — command submission (graphics, compute, transfer)
+- **Buffer** — common buffer abstraction (vertex, index, uniform, storage)
+- **Encoder** — command encoding (draw, dispatch, copy)
+- **Shader programs & pipeline** — compiled shaders and pipeline state
+
+**Backends:** Metal, Vulkan, OpenGL, and OpenGL ES each implement this abstraction. The same application code can run on any backend by swapping the implementation. Heavy abstractions hide GPU details; VertexNova keeps the mental model visible so you learn how GPUs work.
 
 ## Single Shader Source
 
@@ -33,9 +44,13 @@ Every `vne*` library is independently buildable, testable, and documented. You c
 
 ## What This Isn't
 
-- **Not a game engine** — no physics, audio, scripting runtime (yet). A rendering engine with a scene graph.
+- **Not a game engine (yet)** — no physics, audio, or scripting runtime. A rendering engine with a scene graph; game-engine features may come later.
 - **Not max-throughput optimized** — readable code and clarity over squeezing the last few percent of GPU utilization.
 - **Not API-complete** — the abstraction covers what's needed for the current demo set; it grows with the project.
+
+## Current Focus
+
+The codebase is in a phase of **almost-complete refactoring** with an emphasis on **more testing**. APIs and structure are stabilizing; demos and documentation are being brought in line with the design. Solid tests and consistent patterns take priority over new features right now.
 
 ## See Also
 

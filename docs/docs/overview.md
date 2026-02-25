@@ -5,7 +5,7 @@ title: Overview
 
 # VertexNova Engine — Overview
 
-VertexNova is a **modern, multi-backend C++20 rendering engine** built from the ground up to run on every major graphics API and platform from a single codebase.
+VertexNova is a **modern, multi-backend C++17/20 rendering engine** built from the ground up to run on every major graphics API and platform from a single codebase.
 
 It targets **6 platforms** and **4 graphics APIs** simultaneously — and is designed to be readable, modular, and educational at every layer.
 
