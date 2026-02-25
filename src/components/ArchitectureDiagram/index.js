@@ -7,7 +7,9 @@ const LAYERS = [
     num: 'L4',
     title: 'Application',
     subtitle: 'Programs that use the engine',
-    cls: styles.lApp,
+    headerCls: styles.headerApp,
+    cardCls: styles.cardApp,
+    rowCls: styles.rowApp,
     items: [
       { label: 'Editor', note: 'Scene editor' },
       { label: 'Demos', note: 'Runnable examples' },
@@ -20,7 +22,9 @@ const LAYERS = [
     num: 'L3',
     title: 'Graphics Abstraction',
     subtitle: 'Multi-backend rendering',
-    cls: styles.lGraphics,
+    headerCls: styles.headerGraphics,
+    cardCls: styles.cardGraphics,
+    rowCls: styles.rowGraphics,
     items: [
       { label: 'Rendering', note: 'Vulkan · Metal · OpenGL' },
       { label: 'Windowing', note: 'GLFW · iOS · Emscripten' },
@@ -33,7 +37,9 @@ const LAYERS = [
     num: 'L2',
     title: 'Core Systems',
     subtitle: 'Platform-independent utilities',
-    cls: styles.lCore,
+    headerCls: styles.headerCore,
+    cardCls: styles.cardCore,
+    rowCls: styles.rowCore,
     items: [
       { label: 'Math', note: 'Vectors · Matrices · Quaternions' },
       { label: 'Logging', note: 'Structured · Thread-safe' },
@@ -48,7 +54,9 @@ const LAYERS = [
     num: 'L1',
     title: 'Platform',
     subtitle: 'APIs, libraries, hardware',
-    cls: styles.lPlatform,
+    headerCls: styles.headerPlatform,
+    cardCls: styles.cardPlatform,
+    rowCls: styles.rowPlatform,
     items: [
       { label: 'Vulkan', note: 'Windows · Linux' },
       { label: 'Metal', note: 'macOS · iOS · visionOS' },
@@ -63,8 +71,8 @@ export default function ArchitectureDiagram() {
     <div className={styles.root}>
       {LAYERS.map((layer, i) => (
         <React.Fragment key={layer.id}>
-          <div className={`${styles.layer} ${styles[layer.id]}`}>
-            <div className={styles.layerLabel}>
+          <div className={`${styles.row} ${layer.rowCls}`}>
+            <div className={`${styles.layerHeader} ${layer.headerCls}`}>
               <span className={styles.layerNum}>{layer.num}</span>
               <div>
                 <div className={styles.layerTitle}>{layer.title}</div>
@@ -73,7 +81,7 @@ export default function ArchitectureDiagram() {
             </div>
             <div className={styles.layerCards}>
               {layer.items.map((item) => (
-                <div key={item.label} className={styles.card}>
+                <div key={item.label} className={`${styles.card} ${layer.cardCls}`}>
                   <span className={styles.cardLabel}>{item.label}</span>
                   <span className={styles.cardNote}>{item.note}</span>
                 </div>

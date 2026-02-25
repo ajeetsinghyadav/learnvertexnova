@@ -1,15 +1,15 @@
-/* Architecture Diagram — VertexNova */
+/* VertexNova Architecture Diagram */
 
+/* ── CSS variables ── */
 .root {
-  --orange: var(--ifm-color-primary-darkest);
-  --orange-bg: rgba(230, 57, 0, 0.07);
-  --orange-border: rgba(230, 57, 0, 0.5);
-  --gray-dark: #2d3748;
-  --gray-mid: #4a5568;
-  --gray-light: #e2e8f0;
-  --gray-bg: #f7fafc;
-  --white: #ffffff;
-  --radius: 10px;
+  --orange:       #e63900;
+  --slate-900:    #2d3748;
+  --slate-600:    #4a5568;
+  --slate-400:    #718096;
+  --slate-200:    #e2e8f0;
+  --slate-100:    #f7fafc;
+  --white:        #ffffff;
+  --radius:       10px;
 
   display: flex;
   flex-direction: column;
@@ -18,279 +18,211 @@
   font-family: var(--ifm-font-family-monospace);
 }
 
-/* ── Individual layer row ── */
-
-.layer {
-  border-radius: var(--radius);
-  border: 2px solid;
-  overflow: hidden;
+/* ── Row (one layer) ── */
+.row {
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  border-radius: var(--radius);
+  border: 2px solid var(--slate-900);
+  overflow: hidden;
+  background: var(--white);
 }
 
-/* Left label strip */
-.layerLabel {
+/* ── Left header strip ── */
+.layerHeader {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.1rem 1.4rem;
-  min-width: 210px;
-  border-right: 2px solid;
+  padding: 1rem 1.25rem;
+  min-width: 200px;
   flex-shrink: 0;
+  border-right: 2px solid var(--slate-900);
+  background: var(--slate-900);
+  color: #fff;
 }
 
 .layerNum {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.12em;
-  opacity: 0.45;
+  color: rgba(255,255,255,0.45);
   align-self: flex-start;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .layerTitle {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
+  color: #fff;
   line-height: 1.25;
 }
 
 .layerSubtitle {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 400;
+  color: rgba(255,255,255,0.6);
   margin-top: 2px;
-  opacity: 0.65;
-  font-family: var(--ifm-font-family-base);
-}
-
-/* Right cards area */
-.layerCards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 1rem 1.2rem;
-  flex: 1;
-  align-items: center;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0.5rem 0.85rem;
-  border-radius: 7px;
-  border: 2px solid;
-  min-width: 90px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-
-.cardLabel {
-  font-size: 0.88rem;
-  font-weight: 700;
-}
-
-.cardNote {
-  font-size: 0.68rem;
-  font-weight: 400;
-  opacity: 0.7;
   font-family: var(--ifm-font-family-base);
   line-height: 1.3;
 }
 
-/* ── Arrow between layers ── */
+/* ── Card grid ── */
+.layerCards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0.9rem 1.1rem;
+  flex: 1;
+  align-items: center;
+  background: var(--white);
+}
 
+/* ── Individual card ── */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0.45rem 0.8rem;
+  border-radius: 7px;
+  border: 2px solid var(--slate-900);   /* fallback — overridden by cardXxx */
+  min-width: 88px;
+  background: var(--white);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+}
+
+.cardLabel {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.cardNote {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--slate-400);
+  font-family: var(--ifm-font-family-base);
+  line-height: 1.3;
+}
+
+/* ── Arrow ── */
 .arrow {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 4px 0;
-  color: var(--gray-mid);
+  padding: 5px 0;
   font-family: var(--ifm-font-family-base);
 }
 
 .arrowLine {
   width: 2px;
   height: 10px;
-  background: var(--gray-light);
+  background: var(--slate-200);
   display: block;
 }
 
 .arrowHead {
-  font-size: 0.7rem;
-  color: var(--gray-mid);
+  font-size: 0.65rem;
+  color: var(--slate-400);
   line-height: 1;
 }
 
 .arrowText {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--gray-mid);
+  letter-spacing: 0.05em;
+  color: var(--slate-400);
   text-transform: uppercase;
 }
 
-/* ── Layer color themes ── */
+/* ═══════════════════════════════
+   Per-layer: row border + header + cards
+   Each card class is applied DIRECTLY to the card div (no descendant selectors)
+   ═══════════════════════════════ */
 
-/* L4 Application — dark gray */
-.app {
-  border-color: var(--gray-dark);
-  background: var(--white);
-}
-.app .layerLabel {
-  background: var(--gray-dark);
-  border-color: var(--gray-dark);
-  color: #fff;
-}
-.app .layerNum { color: rgba(255,255,255,0.5); }
-.app .layerTitle { color: #fff; }
-.app .layerSubtitle { color: rgba(255,255,255,0.6); }
-.app .card {
-  background: #fff;
-  border-color: #2d3748;
-  color: var(--gray-dark);
-}
+/* L4 Application — dark slate */
+.rowApp     { border-color: var(--slate-900); }
+.headerApp  { background: var(--slate-900); border-color: var(--slate-900); }
+.cardApp    { border-color: var(--slate-900); }
+.cardApp .cardLabel { color: var(--slate-900); }
 
-/* L3 Graphics — orange */
-.graphics {
-  border-color: var(--orange);
-  background: var(--white);
-}
-.graphics .layerLabel {
-  background: var(--orange);
-  border-color: var(--orange);
-  color: #fff;
-}
-.graphics .layerNum { color: rgba(255,255,255,0.5); }
-.graphics .layerTitle { color: #fff; }
-.graphics .layerSubtitle { color: rgba(255,255,255,0.7); }
-.graphics .card {
-  background: #fff;
-  border-color: var(--orange);
-  color: var(--gray-dark);
-}
-.graphics .cardLabel { color: var(--orange); }
+/* L3 Graphics — dark orange */
+.rowGraphics     { border-color: var(--orange); }
+.headerGraphics  { background: var(--orange); border-color: var(--orange); }
+.cardGraphics    { border-color: var(--orange); }
+.cardGraphics .cardLabel { color: var(--orange); }
 
-/* L2 Core — medium gray */
-.core {
-  border-color: var(--gray-mid);
-  background: var(--white);
-}
-.core .layerLabel {
-  background: var(--gray-mid);
-  border-color: var(--gray-mid);
-  color: #fff;
-}
-.core .layerNum { color: rgba(255,255,255,0.5); }
-.core .layerTitle { color: #fff; }
-.core .layerSubtitle { color: rgba(255,255,255,0.65); }
-.core .card {
-  background: #fff;
-  border-color: #4a5568;
-  color: var(--gray-dark);
-}
+/* L2 Core — slate-600 */
+.rowCore     { border-color: var(--slate-600); }
+.headerCore  { background: var(--slate-600); border-color: var(--slate-600); }
+.cardCore    { border-color: var(--slate-600); }
+.cardCore .cardLabel { color: var(--slate-600); }
 
-/* L1 Platform — light gray */
-.platform {
-  border-color: #a0aec0;
-  background: var(--white);
-}
-.platform .layerLabel {
-  background: var(--gray-light);
-  border-color: #a0aec0;
-  color: var(--gray-dark);
-}
-.platform .layerNum { color: rgba(45,55,72,0.4); }
-.platform .card {
-  background: #fff;
-  border-color: #718096;
-  color: var(--gray-mid);
-}
+/* L1 Platform — slate-400 */
+.rowPlatform     { border-color: var(--slate-400); }
+.headerPlatform  { background: var(--slate-200); border-color: var(--slate-400); color: var(--slate-900); }
+.headerPlatform .layerNum   { color: rgba(45,55,72,0.4); }
+.headerPlatform .layerTitle { color: var(--slate-900); }
+.headerPlatform .layerSubtitle { color: var(--slate-600); }
+.cardPlatform    { border-color: var(--slate-400); }
+.cardPlatform .cardLabel { color: var(--slate-600); }
 
-/* ── Dark mode ── */
+/* ═══════════════════════════════
+   Dark mode
+   ═══════════════════════════════ */
 
-[data-theme='dark'] .root {
-  --white: #1a202c;
-  --gray-bg: #2d3748;
-  --gray-light: #4a5568;
-  --gray-dark: #e2e8f0;
-  --gray-mid: #a0aec0;
-  --orange-bg: rgba(255, 107, 53, 0.15);
-  --orange-border: rgba(255, 107, 53, 0.5);
-}
-
-[data-theme='dark'] .app {
-  border-color: #718096;
+[data-theme='dark'] .row {
   background: #1a202c;
 }
-[data-theme='dark'] .app .layerLabel {
-  background: #2d3748;
-  border-color: #4a5568;
-  color: #e2e8f0;
-}
-[data-theme='dark'] .app .layerNum { color: rgba(226,232,240,0.4); }
-[data-theme='dark'] .app .layerTitle { color: #e2e8f0; }
-[data-theme='dark'] .app .layerSubtitle { color: rgba(226,232,240,0.55); }
-[data-theme='dark'] .app .card {
-  background: #2d3748;
-  border-color: #a0aec0;
-  color: #cbd5e0;
-}
 
-[data-theme='dark'] .graphics {
-  border-color: var(--ifm-color-primary);
+[data-theme='dark'] .layerCards {
   background: #1a202c;
 }
-[data-theme='dark'] .graphics .card {
+
+[data-theme='dark'] .card {
   background: #2d3748;
-  border-color: var(--ifm-color-primary-darkest);
-  color: #e2e8f0;
 }
 
-[data-theme='dark'] .core {
-  border-color: #718096;
-  background: #1a202c;
-}
-[data-theme='dark'] .core .layerLabel {
-  background: #2d3748;
-  border-color: #4a5568;
-  color: #e2e8f0;
-}
-[data-theme='dark'] .core .layerNum { color: rgba(226,232,240,0.4); }
-[data-theme='dark'] .core .layerTitle { color: #e2e8f0; }
-[data-theme='dark'] .core .layerSubtitle { color: rgba(226,232,240,0.55); }
-[data-theme='dark'] .core .card {
-  background: #2d3748;
-  border-color: #a0aec0;
-  color: #cbd5e0;
-}
-
-[data-theme='dark'] .platform {
-  border-color: #4a5568;
-  background: #1a202c;
-}
-[data-theme='dark'] .platform .layerLabel {
-  background: #2d3748;
-  border-color: #4a5568;
+[data-theme='dark'] .cardNote {
   color: #a0aec0;
 }
-[data-theme='dark'] .platform .card {
-  background: #2d3748;
-  border-color: #718096;
-  color: #a0aec0;
-}
+
+/* App dark */
+[data-theme='dark'] .rowApp    { border-color: #718096; }
+[data-theme='dark'] .headerApp { background: #2d3748; border-color: #718096; }
+[data-theme='dark'] .cardApp   { border-color: #a0aec0; }
+[data-theme='dark'] .cardApp .cardLabel { color: #e2e8f0; }
+
+/* Graphics dark */
+[data-theme='dark'] .rowGraphics    { border-color: var(--orange); }
+[data-theme='dark'] .headerGraphics { background: var(--orange); border-color: var(--orange); }
+[data-theme='dark'] .cardGraphics   { border-color: var(--orange); background: #2d3748; }
+[data-theme='dark'] .cardGraphics .cardLabel { color: var(--orange); }
+
+/* Core dark */
+[data-theme='dark'] .rowCore    { border-color: #718096; }
+[data-theme='dark'] .headerCore { background: #2d3748; border-color: #718096; }
+[data-theme='dark'] .cardCore   { border-color: #a0aec0; }
+[data-theme='dark'] .cardCore .cardLabel { color: #e2e8f0; }
+
+/* Platform dark */
+[data-theme='dark'] .rowPlatform    { border-color: #4a5568; }
+[data-theme='dark'] .headerPlatform { background: #2d3748; border-color: #4a5568; color: #a0aec0; }
+[data-theme='dark'] .headerPlatform .layerTitle { color: #a0aec0; }
+[data-theme='dark'] .headerPlatform .layerSubtitle { color: rgba(160,174,192,0.65); }
+[data-theme='dark'] .cardPlatform   { border-color: #718096; }
+[data-theme='dark'] .cardPlatform .cardLabel { color: #a0aec0; }
 
 [data-theme='dark'] .arrowLine { background: #4a5568; }
-[data-theme='dark'] .arrowText { color: #718096; }
 [data-theme='dark'] .arrowHead { color: #718096; }
+[data-theme='dark'] .arrowText { color: #718096; }
 
-/* ── Responsive: stack label above cards on narrow screens ── */
+/* ── Responsive ── */
 @media (max-width: 640px) {
-  .layer {
-    flex-direction: column;
-  }
-  .layerLabel {
+  .row { flex-direction: column; }
+  .layerHeader {
     border-right: none;
     border-bottom: 2px solid;
     min-width: unset;
