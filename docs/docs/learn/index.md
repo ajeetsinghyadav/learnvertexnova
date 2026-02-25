@@ -5,7 +5,7 @@ title: Learn
 
 # Learn VertexNova
 
-This section provides a structured learning path for VertexNova Engine, similar to LearnOpenGL but with **multi-backend considerations** throughout.
+This section provides a structured learning path for VertexNova Engine, with **multi-backend considerations** throughout.
 
 Every chapter maps to working code. Every concept ends with something you can run.
 
