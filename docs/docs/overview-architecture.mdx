@@ -3,34 +3,15 @@ sidebar_position: 5
 title: Architecture
 ---
 
+import ArchitectureDiagram from '@site/src/components/ArchitectureDiagram';
+
 # Architecture
 
 VertexNova is organized as a **modular C++20 stack** — each library is independently buildable, testable, and documented. Dependencies only flow upward.
 
 ## Layer Overview
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  APPLICATION LAYER                                           │
-│  vneeditor · vnesamples · vnetestbed · vneviewer             │
-├──────────────────────────────────────────────────────────────┤
-│  GRAPHICS ABSTRACTION                                        │
-│  vnecrossgl · vnecrosswin · vnecrossviz · vnecrossshader     │
-├──────────────────────────────────────────────────────────────┤
-│  CORE SYSTEMS                                                │
-│  vnemath · vnelogging · vneevents · vneio                    │
-│  vnecommon · vneutils · vnescene · vneinteraction            │
-├──────────────────────────────────────────────────────────────┤
-│  SHARED INFRASTRUCTURE                                       │
-│  vnecmake · vneresource · vnetestbed · vnetemplate           │
-├──────────────────────────────────────────────────────────────┤
-│  EXTERNAL DEPENDENCIES                                       │
-│  Vulkan · Metal · OpenGL/GLES · SPIRV-Cross · GLM · GLFW · ImGui · CMake
-├──────────────────────────────────────────────────────────────┤
-│  HARDWARE PLATFORMS                                          │
-│  macOS · iOS · visionOS · Windows · Linux · Web              │
-└──────────────────────────────────────────────────────────────┘
-```
+<ArchitectureDiagram />
 
 ## Graphics Abstraction Layer
 

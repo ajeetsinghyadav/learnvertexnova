@@ -1,0 +1,343 @@
+/* VertexNova architecture diagram — gray-orange scheme */
+/* Private libs: dashed border; Public: solid */
+
+.diagram {
+  --arch-orange: #e8622a;
+  --arch-silver: #aeaeb2;
+  --arch-purple: #8a7fba;
+  --arch-mid: #636366;
+  max-width: 1060px;
+  margin: 2rem auto;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.layer {
+  margin-bottom: 6px;
+}
+
+.layerInner {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.layerInner:hover {
+  box-shadow: 0 0 0 1px var(--arch-orange), 0 8px 24px rgba(232, 98, 42, 0.1);
+}
+
+.layerHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.layerNum {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--arch-mid);
+  letter-spacing: 0.1em;
+  min-width: 2rem;
+}
+
+.layerTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.layerBadge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 1rem 1.2rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  min-width: 100px;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.cardName {
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cardDesc {
+  font-size: 0.65rem;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0.75;
+}
+
+/* Private card styling */
+.cardPrivate {
+  border-style: dashed;
+  opacity: 0.92;
+}
+
+/* Layer themes — gray-orange palette */
+.lApp .layerHeader {
+  background: linear-gradient(90deg, #2e1a07, #3a2010);
+}
+
+.lApp .layerTitle {
+  color: var(--arch-orange);
+}
+
+.lApp .layerBadge {
+  background: rgba(232, 98, 42, 0.15);
+  color: var(--arch-orange);
+  border: 1px solid rgba(232, 98, 42, 0.3);
+}
+
+.lApp .layerInner {
+  background: #1e1208;
+}
+
+.lApp .card {
+  background: #2a1a0a;
+  border-color: rgba(232, 98, 42, 0.25);
+}
+
+.lApp .card:hover {
+  border-color: var(--arch-orange);
+}
+
+.lApp .cardName {
+  color: #f28c5e;
+}
+
+/* Graphics — gold/amber */
+.lGraphics .layerHeader {
+  background: linear-gradient(90deg, #231d12, #2a2212);
+}
+
+.lGraphics .layerTitle {
+  color: #d4a055;
+}
+
+.lGraphics .layerBadge {
+  background: rgba(212, 160, 85, 0.15);
+  color: #d4a055;
+  border: 1px solid rgba(212, 160, 85, 0.3);
+}
+
+.lGraphics .layerInner {
+  background: #1a1610;
+}
+
+.lGraphics .card {
+  background: #231e13;
+  border-color: rgba(212, 160, 85, 0.2);
+}
+
+.lGraphics .card:hover {
+  border-color: #d4a055;
+}
+
+.lGraphics .cardName {
+  color: #e8c07a;
+}
+
+/* Core — silver */
+.lCore .layerHeader {
+  background: linear-gradient(90deg, #1c1c20, #242428);
+}
+
+.lCore .layerTitle {
+  color: var(--arch-silver);
+}
+
+.lCore .layerBadge {
+  background: rgba(174, 174, 178, 0.15);
+  color: var(--arch-silver);
+  border: 1px solid rgba(174, 174, 178, 0.3);
+}
+
+.lCore .layerInner {
+  background: #161618;
+}
+
+.lCore .card {
+  background: #1e1e22;
+  border-color: rgba(174, 174, 178, 0.2);
+}
+
+.lCore .card:hover {
+  border-color: var(--arch-silver);
+}
+
+.lCore .cardName {
+  color: #ebebf0;
+}
+
+/* Shared — silver */
+.lShared .layerHeader {
+  background: linear-gradient(90deg, #1a1a1e, #222226);
+}
+
+.lShared .layerTitle {
+  color: var(--arch-silver);
+}
+
+.lShared .layerBadge {
+  background: rgba(174, 174, 178, 0.12);
+  color: var(--arch-silver);
+  border: 1px solid rgba(174, 174, 178, 0.25);
+}
+
+.lShared .layerInner {
+  background: #141416;
+}
+
+.lShared .card {
+  background: #1a1a1e;
+  border-color: rgba(174, 174, 178, 0.18);
+}
+
+.lShared .card:hover {
+  border-color: var(--arch-silver);
+}
+
+.lShared .cardName {
+  color: #d8d8d8;
+}
+
+/* External — purple */
+.lDeps .layerHeader {
+  background: linear-gradient(90deg, #1a1a24, #20202a);
+}
+
+.lDeps .layerTitle {
+  color: var(--arch-purple);
+}
+
+.lDeps .layerBadge {
+  background: rgba(138, 127, 186, 0.15);
+  color: var(--arch-purple);
+  border: 1px solid rgba(138, 127, 186, 0.3);
+}
+
+.lDeps .layerInner {
+  background: #131318;
+}
+
+.lDeps .card {
+  background: #1a1a22;
+  border-color: rgba(138, 127, 186, 0.2);
+}
+
+.lDeps .card:hover {
+  border-color: var(--arch-purple);
+}
+
+.lDeps .cardName {
+  color: #b8b0d8;
+}
+
+/* Hardware — blue */
+.lHardware .layerHeader {
+  background: linear-gradient(90deg, #1c2228, #202830);
+}
+
+.lHardware .layerTitle {
+  color: #6eb4e8;
+}
+
+.lHardware .layerBadge {
+  background: rgba(110, 180, 232, 0.15);
+  color: #6eb4e8;
+  border: 1px solid rgba(110, 180, 232, 0.3);
+}
+
+.lHardware .layerInner {
+  background: #141a22;
+}
+
+.lHardware .card {
+  background: #1a2030;
+  border-color: rgba(110, 180, 232, 0.2);
+}
+
+.lHardware .card:hover {
+  border-color: #6eb4e8;
+}
+
+.lHardware .cardName {
+  color: #9acfee;
+}
+
+/* Connector */
+.connector {
+  display: flex;
+  justify-content: center;
+  height: 18px;
+  align-items: center;
+  color: #48484a;
+  font-size: 0.9rem;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: #2c2c2e;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  max-width: 1060px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  color: #636366;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendDivider {
+  width: 1px;
+  height: 1.2rem;
+  background: #3a3a3c;
+  margin: 0 0.25rem;
+}
