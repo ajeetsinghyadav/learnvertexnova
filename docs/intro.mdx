@@ -21,8 +21,10 @@ git clone --recursive https://github.com/vertexnova/vnetestbed.git
 
 ```bash
 cd vnetestbed
-./scripts/build_macos.sh -t Debug -b Metal   # or build_linux.sh, build_windows.sh
+./scripts/build_macos.sh -t Debug   # builds Metal, Vulkan, OpenGL on macOS
 ```
+
+Or `build_linux.sh`, `build_windows.sh` for other platforms.
 
 **3. Run**
 
@@ -31,7 +33,7 @@ cd build/Debug/build-*/bin
 ./04_DemoCube
 ```
 
-A window opens. A cube renders. You just ran your first demo.
+On macOS, Metal is the default backend. Use `--backend vulkan` or `--backend opengl` to switch. A window opens. A cube renders.
 
 :::tip Full build guide
 Platform-specific scripts, iOS, visionOS, Web — see [Build & Run](/docs/docs/demos/build).

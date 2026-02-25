@@ -13,13 +13,15 @@ VertexNova provides platform-specific build scripts in the `scripts/` directory.
 
 ## Build
 
+Running a build script without `-b` builds **all available backends** for that platform (e.g. macOS: Metal, Vulkan, OpenGL).
+
 <Tabs>
 <TabItem value="macos" label="macOS" default>
 
 ```bash
 cd vnetestbed
-./scripts/build_macos.sh -t Debug -b Metal
-# Demos: build/Debug/build-macos-clang-<version>/bin/
+./scripts/build_macos.sh -t Debug
+# Builds Metal, Vulkan, OpenGL. Demos: build/Debug/build-macos-clang-<version>/bin/
 ```
 
 </TabItem>
@@ -40,7 +42,7 @@ cd vnetestbed
 <TabItem value="windows" label="Windows">
 
 ```powershell
-.\scripts\build_windows.sh -t Debug -b Vulkan
+.\scripts\build_windows.sh -t Debug
 # Demos: build\Debug\build-windows-cl-<version>\bin\
 ```
 
@@ -48,7 +50,7 @@ cd vnetestbed
 <TabItem value="linux" label="Linux">
 
 ```bash
-./scripts/build_linux.sh -t Debug -b Vulkan
+./scripts/build_linux.sh -t Debug
 # Demos: build/Debug/build-ubuntu-<compiler>-<version>/bin/
 ```
 
@@ -67,13 +69,15 @@ cd vnetestbed
 
 After building, run demos from the `bin/` folder. The path depends on your platform and compiler version.
 
+**Backend selection:** Use `--backend <api>` to choose the graphics API. Defaults: macOS = Metal, Linux = Vulkan, Windows = OpenGL (for testing). Omit `--backend` to use the default.
+
 ```bash
 # From vnetestbed repo root — macOS example
 cd build/Debug/build-macos-clang-17.0.0/bin
 
-./02_DemoTriangle
-./04_DemoCube
-./12_DemoLighting
+./04_DemoCube                    # Metal (default on macOS)
+./04_DemoCube --backend vulkan
+./04_DemoCube --backend opengl
 ```
 
 **Paths by platform:**
