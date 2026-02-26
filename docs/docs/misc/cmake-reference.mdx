@@ -151,6 +151,34 @@ target_compile_definitions(myapp PRIVATE
 )
 ```
 
+### BUILD_INTERFACE / INSTALL_INTERFACE
+
+Use different include paths for build (source tree) vs install (deployed). Essential when packaging libraries.
+
+```cmake
+target_include_directories(mylib PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+```
+
+- **BUILD_INTERFACE** — Used when consumers build against your source (e.g. `add_subdirectory`). Path is absolute.
+- **INSTALL_INTERFACE** — Used when consumers use installed headers. Path is relative to `CMAKE_INSTALL_PREFIX`.
+
+### Library alias
+
+Create an alias target so consumers link to a stable name (e.g. `mylib::mylib`) instead of the raw target.
+
+```cmake
+add_library(mylib STATIC src/mylib.cpp)
+add_library(mylib::mylib ALIAS mylib)
+
+# Consumers link to mylib::mylib — same as mylib but namespaced
+target_link_libraries(myapp PRIVATE mylib::mylib)
+```
+
+Useful for consistency with imported targets (`Vulkan::Vulkan`) and install/export.
+
 ---
 
 ## find_package & FetchContent
@@ -193,6 +221,55 @@ target_link_libraries(myapp PRIVATE glm::glm)
 :::info When to use which
 **find_package** — System-installed (Vulkan SDK, OpenGL). **FetchContent** — Pin a version, header-only or small libs.
 :::
+
+### Google Test (FetchContent)
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        v1.14.0
+)
+
+# Prevent GTest from adding its own tests to CTest
+set(FETCHCONTENT_QUIET OFF)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(googletest)
+
+# Use in tests
+add_executable(my_test tests/my_test.cpp)
+target_link_libraries(my_test PRIVATE GTest::gtest_main)
+```
+
+### Install rules (third-party / packaging)
+
+Define what gets installed when running `cmake --install build`.
+
+```cmake
+# Install library
+install(TARGETS mylib
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+)
+
+# Install headers
+install(DIRECTORY include/
+  DESTINATION include
+  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+)
+
+# Install config for find_package (advanced)
+install(EXPORT mylib-targets
+  FILE mylib-targets.cmake
+  NAMESPACE mylib::
+  DESTINATION lib/cmake/mylib
+)
+```
 
 ---
 
@@ -321,3 +398,5 @@ cmake --build --preset=release
 | Subdir | `add_subdirectory(path)` |
 | Test | `add_test(NAME n COMMAND exe)` |
 | Run tests | `ctest --test-dir build` |
+| Alias | `add_library(alias::name ALIAS target)` |
+| Build/Install interface | `$<BUILD_INTERFACE:dir>` `$<INSTALL_INTERFACE:dir>` |
