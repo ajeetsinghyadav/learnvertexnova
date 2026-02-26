@@ -560,6 +560,28 @@ table code {
   gap: 0.5rem;
 }
 
+/* Mobile: horizontal scroll for platform tabs when they overflow */
+@media (max-width: 996px) {
+  .tabs__list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding-bottom: 0.5rem;
+  }
+  .tabs__list::-webkit-scrollbar {
+    height: 6px;
+  }
+  .tabs__list::-webkit-scrollbar-thumb {
+    background: var(--ifm-color-emphasis-300);
+    border-radius: 3px;
+  }
+  .tabs__item {
+    flex-shrink: 0;
+  }
+}
+
 .tabs__item {
   border-radius: 8px 8px 0 0;
   padding: 0.875rem 1.75rem;
