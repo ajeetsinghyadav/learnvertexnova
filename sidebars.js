@@ -26,7 +26,6 @@ const sidebars = {
         id: 'docs/overview',
       },
       items: [
-        { type: 'doc', id: 'docs/overview', label: 'Overview' },
         { type: 'doc', id: 'docs/overview-architecture', label: 'Architecture' },
         { type: 'doc', id: 'docs/overview-design', label: 'Design' },
         { type: 'doc', id: 'docs/roadmap', label: 'Roadmap' },
