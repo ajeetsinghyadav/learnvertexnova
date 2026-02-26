@@ -564,11 +564,16 @@ table code {
 @media (max-width: 996px) {
   .tabs__list {
     flex-wrap: nowrap;
-    overflow-x: auto;
+    overflow-x: scroll;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
     scrollbar-width: thin;
     padding-bottom: 0.5rem;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .tabs__list::-webkit-scrollbar {
     height: 6px;
@@ -579,6 +584,13 @@ table code {
   }
   .tabs__item {
     flex-shrink: 0;
+  }
+  /* Build page: allow tab list to scroll when parent would clip it */
+  .platform-tabs-scroll {
+    overflow: visible;
+  }
+  .platform-tabs-scroll .tabs {
+    overflow: visible;
   }
 }
 
