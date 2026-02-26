@@ -86,6 +86,7 @@ const sidebars = {
         { type: 'doc', id: 'docs/misc/glossary', label: 'Glossary' },
         { type: 'doc', id: 'docs/misc/references', label: 'References' },
         { type: 'doc', id: 'docs/misc/git-reference', label: 'Git, GitHub & GitLab' },
+        { type: 'doc', id: 'docs/misc/cmake-reference', label: 'CMake Build System' },
       ],
     },
 
