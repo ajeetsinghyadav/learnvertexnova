@@ -26,7 +26,7 @@ export default function PlatformBuild({ children }) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 996);
+    const check = () => setIsMobile(window.innerWidth <= 1200);
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);

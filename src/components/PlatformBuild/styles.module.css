@@ -7,7 +7,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Mobile: select dropdown */
+/* Mobile/tablet: select dropdown (≤1200px) */
 .selectLabel {
   display: block;
   padding: 1rem 1rem 0.5rem;
