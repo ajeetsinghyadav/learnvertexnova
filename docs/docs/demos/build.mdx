@@ -3,9 +3,8 @@ sidebar_position: 2
 title: Build & Run
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import Link from '@docusaurus/Link';
+import PlatformBuild, { PlatformPanel } from '@site/src/components/PlatformBuild';
 
 # Build & Run
 
@@ -15,8 +14,8 @@ VertexNova provides platform-specific build scripts in the `scripts/` directory.
 
 Running a build script without `-b` builds **all available backends** for that platform (e.g. macOS: Metal, Vulkan via MoltenVK, OpenGL).
 
-<Tabs>
-<TabItem value="macos" label="macOS" default>
+<PlatformBuild>
+<PlatformPanel value="macos" default>
 
 **1. Enter repo**
 
@@ -32,8 +31,8 @@ cd vnetestbed
 
 Demos: `build/Debug/build-macos-clang-<version>/bin/`
 
-</TabItem>
-<TabItem value="ios" label="iOS">
+</PlatformPanel>
+<PlatformPanel value="ios">
 
 **1. Enter repo**
 
@@ -47,8 +46,8 @@ cd vnetestbed
 ./scripts/build_ios.sh -t Debug -simulator
 ```
 
-</TabItem>
-<TabItem value="visionos" label="visionOS">
+</PlatformPanel>
+<PlatformPanel value="visionos">
 
 **1. Enter repo**
 
@@ -62,8 +61,8 @@ cd vnetestbed
 ./scripts/build_visionos.sh -t Debug
 ```
 
-</TabItem>
-<TabItem value="windows" label="Windows">
+</PlatformPanel>
+<PlatformPanel value="windows">
 
 **1. Enter repo**
 
@@ -79,8 +78,8 @@ cd vnetestbed
 
 Demos: `build\Debug\build-windows-cl-<version>\bin\`
 
-</TabItem>
-<TabItem value="linux" label="Linux">
+</PlatformPanel>
+<PlatformPanel value="linux">
 
 **1. Enter repo**
 
@@ -96,8 +95,8 @@ cd vnetestbed
 
 Demos: `build/Debug/build-ubuntu-<compiler>-<version>/bin/`
 
-</TabItem>
-<TabItem value="web" label="Web">
+</PlatformPanel>
+<PlatformPanel value="web">
 
 **1. Enter repo**
 
@@ -113,8 +112,8 @@ cd vnetestbed
 
 Output: `build/Release/web/`
 
-</TabItem>
-</Tabs>
+</PlatformPanel>
+</PlatformBuild>
 
 ## Run
 

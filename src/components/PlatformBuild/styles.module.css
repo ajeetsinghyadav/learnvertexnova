@@ -1,0 +1,90 @@
+.wrapper {
+  margin: 2.5rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Mobile: select dropdown */
+.selectLabel {
+  display: block;
+  padding: 1rem 1rem 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ifm-color-content);
+}
+
+.select {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 1rem 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-content);
+  cursor: pointer;
+  appearance: auto;
+  -webkit-appearance: menulist;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+}
+
+/* Desktop: tab buttons */
+.tabsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 0.75rem 0;
+  margin: 0;
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-color);
+}
+
+.tab {
+  padding: 0.875rem 1.75rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--ifm-color-content-secondary);
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-primary);
+}
+
+.tabActive {
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+  font-weight: 700;
+}
+
+.content {
+  padding: 2rem;
+  background: var(--ifm-background-surface-color);
+}
+
+.content pre {
+  margin: 0;
+  border-radius: 8px;
+}
