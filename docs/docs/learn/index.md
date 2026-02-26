@@ -1,9 +1,10 @@
 ---
 sidebar_position: 0
-title: Learn
+title: Learn by Building
+pagination_next: docs/learn/dev-environment-setup
 ---
 
-# Learn VertexNova
+# Learn by Building
 
 This section provides a structured learning path for VertexNova Engine, with **multi-backend considerations** throughout.
 

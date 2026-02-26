@@ -1,6 +1,7 @@
 ---
 sidebar_position: 4
 title: Overview
+pagination_next: docs/overview-architecture
 ---
 
 # VertexNova Engine — Overview
