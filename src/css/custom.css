@@ -560,10 +560,24 @@ table code {
   gap: 0.5rem;
 }
 
-/* Mobile: let platform tabs wrap to multiple rows */
+/* Mobile: compact grid so all 6 platform tabs fit in 2 lines without overflow */
 @media (max-width: 996px) {
   .tabs__list {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .tabs__item {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.85rem;
+    text-align: center;
+    margin: 0;
+  }
+}
+/* Very narrow screens: 2 columns, 3 rows */
+@media (max-width: 480px) {
+  .tabs__list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
