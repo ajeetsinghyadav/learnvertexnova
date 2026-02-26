@@ -87,12 +87,12 @@ target_include_directories(mylib
 
 target_link_libraries(myapp
   PRIVATE   mylib      # link, don't expose to consumers
-  PUBLIC    vn_math    # link AND expose (transitive)
+  PUBLIC    vne_math   # link AND expose (transitive)
 )
 
 target_compile_options(mylib PRIVATE -Wall -Wextra)
 
-target_compile_definitions(mylib PRIVATE VN_VERSION=1)
+target_compile_definitions(mylib PRIVATE VNE_VERSION=1)
 ```
 
 ### PRIVATE / PUBLIC / INTERFACE
@@ -126,15 +126,15 @@ add_library(mylib ${MY_SOURCES})
 ### Options
 
 ```cmake
-option(VN_BUILD_TESTS "Build tests" OFF)
-option(VN_ENABLE_VULKAN "Enable Vulkan" ON)
+option(VNE_BUILD_TESTS "Build tests" OFF)
+option(VNE_ENABLE_VULKAN "Enable Vulkan" ON)
 
-if(VN_BUILD_TESTS)
+if(VNE_BUILD_TESTS)
   add_subdirectory(tests)
 endif()
 ```
 
-Override: `cmake -B build -DVN_BUILD_TESTS=ON`
+Override: `cmake -B build -DVNE_BUILD_TESTS=ON`
 
 ### Generator expressions
 
@@ -290,7 +290,7 @@ ctest --test-dir build -R Renderer
       "binaryDir": "${sourceDir}/build/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "VN_ENABLE_VULKAN": "ON"
+        "VNE_ENABLE_VULKAN": "ON"
       }
     }
   ]
