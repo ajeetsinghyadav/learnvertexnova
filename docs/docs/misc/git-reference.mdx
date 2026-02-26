@@ -7,374 +7,205 @@ slug: git-reference
 
 # Git, GitHub & GitLab
 
-A practical reference covering version control fundamentals, essential Git commands, GitHub and GitLab workflows, rebase, cherry-pick, and a side-by-side platform comparison.
+Reference and notes for version control. **Git** is the engine; **GitHub** and **GitLab** are the platforms that host and collaborate on it.
 
 ## Overview
 
-Version control tracks every change to your codebase, lets teams collaborate without overwriting each other's work, and lets you roll back to any point in history. **Git** is the engine; **GitHub** and **GitLab** are the platforms.
-
-| Tool | Role |
-|------|------|
-| **Git** | Free, open-source distributed VCS. Runs offline on your machine. The foundation everything else is built on. |
-| **GitHub** | World's largest code hosting platform. Adds Pull Requests, Issues, Actions CI/CD, and a massive open-source community. |
-| **GitLab** | Complete DevSecOps suite. Cloud or self-hosted. Built-in CI/CD pipelines, container registry, and security scanning. |
-
-:::tip Analogy
-Git is a camera that snapshots your code at every save. GitHub and GitLab are the cloud albums — they store every snapshot, let others view them, and let the whole team contribute.
-:::
+| Tool | What it does |
+|------|--------------|
+| **Git** | Local version control. Tracks changes as commits. Runs offline. |
+| **GitHub** | Hosting + Pull Requests, Issues, Actions CI/CD. Largest open-source community. |
+| **GitLab** | Hosting + Merge Requests, built-in CI/CD, container registry. Can self-host for free. |
 
 ---
 
-## Git Basics
+## Git Concepts
 
-Git tracks changes as **commits** (snapshots) inside a **repository**. Each developer holds a complete copy — so you can work offline and sync later.
+- **Repository** — Folder tracked by Git. Holds files + full history.
+- **Commit** — Saved snapshot with a hash and message. Immutable.
+- **Branch** — Pointer to a commit. Work in parallel without touching `main`.
+- **Staging area** — Prep zone before commit. `git add` puts files here.
+- **Remote** — Repo hosted elsewhere (GitHub, GitLab). Push to share; pull to get changes.
 
-| Concept | Description |
-|---------|-------------|
-| **Repository** | A folder tracked by Git. Holds your project files plus the full history of all changes. |
-| **Commit** | A saved snapshot with a unique hash ID and a message. Commits are immutable. |
-| **Branch** | A lightweight pointer to a commit. Work in parallel without touching stable `main`. |
-| **Staging Area** | A prep zone (index) between your files and a commit. Lets you craft precise, focused commits. |
-| **Remote** | A version of your repo hosted elsewhere. Push to share; pull to get others' changes. |
-| **Merge / Rebase** | Merge combines branch histories. Rebase replays commits on top of another branch for a clean linear log. |
+---
 
-### First-time setup
+## Essential Commands
+
+### Setup
 
 ```bash
-# Set identity — required before your first commit
-git config --global user.name  "Your Name"
+git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
-
-# Default branch name (modern projects use 'main')
 git config --global init.defaultBranch main
-
-# Verify config
-git config --list
 ```
 
----
-
-## Core Commands
-
-### Init & clone
+### Start & clone
 
 ```bash
-# Start tracking a folder with Git
-git init
-
-# Clone a remote repository locally
-git clone https://github.com/user/repo.git
-
-# Clone into a named folder
-git clone https://github.com/user/repo.git my-project
+git init                    # Start tracking current folder
+git clone <url>             # Clone a remote repo
+git clone <url> my-project  # Clone into named folder
 ```
 
-### Daily loop — stage, commit, push
+### Daily workflow
 
 ```bash
-# See what's changed
-git status
-
-# Stage a specific file
-git add src/renderer.cpp
-
-# Stage all changed files
-git add .
-
-# Commit with a message (use conventional commits format)
-git commit -m "feat(vulkan): add depth buffer support"
-
-# Push to remote — -u sets upstream tracking (first push)
-git push -u origin main
-
-# Subsequent pushes
-git push
-
-# Pull remote changes and merge
-git pull
+git status                  # What changed?
+git add .                   # Stage all (or git add <file>)
+git commit -m "message"     # Commit
+git push                    # Send to remote
+git pull                    # Get remote changes
 ```
 
-### Branching
+### Branches
 
 ```bash
-# List all local branches
-git branch
-
-# Create and switch to a new branch (modern)
-git switch -c feature/metal-backend
-
-# Switch to an existing branch
-git switch main
-
-# Merge feature branch into current branch
-git merge feature/metal-backend
-
-# Delete branch after merging
-git branch -d feature/metal-backend
-
-# Push branch to remote
-git push origin feature/metal-backend
+git branch                  # List branches
+git switch -c feature/foo    # Create and switch (modern)
+git switch main             # Switch to existing branch
+git checkout -b feature/foo # Same as switch -c (older syntax)
+git merge feature/foo       # Merge into current branch
+git branch -d feature/foo   # Delete branch
 ```
 
-### Undo & history
+### Checkout
 
-```bash
-# View commit log (compact, visual)
-git log --oneline --graph --all
+`git checkout` switches branches or restores files. Prefer `git switch` for branches and `git restore` for files (clearer).
 
-# Unstage a file (keep changes in working dir)
-git restore --staged renderer.cpp
+| Command | Does |
+|---------|------|
+| `git checkout main` | Switch to branch `main` |
+| `git checkout -b new-branch` | Create and switch to new branch |
+| `git checkout -- file.txt` | Discard changes in file (use `git restore file.txt` instead) |
+| `git checkout abc123` | Detached HEAD — view old commit |
 
-# Discard working directory changes (irreversible!)
-git restore renderer.cpp
+### Stash
 
-# Undo last commit, keep changes staged
-git reset --soft HEAD~1
+Temporarily save uncommitted work so you can switch branches or pull cleanly.
 
-# Stash work-in-progress changes temporarily
-git stash
-git stash pop    # restore stash
-```
+| Command | Does |
+|---------|------|
+| `git stash` | Save changes, working dir clean |
+| `git stash pop` | Restore most recent stash (and remove it) |
+| `git stash apply` | Restore stash but keep it in list |
+| `git stash list` | Show all stashes |
+| `git stash drop` | Delete a stash |
+| `git stash -m "message"` | Stash with a label |
 
-:::danger Never force-push to shared branches
-`git push --force` rewrites history and can destroy teammates' commits. Use `--force-with-lease` if absolutely necessary — it aborts if someone else has pushed since your last pull.
+**Typical use:** You're mid-edit, need to switch to `main` for a quick fix. `git stash` → `git switch main` → fix → `git switch feature/foo` → `git stash pop`.
+
+### Undo
+
+| Command | Does |
+|---------|------|
+| `git restore <file>` | Discard unstaged changes (irreversible) |
+| `git restore --staged <file>` | Unstage file, keep changes |
+| `git reset --soft HEAD~1` | Undo last commit, keep changes staged |
+| `git revert <hash>` | Create new commit that undoes a commit (safe for shared history) |
+
+:::danger Force-push
+`git push --force` rewrites history. Never use on shared branches. Use `--force-with-lease` if you must — it aborts if someone else pushed.
 :::
 
 ---
 
 ## Rebase
 
-Rebase reapplies commits on top of another branch, creating a linear history.
+Replay your commits on top of another branch. Creates a linear history.
 
-| Command | Description |
-|---------|--------------|
-| `git rebase <branch>` | Rebase current branch onto `<branch>` |
-| `git rebase -i <commit>` | Interactive rebase (edit, squash, reorder) |
-| `git rebase --abort` | Abort rebase and restore original state |
-| `git rebase --continue` | Continue after resolving conflicts |
+| Command | Does |
+|---------|------|
+| `git rebase main` | Rebase current branch onto main |
+| `git rebase -i HEAD~4` | Interactive — edit last 4 commits |
+| `git rebase --abort` | Cancel rebase |
+| `git rebase --continue` | After fixing conflicts |
 
-**When to use**: Clean up history before merging, sync a feature branch with main.
+**Interactive rebase actions:** pick, reword, edit, squash (combine), fixup (combine, drop message), drop (remove).
 
-**Caution**: Don't rebase commits that have been pushed and shared — it rewrites history.
-
----
-
-## Interactive rebase
-
-`git rebase -i HEAD~n` lets you edit the last `n` commits.
-
-**Actions in the editor:**
-
-| Action | Short | What it does |
-|--------|-------|--------------|
-| pick | p | Keep commit as-is |
-| reword | r | Keep commit, change message |
-| edit | e | Pause to amend the commit |
-| squash | s | Combine with previous commit |
-| fixup | f | Like squash, discard message |
-| drop | d | Remove commit |
-
-**Typical workflow:**
-1. `git rebase -i HEAD~4` — edit last 4 commits
-2. Change `pick` to `squash` (or `s`) for commits to combine
-3. Save and close — Git opens editor for combined message
-4. Resolve any conflicts, then `git rebase --continue`
+**Caution:** Don't rebase commits already pushed and shared.
 
 ---
 
 ## Cherry-pick
 
-Apply specific commits from one branch onto another.
+Apply one or more specific commits from another branch onto your current branch.
 
-| Command | Description |
-|---------|--------------|
-| `git cherry-pick <commit>` | Apply one commit |
-| `git cherry-pick <commit1> <commit2>` | Apply multiple commits |
-| `git cherry-pick -n <commit>` | Apply without committing (stage only) |
-| `git cherry-pick --abort` | Abort and restore state |
+```bash
+git cherry-pick abc123           # Apply one commit
+git cherry-pick abc123 def456    # Apply multiple
+git cherry-pick -n abc123       # Apply but don't commit (stage only)
+git cherry-pick --abort         # Cancel
+```
 
-**When to use**: Port a fix or feature from one branch to another without merging the whole branch.
-
-**Example:** You fixed a bug on `main` and need it on `release/v1`. Checkout `release/v1`, then `git cherry-pick abc123`.
+**Use case:** Bug fix on `main` needed on `release/v1`. `git switch release/v1` → `git cherry-pick abc123`.
 
 ---
 
 ## GitHub
 
-The world's largest code hosting platform. Adds collaboration, automation, and community tools on top of Git.
+- **Pull Request (PR)** — Propose merging your branch. Review, approve, merge.
+- **Issues** — Track bugs and features. Link to PRs.
+- **Actions** — CI/CD via YAML in `.github/workflows/`.
+- **Pages** — Free static hosting.
 
-| Concept | Description |
-|---------|-------------|
-| **Pull Requests (PR)** | Propose merging your branch. Team reviews, comments, approves, then merges. |
-| **Issues** | Track bugs, tasks, and feature requests. Link issues to PRs — closing a PR can auto-close an issue. |
-| **GitHub Actions** | YAML-based CI/CD. Triggers on push, PR, schedule, or any event. |
-| **GitHub Pages** | Free static site hosting from a repo. Perfect for docs and project landing pages. |
-
-### GitHub Actions — CI example
-
-```yaml
-name: CI
-
-on: [push, pull_request]
-
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: sudo apt-get install -y cmake ninja-build
-
-      - name: Configure
-        run: cmake -B build -G Ninja
-
-      - name: Build
-        run: cmake --build build
-
-      - name: Test
-        run: ctest --test-dir build --output-on-failure
-```
-
-:::tip Branch protection
-Use **branch protection rules** on `main` — require CI to pass and at least one reviewer before any PR can merge. This keeps your main branch always green.
+:::tip
+Use branch protection on `main`: require CI pass + reviewer before merge.
 :::
 
 ---
 
 ## GitLab
 
-A full DevSecOps platform. GitLab's differentiator is its **integrated everything** approach — CI/CD, container registry, security scanning, and Agile boards all in one place, and it can run on your own servers.
-
-| Concept | Description |
-|---------|-------------|
-| **Merge Requests (MR)** | GitLab's PR equivalent. Inline test reports, code coverage diff, and security scan results appear automatically. |
-| **GitLab CI/CD** | Defined in `.gitlab-ci.yml`. Supports parallel jobs, environments, manual gates, and artifact passing. |
-| **Self-Hosting** | Deploy GitLab CE (Community Edition) on your own Linux server — free. |
-| **Container Registry** | Every project gets a built-in Docker registry at `registry.gitlab.com/user/repo`. |
-
-### GitLab CI/CD pipeline example
-
-```yaml
-stages:
-  - test
-  - build
-  - deploy
-
-test:unit:
-  stage: test
-  image: gcc:13
-  script:
-    - cmake -B build && cmake --build build
-    - ctest --test-dir build
-
-build:docker:
-  stage: build
-  image: docker:latest
-  script:
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
-    - docker push  $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-
-deploy:production:
-  stage: deploy
-  environment: production
-  when: manual          # requires a human click
-  script:
-    - ./scripts/deploy.sh $CI_COMMIT_SHORT_SHA
-  only:
-    - main
-```
+- **Merge Request (MR)** — Same idea as PR. Inline test reports, security scans.
+- **CI/CD** — Defined in `.gitlab-ci.yml`. Stages, parallel jobs, manual gates.
+- **Self-host** — GitLab CE free on your own server.
+- **Registry** — Built-in Docker registry per project.
 
 ---
 
 ## GitHub vs GitLab
 
-| Feature | GitHub | GitLab |
-|---------|---------|--------|
-| Open Source Community | ★★★★★ — Largest worldwide | ★★★ — Smaller but growing |
-| CI/CD (built-in) | GitHub Actions — great | GitLab CI — excellent, more flexible |
-| Self-hosting | GitHub Enterprise (paid only) | Community Edition — free |
-| Container Registry | GitHub Packages | Built-in per project |
-| Security Scanning | Dependabot + CodeQL | SAST, DAST, secret detection built-in |
-| Free Private Repos | Unlimited | Unlimited |
-| Best for | Open source, discoverability, community | Enterprises, DevOps, self-hosting |
-
-:::info For VertexNova
-GitHub is the natural home — it maximises discoverability for open-source contributors. GitLab becomes useful when you need robust self-hosted CI/CD or want all DevOps tooling under one roof.
-:::
+| | GitHub | GitLab |
+|---|--------|--------|
+| Community | Largest | Smaller |
+| CI/CD | Actions | Built-in, very flexible |
+| Self-host | Paid only | Free CE |
+| Best for | Open source, discoverability | Enterprises, DevOps, self-hosting |
 
 ---
 
 ## Feature Branch Workflow
 
-The standard workflow in modern teams. Every feature or fix lives in its own branch, gets reviewed, CI-verified, and only then merged into `main`.
+1. **Branch** — `git switch -c feature/name` from `main`
+2. **Commit** — Small commits. Use `feat:`, `fix:`, `docs:` prefixes
+3. **Push** — `git push -u origin feature/name`
+4. **PR/MR** — Open on GitHub/GitLab, link issues
+5. **Review** — CI runs. Teammates review. Fix feedback.
+6. **Merge** — Approve, merge, delete branch
 
-1. **Branch from main** — Use descriptive names: `feature/vulkan-instancing`, `fix/memory-leak-renderer`, `docs/setup-guide`
-2. **Develop & commit often** — Small, focused commits. Follow **Conventional Commits**: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`
-3. **Push & open a PR / MR** — Write a clear description, link related issues
-4. **CI runs automatically** — Fix any failures before requesting review — red CI blocks merging
-5. **Code review** — Teammates review, leave comments, request changes. CI re-runs on each push
-6. **Merge & clean up** — Once approved and green, merge into `main`. Delete the feature branch
-
-:::tip Pro tip
-Keep PRs/MRs small — under 400 lines changed. Reviewers give better feedback on focused changes.
+:::tip
+Keep PRs under ~400 lines. Easier to review.
 :::
 
 ---
 
-## Quick Cheatsheet
+## Quick Reference
 
-### Setup & Init
-| Command | Description |
-|---------|-------------|
-| `git init` | Init new repo |
-| `git clone <url>` | Clone remote repo |
-| `git config --global user.name` | Set name |
-| `git config --list` | View config |
-
-### Stage & Commit
-| Command | Description |
-|---------|-------------|
-| `git status` | Show changes |
-| `git add .` | Stage everything |
-| `git commit -m "msg"` | Commit with message |
-| `git commit --amend` | Edit last commit |
-
-### Branches
-| Command | Description |
-|---------|-------------|
-| `git branch` | List branches |
-| `git switch -c <name>` | Create & switch branch |
-| `git merge <branch>` | Merge into current |
-| `git branch -d <name>` | Delete branch |
-
-### Remote
-| Command | Description |
-|---------|-------------|
-| `git remote -v` | List remotes |
-| `git push -u origin main` | First push + track |
-| `git pull` | Fetch + merge |
-| `git fetch` | Fetch, no merge |
-
-### Undo
-| Command | Description |
-|---------|-------------|
-| `git restore <file>` | Discard changes |
-| `git restore --staged <file>` | Unstage file |
-| `git reset --soft HEAD~1` | Undo last commit |
-| `git revert <hash>` | Safe undo (new commit) |
-
-### Rebase & Cherry-pick
-| Command | Description |
-|---------|-------------|
-| `git rebase <branch>` | Rebase onto branch |
-| `git rebase -i HEAD~n` | Interactive rebase |
-| `git cherry-pick <commit>` | Apply specific commit |
-
-### Inspect & Debug
-| Command | Description |
-|---------|-------------|
-| `git log --oneline --graph` | Visual history |
-| `git diff` | Unstaged changes |
-| `git stash` | Save WIP |
-| `git stash pop` | Restore WIP |
+| Task | Command |
+|------|---------|
+| Init | `git init` |
+| Clone | `git clone <url>` |
+| Status | `git status` |
+| Stage all | `git add .` |
+| Commit | `git commit -m "msg"` |
+| Push | `git push` |
+| Pull | `git pull` |
+| New branch | `git switch -c <name>` |
+| Switch branch | `git switch <name>` |
+| Merge | `git merge <branch>` |
+| Stash | `git stash` / `git stash pop` |
+| Rebase | `git rebase <branch>` |
+| Cherry-pick | `git cherry-pick <commit>` |
+| Discard file | `git restore <file>` |
+| Unstage | `git restore --staged <file>` |
+| Log | `git log --oneline --graph` |
