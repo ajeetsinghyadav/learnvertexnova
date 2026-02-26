@@ -31,6 +31,11 @@ Throughout the learning path, you'll encounter notes about:
 - **Best Practices**: Cross-platform rendering techniques
 - **Debugging**: Backend-specific debugging strategies
 
+## References
+
+- [Git, GitHub & GitLab](/docs/docs/misc/git-reference) — Version control commands, rebase, cherry-pick, stash
+- [CMake Build System](/docs/docs/misc/cmake-reference) — Build configuration, targets, find_package, generators
+
 ## Next Steps
 
 - Explore the [Demos](/docs/docs/demos) page to see working examples
