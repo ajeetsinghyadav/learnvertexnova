@@ -1,0 +1,88 @@
+---
+sidebar_position: 4
+title: Git, GitHub & GitLab
+description: "Reference and notes for Git, GitHub, and GitLab."
+slug: git-reference
+---
+
+# Git, GitHub & GitLab
+
+Reference and notes for version control with Git, GitHub, and GitLab.
+
+## Git
+
+### Common commands
+
+| Command | Description |
+|---------|--------------|
+| `git clone <url>` | Clone a repository |
+| `git status` | Show working tree status |
+| `git add <file>` | Stage changes |
+| `git commit -m "message"` | Commit staged changes |
+| `git push` | Push to remote |
+| `git pull` | Pull from remote |
+| `git branch` | List branches |
+| `git checkout <branch>` | Switch branch |
+| `git merge <branch>` | Merge branch |
+| `git log` | View commit history |
+
+### Workflow notes
+
+- **Staging**: `git add .` stages all changes; `git add -p` for interactive staging
+- **Undo**: `git restore <file>` discards unstaged changes; `git reset HEAD~1` undoes last commit (keeps changes)
+- **Branches**: Create with `git branch <name>` or `git checkout -b <name>`
+
+---
+
+## GitHub
+
+### Key concepts
+
+- **Repository** — Project container (code, issues, PRs)
+- **Fork** — Your copy of someone else's repo
+- **Pull Request (PR)** — Propose changes to merge into a branch
+- **Issue** — Bug report, feature request, or discussion
+
+### Common workflows
+
+- **Clone**: `git clone https://github.com/owner/repo.git`
+- **Fork & clone**: Fork on GitHub, then clone your fork
+- **Upstream sync**: Add `git remote add upstream <original-url>`, then `git fetch upstream` and `git merge upstream/main`
+
+### Notes
+
+- GitHub Actions for CI/CD
+- GitHub Pages for static sites
+- SSH keys: use `git@github.com:owner/repo.git` for SSH URLs
+
+---
+
+## GitLab
+
+### Key concepts
+
+- **Project** — Similar to GitHub repository
+- **Merge Request (MR)** — Equivalent to GitHub's Pull Request
+- **CI/CD** — Built-in pipelines via `.gitlab-ci.yml`
+
+### Common workflows
+
+- **Clone**: `git clone https://gitlab.com/owner/repo.git`
+- **Merge Request**: Create branch, push, open MR in GitLab UI
+- **Pipelines**: Define jobs in `.gitlab-ci.yml` for build, test, deploy
+
+### Notes
+
+- Self-hosted option available
+- Integrated container registry
+- Built-in issue tracking and wiki
+
+---
+
+## Quick reference
+
+| Task | Git | GitHub | GitLab |
+|------|-----|--------|--------|
+| Propose changes | `git push` + PR/MR | Pull Request | Merge Request |
+| CI/CD | — | Actions | Pipelines |
+| Hosting | — | github.com | gitlab.com / self-hosted |
