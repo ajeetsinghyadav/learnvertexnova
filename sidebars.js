@@ -73,6 +73,11 @@ const sidebars = {
           id: 'glsl-coding-guidelines',
           label: 'GLSL Guidelines',
         },
+        {
+          type: 'doc',
+          id: 'cmake-coding-guidelines',
+          label: 'CMake Guidelines',
+        },
       ],
     },
 

@@ -222,7 +222,9 @@ target_link_libraries(myapp PRIVATE glm::glm)
 **find_package** — System-installed (Vulkan SDK, OpenGL). **FetchContent** — Pin a version, header-only or small libs.
 :::
 
-### Google Test (FetchContent)
+### Google Test
+
+**Option A — FetchContent (download at configure):**
 
 ```cmake
 include(FetchContent)
@@ -233,15 +235,34 @@ FetchContent_Declare(
   GIT_TAG        v1.14.0
 )
 
-# Prevent GTest from adding its own tests to CTest
-set(FETCHCONTENT_QUIET OFF)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
 FetchContent_MakeAvailable(googletest)
+
+add_executable(my_test tests/my_test.cpp)
+target_link_libraries(my_test PRIVATE GTest::gtest_main)
+```
+
+**Option B — Submodule in deps (bundled):**
+
+```cmake
+# Googletest in deps/external/googletest (git submodule)
+message(STATUS "Using Google Test from deps/external/googletest (v1.17.0)")
+add_subdirectory(
+  ${CMAKE_SOURCE_DIR}/deps/external/googletest
+  ${CMAKE_BINARY_DIR}/deps/external/googletest
+)
+include(GoogleTest)
+
+set(GTEST_LIBRARIES gtest_main gmock)
+set(GTEST_INCLUDE_DIRS
+  ${CMAKE_SOURCE_DIR}/deps/external/googletest/googletest/include
+  ${CMAKE_SOURCE_DIR}/deps/external/googletest/googlemock/include
+)
 
 # Use in tests
 add_executable(my_test tests/my_test.cpp)
-target_link_libraries(my_test PRIVATE GTest::gtest_main)
+target_link_libraries(my_test PRIVATE ${GTEST_LIBRARIES})
+target_include_directories(my_test PRIVATE ${GTEST_INCLUDE_DIRS})
 ```
 
 ### Install rules (third-party / packaging)

@@ -1,0 +1,386 @@
+---
+sidebar_position: 8
+title: CMake Guidelines
+description: CMake build system coding standards for VertexNova projects
+---
+
+# VertexNova CMake Coding Guidelines
+
+**Version:** 1.0  
+**Last Updated:** January 2026  
+**CMake Minimum:** 3.16+ (3.20+ recommended for new projects)
+
+## Introduction
+
+These guidelines establish standards for writing CMake build configuration in VertexNova projects. They prioritize:
+
+- **Target-based modern CMake**: Use targets, not global variables or flags
+- **Clarity and maintainability**: Clear structure, documented options
+- **Cross-platform compatibility**: Works on Windows, macOS, Linux, iOS, Web
+- **Consistency**: Uniform naming and organization across vne* libraries
+
+Reference implementation: [vertexnova/vnemath](https://github.com/vertexnova/vnemath)
+
+These guidelines draw inspiration from:
+- [Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+- [CMake Best Practices](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html)
+- [vertexnova/vnemath](https://github.com/vertexnova/vnemath) project structure
+
+---
+
+## General Principles
+
+### Philosophy
+
+1. **Targets, not flags**: Configure each target with `target_*` commands. Never use global `include_directories()`, `link_libraries()`, or `add_compile_options()`.
+2. **Out-of-source builds**: Always `cmake -B build`. Never build in the source tree.
+3. **PRIVATE / PUBLIC / INTERFACE**: Use the correct propagation. PRIVATE = only this target; PUBLIC = this + consumers; INTERFACE = only consumers.
+4. **Imported targets over variables**: Link to `Vulkan::Vulkan`, not `VULKAN_LIBRARIES`.
+5. **Explicit over implicit**: Set `CMAKE_CXX_STANDARD_REQUIRED ON`, `CMAKE_CXX_EXTENSIONS OFF`. Require minimum versions.
+
+### Code Organization
+
+- **One CMakeLists.txt per directory**: Each subdirectory with sources has its own
+- **deps/external** for third-party (GLM, Google Test)
+- **deps/internal** for VertexNova libraries (vnecommon, vnelogging)
+- **cmake/** for project-specific modules and Find*.cmake
+
+---
+
+## Naming Conventions
+
+### Summary Table
+
+| Construct | Style | Example |
+|-----------|-------|---------|
+| Targets (libs, executables) | snake_case | `vnemath`, `TestVneMath` |
+| Alias targets | `namespace::name` | `vne::math`, `vne::math::Warnings` |
+| Options | `PROJECT_` or `VNE_` prefix, UPPER_SNAKE | `VNE_MATH_DEV`, `BUILD_TESTS` |
+| Cache variables | UPPER_SNAKE | `CMAKE_BUILD_TYPE`, `VNE_DEPS_DIR` |
+| Internal variables | `_` prefix or UPPER_SNAKE | `_vnemath_saved`, `VNE_INCLUDE_DIR` |
+| Functions (private) | `_` prefix | `_vnemath_configure_glm_dep()` |
+| CMake modules | PascalCase | `FindVneMath.cmake`, `ProjectSetup.cmake` |
+
+### Targets
+
+```cmake
+# Library targets: lowercase, descriptive
+add_library(vnemath STATIC ...)
+add_library(vnecommon STATIC ...)
+
+# Alias for consumers: namespace::name
+add_library(vne::math ALIAS vnemath)
+
+# Test executables: Test + PascalCase
+add_executable(TestVneMath ...)
+
+# Examples: lowercase
+add_executable(example_01_hello_math ...)
+```
+
+### Options
+
+Use a project-specific prefix to avoid collisions when used as a submodule:
+
+```cmake
+# VertexNova project options: VNE_<PROJECT>_<NAME>
+option(VNE_MATH_DEV "Dev build: enable examples and tests" ON)
+option(VNE_MATH_TESTS "Build vnemath test suite" ON)
+option(VNE_MATH_CI "CI build: tests ON, examples OFF" OFF)
+
+# Standard options (no prefix)
+option(BUILD_TESTS "Build the test suite" ON)
+option(BUILD_EXAMPLES "Build example programs" OFF)
+option(ENABLE_COVERAGE "Enable code coverage" OFF)
+```
+
+### Variables
+
+```cmake
+# Project-scoped paths: PROJECT_ or VNE_ prefix
+set(VNE_DEPS_DIR ${PROJECT_SOURCE_DIR}/deps)
+set(VNE_DEPS_EXTERNAL_DIR ${VNE_DEPS_DIR}/external)
+set(VNE_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+
+# Use CMAKE_ for standard vars
+# Use UPPER_SNAKE for cache/config
+```
+
+---
+
+## Project Structure
+
+Follow the layout used in [vnemath](https://github.com/vertexnova/vnemath):
+
+```
+myproject/
+├── CMakeLists.txt              # Root: project(), options, deps, subdirs
+├── cmake/                       # Project CMake modules
+│   ├── FindMyLib.cmake
+│   ├── ProjectSetup.cmake
+│   └── ProjectWarnings.cmake
+├── configs/                     # Configure-time templates
+│   └── config.h.in
+├── deps/
+│   ├── external/               # Third-party (git submodules)
+│   │   ├── glm/
+│   │   └── googletest/
+│   └── internal/               # VertexNova libs
+│       ├── vnecommon/
+│       └── vnelogging/
+├── include/
+│   └── vertexnova/
+├── src/
+│   └── CMakeLists.txt
+├── tests/
+│   └── CMakeLists.txt
+├── examples/
+│   └── CMakeLists.txt
+└── build/                       # Out-of-source (git-ignored)
+```
+
+---
+
+## Root CMakeLists.txt
+
+### Required First Lines
+
+```cmake
+cmake_minimum_required(VERSION 3.16)
+project(MyProject VERSION 1.0.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+```
+
+### Module Path
+
+```cmake
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+```
+
+### Options and Presets
+
+Define DEV (local) and CI (pipeline) presets. Document options in a table:
+
+```cmake
+# | Option        | Default | Description                    |
+# |---------------|---------|--------------------------------|
+# | BUILD_TESTS   | ON      | Build the test suite           |
+# | BUILD_EXAMPLES| OFF     | Build example programs         |
+# | VNE_MATH_DEV  | ON*     | Dev: tests+examples            |
+# | VNE_MATH_CI   | OFF     | CI: tests only                 |
+
+option(BUILD_TESTS "Build the test suite" ON)
+option(BUILD_EXAMPLES "Build example programs" OFF)
+
+if(VNE_MATH_CI)
+  set(BUILD_TESTS ON CACHE BOOL "" FORCE)
+  set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+  message(STATUS "CI build -> BUILD_TESTS=ON, BUILD_EXAMPLES=OFF")
+elseif(VNE_MATH_DEV)
+  set(BUILD_TESTS ON CACHE BOOL "" FORCE)
+  set(BUILD_EXAMPLES ON CACHE BOOL "" FORCE)
+  message(STATUS "DEV build -> BUILD_TESTS=ON, BUILD_EXAMPLES=ON")
+endif()
+```
+
+---
+
+## Third-Party Dependencies
+
+### Dependency Locations
+
+| Location | Use for |
+|----------|---------|
+| `deps/external/` | Third-party (GLM, Google Test) — git submodules |
+| `deps/internal/` | VertexNova libs (vnecommon, vnelogging) |
+
+### Resolution Order
+
+1. **Submodule** — If `deps/external/glm` exists, use it
+2. **find_package** — System-installed
+3. **FetchContent** — Download at configure
+
+```cmake
+function(_myproject_configure_glm_dep)
+  if(EXISTS "${VNE_DEPS_EXTERNAL_DIR}/glm/CMakeLists.txt")
+    message(STATUS "Using GLM from deps/external/glm")
+    add_subdirectory(${VNE_DEPS_EXTERNAL_DIR}/glm ${CMAKE_BINARY_DIR}/deps/external/glm)
+  else()
+    find_package(glm QUIET)
+    if(NOT glm_FOUND)
+      include(FetchContent)
+      FetchContent_Declare(glm GIT_REPOSITORY ... GIT_TAG ...)
+      FetchContent_MakeAvailable(glm)
+    endif()
+  endif()
+endfunction()
+_myproject_configure_glm_dep()
+```
+
+### Google Test (Submodule)
+
+```cmake
+message(STATUS "Using Google Test from deps/external/googletest (v1.17.0)")
+add_subdirectory(
+  ${CMAKE_SOURCE_DIR}/deps/external/googletest
+  ${CMAKE_BINARY_DIR}/deps/external/googletest
+)
+include(GoogleTest)
+
+set(GTEST_LIBRARIES gtest_main gmock)
+set(GTEST_INCLUDE_DIRS
+  ${CMAKE_SOURCE_DIR}/deps/external/googletest/googletest/include
+  ${CMAKE_SOURCE_DIR}/deps/external/googletest/googlemock/include
+)
+```
+
+---
+
+## Target Configuration
+
+### Use target_* Always
+
+```cmake
+target_include_directories(mylib
+  PUBLIC  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+          $<INSTALL_INTERFACE:include>
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_link_libraries(mylib
+  PUBLIC  glm::glm
+  PRIVATE vne::common
+)
+
+target_compile_options(mylib PRIVATE -Wall -Wextra)
+target_compile_definitions(mylib PRIVATE MYLIB_VERSION=${PROJECT_VERSION})
+```
+
+### Alias Targets
+
+Provide a namespaced alias for consumers:
+
+```cmake
+add_library(vnemath STATIC ...)
+add_library(vne::math ALIAS vnemath)
+
+# Consumers link to vne::math
+target_link_libraries(myapp PRIVATE vne::math)
+```
+
+### Interface Libraries for Settings
+
+Use INTERFACE libraries to propagate warnings, defines, or build settings:
+
+```cmake
+add_library(MathWarnings INTERFACE)
+target_compile_options(MathWarnings INTERFACE -Wall -Wextra -Wpedantic)
+add_library(vne::math::Warnings ALIAS MathWarnings)
+
+target_link_libraries(vnemath PRIVATE vne::math::Warnings)
+```
+
+---
+
+## BUILD_INTERFACE / INSTALL_INTERFACE
+
+Use generator expressions so includes work both when building from source and when installed:
+
+```cmake
+target_include_directories(mylib PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+```
+
+- **BUILD_INTERFACE**: Absolute path when consumers use `add_subdirectory`
+- **INSTALL_INTERFACE**: Relative to `CMAKE_INSTALL_PREFIX` when installed
+
+---
+
+## Install Rules
+
+### Library and Headers
+
+```cmake
+include(GNUInstallDirs)
+
+install(TARGETS mylib
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(DIRECTORY include/vertexnova/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vertexnova
+  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+)
+```
+
+### Config Module for find_package
+
+Provide `FindMyLib.cmake` or a config package so consumers can use `find_package(MyLib REQUIRED)`.
+
+---
+
+## Platform Detection
+
+Use a consistent pattern for platform-specific defines:
+
+```cmake
+if(EMSCRIPTEN)
+  set(VNE_TARGET_PLATFORM "Web")
+elseif(WIN32)
+  set(VNE_TARGET_PLATFORM "Windows")
+elseif(APPLE)
+  if(IOS) set(VNE_TARGET_PLATFORM "iOS")
+  elseif(VISIONOS) set(VNE_TARGET_PLATFORM "visionOS")
+  else() set(VNE_TARGET_PLATFORM "macOS")
+  endif()
+elseif(UNIX)
+  if(ANDROID) set(VNE_TARGET_PLATFORM "Android")
+  else() set(VNE_TARGET_PLATFORM "Linux")
+  endif()
+endif()
+
+message(STATUS "Detected platform: ${VNE_TARGET_PLATFORM}")
+```
+
+Use `target_compile_definitions` with the platform, not global `add_compile_definitions` (prefer target-scoped when possible).
+
+---
+
+## Testing
+
+```cmake
+if(BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(tests)
+endif()
+```
+
+Use `add_test()` or CTest integration. Run with `ctest --test-dir build --output-on-failure`.
+
+---
+
+## Do Not
+
+- **Global include_directories()** — Use target_include_directories
+- **Global link_libraries()** — Use target_link_libraries
+- **Global add_compile_options()** — Use target_compile_options
+- **Manipulate CMAKE_CXX_FLAGS** — Use target_compile_options
+- **In-source builds** — Always `cmake -B build`
+- **Legacy find result variables** — Prefer imported targets (e.g. `Vulkan::Vulkan`)
+
+---
+
+## References
+
+- [vertexnova/vnemath](https://github.com/vertexnova/vnemath) — Reference implementation
+- [Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+- [CMake Buildsystem](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html)
+- [CMake Reference](https://cmake.org/cmake/help/latest/) — Official documentation

@@ -35,6 +35,7 @@ Throughout the learning path, you'll encounter notes about:
 
 - [Git, GitHub & GitLab](/docs/docs/misc/git-reference) — Version control commands, rebase, cherry-pick, stash
 - [CMake Build System](/docs/docs/misc/cmake-reference) — Build configuration, targets, find_package, generators
+- [CMake Guidelines](/docs/cmake-coding-guidelines) — Coding standards for CMake (naming, structure, best practices)
 
 ## Next Steps
 
