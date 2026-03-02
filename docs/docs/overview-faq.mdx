@@ -5,7 +5,7 @@ title: FAQ
 
 ## What is VertexNova?
 
-VertexNova is a modern, multi-backend rendering engine written in C++17/20, designed to run on every major graphics API and platform from a single codebase. It is currently an educational, personal project focused on transparent architecture and hands-on learning in graphics and visualization. Its longer-term goal is to become a portable, integrable visualization runtime optimized for domain-specific rendering workflows.
+VertexNova is a modern, multi-backend rendering engine written in C++17/20, designed to run on every major graphics API and platform from a single codebase. It is built from modular libraries — for example vnelogging, vnemath, vneevent, and the graphics stack (vnecrossgl, vnecrossviz) — each independently buildable and testable. It is currently an educational, personal project focused on transparent architecture and hands-on learning in graphics and visualization. Its longer-term goal is to become a portable, integrable visualization runtime optimized for domain-specific rendering workflows.
 
 ## What makes VertexNova different?
 
@@ -56,10 +56,6 @@ VertexNova is **GLSL 4.5-centric**: shaders are written in Vulkanized GLSL 4.5, 
 This offline compilation approach keeps the runtime simple, eliminates the need to ship a shader compiler, and gives you a single source of truth. The generated output — MSL, GLSL, or otherwise — can be inspected and hand-edited for specific backends when needed. Where the cross-compilation approach doesn't fit, fully native backend shaders can still be introduced.
 
 **Does SPIRV-Cross support all MSL versions?** No. SPIRV-Cross targets a subset of Metal Shading Language versions and does not cover every MSL feature. When a required MSL version or feature is unsupported, VertexNova falls back to native MSL shaders or constrains the pipeline to a supported target. For the majority of use cases, the trade-off favours a single shader source with cross-backend portability.
-
-## When would VertexNova adopt an external abstraction layer?
-
-The project remains open to this. A third-party abstraction layer would be reconsidered if it closely aligned with VertexNova's architectural goals, if the maintenance cost of the current approach outweighed its benefits, if integration complexity was low, and if domain-specific requirements could be met without excessive layering. The goal is pragmatic engineering — not attachment to a custom implementation.
 
 ## What is VertexNova's long-term vision?
 
