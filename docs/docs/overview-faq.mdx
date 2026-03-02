@@ -5,7 +5,7 @@ title: FAQ
 
 ## What is VertexNova?
 
-VertexNova is a modern, multi-backend C++17/20 rendering engine built to run on every major graphics API and platform from a single codebase. Today it is an educational, personal project focused on transparent architecture and learning. Its longer-term direction is to evolve into a portable, integrable visualization runtime optimized for domain-specific rendering workflows.
+VertexNova is a modern, multi-backend C++17/20 rendering engine built to run on every major graphics API and platform from a single codebase. Today it is an educational, personal project focused on transparent architecture and on developing skills in graphics and visualization — and it is continuously evolving. Its longer-term direction is to become a portable, integrable visualization runtime optimized for domain-specific rendering workflows.
 
 ## What makes VertexNova different?
 
@@ -35,7 +35,9 @@ Building a controlled rendering runtime becomes strategic when rendering is core
 
 ## Why use SPIR-V cross-compilation instead of native shaders?
 
-VertexNova uses SPIRV-Cross to translate SPIR-V into backend shading languages such as MSL or GLSL. This approach provides a single shader source of truth, reduces maintenance overhead, ensures backend portability, and gives explicit control over feature baselines. Where necessary, backend-specific shader implementations can still be introduced.
+VertexNova is **GLSL 4.5 centric**: shaders are written in Vulkanized GLSL 4.5, which aligns with OpenGL 4.5 and makes it easy to reuse or adapt existing OpenGL implementations and shader code. The pipeline uses SPIRV-Cross to translate SPIR-V into backend shading languages (MSL, GLSL, etc.). Shaders are generated **offline** at build time, which keeps runtime simple and avoids shipping a compiler. The generated MSL, GLSL, or other outputs can be inspected, edited, and modified if you need to tune or fix something for a specific backend — so you get a single source of truth with the option to hand-adjust when necessary. This approach reduces maintenance overhead, ensures backend portability, and gives explicit control over feature baselines. Where needed, fully backend-specific shader implementations can still be introduced.
+
+**Does SPIRV-Cross support all versions of MSL?** No. SPIRV-Cross targets a subset of Metal Shading Language (MSL) versions and does not support every MSL feature or version. When a required MSL version or feature is unsupported, VertexNova can fall back to native MSL shaders or constrain the pipeline to a supported MSL target. The trade-off remains favourable for the majority of use cases where a single shader source and cross-backend portability matter most.
 
 ## When would VertexNova adopt an external abstraction layer?
 
