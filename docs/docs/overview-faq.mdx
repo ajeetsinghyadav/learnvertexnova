@@ -1,0 +1,46 @@
+---
+sidebar_position: 5
+title: FAQ
+---
+
+## What is VertexNova?
+
+VertexNova is a modern, multi-backend C++17/20 rendering engine built to run on every major graphics API and platform from a single codebase. Today it is an educational, personal project focused on transparent architecture and learning. Its longer-term direction is to evolve into a portable, integrable visualization runtime optimized for domain-specific rendering workflows.
+
+## What makes VertexNova different?
+
+VertexNova is designed as a domain-focused, integrable visualization runtime rather than a general-purpose graphics abstraction layer.
+
+**Comparison with other abstraction libraries:** [Diligent Engine](https://diligentgraphics.com/diligent-engine/) is a high-performance, cross-platform API abstraction and rendering framework with a unified interface and HLSL-centric shading. [LLGL](https://github.com/LukasBanana/LLGL) is a thin, close-to-the-metal abstraction with broad API and platform support (including D3D12, Vulkan, OpenGL, Metal) and multiple language bindings. [IGL](https://github.com/facebook/igl) (Meta) is a low-level, forward-looking GPU library (command buffers, bindless) built for production scale across Android, iOS, and other platforms. All three focus on API portability, resource abstraction, and pipeline management.
+
+VertexNova adds emphasis on domain-specific visualization workflows (e.g., slicing, CSG, multi-view rendering), tight integration with application frameworks (e.g., Qt, C#/.NET, Swift/iOS), controlled shader pipelines, and long-term architectural ownership. Today it focuses on multi-backend support (Metal, Vulkan, OpenGL, OpenGL ES), a single shader source pipeline, and readable, modular code. Per the [roadmap](/docs/docs/roadmap), it is evolving through stabilisation and testing (Phase 1), then scene system and editor (Phase 2), with future work on animation, XR, and scripting — toward an integrable runtime tailored to visualization use cases.
+
+## Why not use existing graphics abstractions (Diligent Engine, LLGL, IGL)?
+
+Diligent Engine, LLGL, and IGL are mature, high-quality cross-backend graphics libraries. Each provides strong API abstraction and is well suited to projects that need a general-purpose rendering API layer.
+
+VertexNova does not exist because those libraries are inadequate. It exists because its goals differ: a domain-focused, integrable visualization runtime with full control over the roadmap and the ability to evolve the stack (see the [roadmap](/docs/docs/roadmap)) for visualization, tooling, and integration needs. General-purpose abstraction libraries prioritize API portability and broad applicability; VertexNova prioritizes controlled integration, domain alignment, and long-term ownership of the architecture.
+
+## Why not use a game engine?
+
+Game engines (e.g., Unreal or Unity) provide full application frameworks, editor ecosystems, asset pipelines, physics, scripting, and extensive tooling. They are well suited to content-driven products.
+
+VertexNova is not a game engine. It is designed as a lightweight runtime that can be integrated into larger systems, with a focus on controlled visualization rather than content creation. For deeply integrated visualization systems where rendering is core to product value, a smaller, controlled runtime can be more appropriate than a full engine.
+
+## Is VertexNova reinventing the wheel?
+
+In part, yes. Graphics abstraction is a solved problem in many respects.
+
+Building a controlled rendering runtime becomes strategic when rendering is core to product value, when domain-specific behavior is required, when long-term control matters, or when deep customization of the rendering pipeline is necessary. VertexNova intentionally builds only the layers needed for multi-backend support, visualization-oriented workflows, and integration flexibility. It does not attempt to compete with full engines or general-purpose frameworks.
+
+## Why use SPIR-V cross-compilation instead of native shaders?
+
+VertexNova uses SPIRV-Cross to translate SPIR-V into backend shading languages such as MSL or GLSL. This approach provides a single shader source of truth, reduces maintenance overhead, ensures backend portability, and gives explicit control over feature baselines. Where necessary, backend-specific shader implementations can still be introduced.
+
+## When would VertexNova adopt an external abstraction layer?
+
+VertexNova remains open to evaluation. Adoption of a third-party abstraction layer would be reconsidered if a solution aligned closely with its architectural goals, if maintenance cost outweighed the benefits of the current approach, if integration complexity were minimal, and if domain-specific requirements could be met without excessive layering. The goal is pragmatic engineering, not attachment to a custom implementation.
+
+## What is VertexNova's long-term vision?
+
+VertexNova aims to be a portable, integrable visualization runtime optimized for domain-specific rendering workflows. The [roadmap](/docs/docs/roadmap) outlines evolution from today’s multi-backend engine and demos (Phase 1: stabilise, test, document) to scene system, material system, and editor (Phase 2), and later to animation, XR, scripting, and GPU-driven rendering. It is not intended to replace full-featured engines or to compete as a general-purpose graphics abstraction library. Its purpose is controlled integration, portability, and long-term architectural ownership.

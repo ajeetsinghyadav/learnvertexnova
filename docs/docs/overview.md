@@ -48,6 +48,7 @@ VertexNova is a **personal project** — built on weekends and evenings. Every l
 | [Architecture](/docs/docs/overview-architecture) | How the libraries fit together |
 | [Design](/docs/docs/overview-design) | Engineering decisions behind the engine |
 | [Roadmap](/docs/docs/roadmap) | What's done, in progress, and next |
+| [FAQ](/docs/docs/overview-faq) | Common questions about VertexNova |
 | [Getting Started](/docs/intro) | Build and run your first demo |
 | [Demos](/docs/docs/demos) | What the engine can render today |
 

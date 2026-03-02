@@ -30,6 +30,7 @@ const sidebars = {
         { type: 'doc', id: 'docs/overview-architecture', label: 'Architecture' },
         { type: 'doc', id: 'docs/overview-design', label: 'Design' },
         { type: 'doc', id: 'docs/roadmap', label: 'Roadmap' },
+        { type: 'doc', id: 'docs/overview-faq', label: 'FAQ' },
       ],
     },
 
