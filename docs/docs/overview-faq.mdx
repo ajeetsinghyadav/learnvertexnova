@@ -20,7 +20,7 @@ Currently, the focus is on multi-backend support (Metal, Vulkan, OpenGL, OpenGL 
 
 ## Why not use an existing graphics abstraction like Diligent Engine, LLGL, or IGL?
 
-Diligent Engine, LLGL, and IGL are mature, high-quality libraries that provide strong API abstraction, comparable in role to VertexNova's vnecrossgl layer.
+Diligent Engine, LLGL, and IGL are mature, high-quality libraries that provide strong API abstraction, comparable in role to VertexNova's vnecrossgl layer. (Diligent’s Metal backend is not publicly available; LLGL and IGL offer Metal in their open offerings.)
 
 VertexNova does not exist because those libraries fall short. It exists because the project's goals go beyond API abstraction. The vnecrossviz layer (the domain-focused visualization runtime) requires full control over the roadmap and the ability to evolve the stack for visualization, tooling, and integration use cases. General-purpose abstraction libraries optimize for broad applicability; VertexNova adds the dedicated visualization layer and long-term ownership of the full stack.
 
