@@ -87,6 +87,10 @@ const sidebars = {
       type: 'category',
       label: 'Misc',
       collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'docs/misc/git-reference',
+      },
       items: [
         { type: 'doc', id: 'docs/misc/git-reference', label: 'Git, GitHub & GitLab' },
         { type: 'doc', id: 'docs/misc/cmake-reference', label: 'CMake Build System' },
