@@ -5,42 +5,42 @@ title: FAQ
 
 ## What is VertexNova?
 
-VertexNova is a modern, multi-backend rendering engine written in C++17/20, designed to run on every major graphics API and platform from a single codebase. It is built from modular libraries — for example vnelogging, vnemath, vneevent, and the graphics stack (vnecrossgl, vnecrossviz) — each independently buildable and testable. It is currently an educational, personal project focused on transparent architecture and hands-on learning in graphics and visualization. Its longer-term goal is to become a portable, integrable visualization runtime optimized for domain-specific rendering workflows.
+VertexNova is a modern, multi-backend rendering engine written in C++17/20, designed to run on every major graphics API and platform from one codebase. It is built from modular libraries (for example vnelogging, vnemath, vneevent, and the graphics stack vnecrossgl, vnecrossviz), each independently buildable and testable. Currently an educational, personal project focused on transparent architecture and hands-on learning in graphics and visualization, its longer-term goal is to become a portable, integrable visualization runtime optimized for domain-specific rendering workflows.
 
 ## What makes VertexNova different?
 
 VertexNova is built as a domain-focused, integrable visualization runtime. Its stack has two main layers:
 
-- **vnecrossgl** — the cross-API graphics interface. This is VertexNova's multi-backend abstraction, occupying the same space as [Diligent Engine](https://diligentgraphics.com/diligent-engine/), [LLGL](https://github.com/LukasBanana/LLGL), and [IGL](https://github.com/facebook/igl) (Meta). Like those libraries, it focuses on API portability, resource abstraction, and pipeline management.
-- **vnecrossviz** — the domain-focused visualization layer built on top of vnecrossgl. This is where VertexNova differentiates itself: it adds an ECS-style structure, asset handling, multiple renderers, and visualization-specific workflows such as slicing, CSG, and multi-view rendering. It also integrates tightly with application frameworks including Qt, C#/.NET, and Swift/iOS.
+- **vnecrossgl**: the cross-API graphics interface. VertexNova's multi-backend abstraction occupies the same space as [Diligent Engine](https://diligentgraphics.com/diligent-engine/), [LLGL](https://github.com/LukasBanana/LLGL), and [IGL](https://github.com/facebook/igl) (Meta). Like those libraries, it focuses on API portability, resource abstraction, and pipeline management.
+- **vnecrossviz**: the domain-focused visualization layer built on top of vnecrossgl. This is where VertexNova differentiates itself: ECS-style structure, asset handling, multiple renderers, and visualization-specific workflows such as slicing, CSG, and multi-view rendering, plus tight integration with application frameworks including Qt, C#/.NET, and Swift/iOS.
 
-In short: VertexNova combines a cross-API graphics interface (comparable to LLGL, IGL, or Diligent Engine) with a dedicated visualization layer that those libraries do not provide.
+In short: VertexNova combines one cross-API graphics interface (comparable to LLGL, IGL, or Diligent Engine) with one dedicated visualization layer that those libraries do not provide.
 
-Currently, the focus is on multi-backend support (Metal, Vulkan, OpenGL, OpenGL ES), a single-source shader pipeline, and readable, modular code. The project is evolving through Phase 1 (stabilise, test, document), Phase 2 (scene system, editor), and later phases covering animation, XR, and scripting — see the [roadmap](/docs/docs/roadmap) for details.
+Currently, the focus is on multi-backend support (Metal, Vulkan, OpenGL, OpenGL ES), one single-source shader pipeline, and readable, modular code. The project is evolving through Phase 1 (stabilise, test, document), Phase 2 (scene system, editor), and later phases covering animation, XR, and scripting. See the [roadmap](/docs/docs/roadmap) for details.
 
 ## Why not use an existing graphics abstraction like Diligent Engine, LLGL, or IGL?
 
-Diligent Engine, LLGL, and IGL are mature, high-quality libraries that provide strong API abstraction — comparable in role to VertexNova's vnecrossgl layer.
+Diligent Engine, LLGL, and IGL are mature, high-quality libraries that provide strong API abstraction, comparable in role to VertexNova's vnecrossgl layer.
 
-VertexNova does not exist because those libraries fall short. It exists because the project's goals go beyond API abstraction. The vnecrossviz layer — a domain-focused visualization runtime — requires full control over the roadmap and the ability to evolve the stack for visualization, tooling, and integration use cases. General-purpose abstraction libraries optimize for broad applicability; VertexNova adds a dedicated visualization layer and long-term ownership of the full stack.
+VertexNova does not exist because those libraries fall short. It exists because the project's goals go beyond API abstraction. The vnecrossviz layer (the domain-focused visualization runtime) requires full control over the roadmap and the ability to evolve the stack for visualization, tooling, and integration use cases. General-purpose abstraction libraries optimize for broad applicability; VertexNova adds the dedicated visualization layer and long-term ownership of the full stack.
 
 ## Why not use a game engine?
 
 Game engines like Unreal and Unity provide complete application frameworks: editor ecosystems, asset pipelines, physics, scripting, and extensive tooling. They excel at content-driven products.
 
-VertexNova is not a game engine. It is a lightweight runtime designed to be embedded within larger systems, with a focus on controlled, programmable visualization rather than content creation. When rendering is core to a product's value — and deep integration matters more than a full editor ecosystem — a smaller, purpose-built runtime is often the better fit.
+VertexNova is not a game engine. It is a lightweight runtime designed to be embedded within larger systems, with focus on controlled, programmable visualization rather than content creation. When rendering is core to the product's value and deep integration matters more than the full editor ecosystem, smaller, purpose-built runtimes are often the better fit.
 
 ## How does VertexNova approach quality and testing?
 
-Testing is a first-class concern, not an afterthought.
+Testing is first-class, not an afterthought.
 
 Each modular library is tested independently through unit tests and build/link checks. The [vnetestbed](https://github.com/vertexnova/vnetestbed) project runs integration-level tests and demos across backends and platforms, providing both per-component confidence and end-to-end validation that the full stack works together.
 
 ## Is VertexNova reinventing the wheel?
 
-In part, yes — and intentionally so.
+In part, yes, and intentionally so.
 
-Graphics API abstraction is a well-understood problem. However, building a controlled rendering runtime becomes the right choice when:
+Graphics API abstraction is well-understood. However, building one controlled rendering runtime becomes the right choice when:
 
 - Rendering is core to the product's value
 - Domain-specific rendering behavior is required
@@ -53,12 +53,12 @@ VertexNova builds only the layers needed for multi-backend support, visualizatio
 
 VertexNova is **GLSL 4.5-centric**: shaders are written in Vulkanized GLSL 4.5, which aligns with OpenGL 4.5 and makes it straightforward to reuse or adapt existing OpenGL shader code. SPIRV-Cross then translates SPIR-V bytecode into backend-specific shading languages (MSL, GLSL, etc.) at build time, not at runtime.
 
-This offline compilation approach keeps the runtime simple, eliminates the need to ship a shader compiler, and gives you a single source of truth. The generated output — MSL, GLSL, or otherwise — can be inspected and hand-edited for specific backends when needed. Where the cross-compilation approach doesn't fit, fully native backend shaders can still be introduced.
+This offline compilation approach keeps the runtime simple, eliminates shipping a shader compiler, and gives you one single source of truth. The generated output (MSL, GLSL, or otherwise) can be inspected and hand-edited for specific backends when needed. Where the cross-compilation approach doesn't fit, fully native backend shaders can still be introduced.
 
-**Does SPIRV-Cross support all MSL versions?** No. SPIRV-Cross targets a subset of Metal Shading Language versions and does not cover every MSL feature. When a required MSL version or feature is unsupported, VertexNova falls back to native MSL shaders or constrains the pipeline to a supported target. For the majority of use cases, the trade-off favours a single shader source with cross-backend portability.
+**Does SPIRV-Cross support all MSL versions?** No. SPIRV-Cross targets one subset of Metal Shading Language versions and does not cover every MSL feature. When the required MSL version or feature is unsupported, VertexNova falls back to native MSL shaders or constrains the pipeline to one supported target. For the majority of use cases, the trade-off favours one single shader source with cross-backend portability.
 
 ## What is VertexNova's long-term vision?
 
-VertexNova aims to be a portable, integrable visualization runtime optimized for domain-specific rendering workflows. The [roadmap](/docs/docs/roadmap) traces a path from the current multi-backend foundation and demo suite (Phase 1: stabilise, test, document) to a full scene system, material system, and editor (Phase 2), and eventually to animation, XR, scripting, and GPU-driven rendering.
+VertexNova aims to be a portable, integrable visualization runtime optimized for domain-specific rendering workflows. The [roadmap](/docs/docs/roadmap) traces the path from the current multi-backend foundation and demo suite (Phase 1: stabilise, test, document) to the full scene system, material system, and editor (Phase 2), and eventually to animation, XR, scripting, and GPU-driven rendering.
 
 It is not intended to replace full-featured engines or to serve as a general-purpose graphics abstraction library. Its purpose is controlled integration, portability, and long-term architectural ownership of the full rendering stack.
