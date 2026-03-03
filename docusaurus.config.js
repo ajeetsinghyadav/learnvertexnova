@@ -71,11 +71,6 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/logo-icon.svg',
-      docs: {
-        sidebar: {
-          hideable: true,
-        },
-      },
       colorMode: {
         respectPrefersColorScheme: true,
       },

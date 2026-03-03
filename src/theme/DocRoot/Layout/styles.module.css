@@ -1,0 +1,48 @@
+.docRoot {
+  display: flex;
+  width: 100%;
+}
+
+.docsWrapper {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+/* Resize handle between sidebar and main content (desktop only) */
+.sidebarResizeHandle {
+  display: none;
+}
+
+@media (min-width: 997px) {
+  .sidebarResizeHandle {
+    display: block;
+    width: 6px;
+    flex-shrink: 0;
+    cursor: col-resize;
+    background: transparent;
+    position: relative;
+  }
+
+  .sidebarResizeHandle:hover,
+  .sidebarResizeHandle:active {
+    background: var(--ifm-color-primary);
+    opacity: 0.2;
+  }
+
+  .sidebarResizeHandle::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 2px;
+    width: 2px;
+    height: 100%;
+    background: var(--ifm-color-emphasis-200);
+    border-radius: 1px;
+  }
+
+  .sidebarResizeHandle:hover::after,
+  .sidebarResizeHandle:active::after {
+    background: var(--ifm-color-primary);
+    opacity: 0.8;
+  }
+}
