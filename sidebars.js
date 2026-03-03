@@ -62,7 +62,11 @@ const sidebars = {
     {
       type: 'category',
       label: 'Coding Guidelines',
-      collapsed: false,
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'coding-guidelines',
+      },
       items: [
         {
           type: 'doc',
