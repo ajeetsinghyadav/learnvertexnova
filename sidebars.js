@@ -94,7 +94,7 @@ const sidebars = {
       items: [
         { type: 'doc', id: 'docs/misc/git-reference', label: 'Git, GitHub & GitLab' },
         { type: 'doc', id: 'docs/misc/cmake-reference', label: 'CMake Build System' },
-        { type: 'doc', id: 'docs/misc/color-palette', label: 'Color Palette' },
+        { type: 'doc', id: 'docs/misc/visual-style', label: 'Visual Style' },
         { type: 'doc', id: 'docs/misc/glossary', label: 'Glossary' },
         { type: 'doc', id: 'docs/misc/references', label: 'References' },
       ],
