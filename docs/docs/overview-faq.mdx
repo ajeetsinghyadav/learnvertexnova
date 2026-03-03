@@ -12,7 +12,7 @@ VertexNova is a modern, multi-backend rendering engine written in C++17/20, desi
 VertexNova is built as a domain-focused, integrable visualization runtime. Its stack has two main layers:
 
 - **vnecrossgl**: the cross-API graphics interface. VertexNova's multi-backend abstraction occupies the same space as [Diligent Engine](https://diligentgraphics.com/diligent-engine/), [LLGL](https://github.com/LukasBanana/LLGL), and [IGL](https://github.com/facebook/igl) (Meta). Like those libraries, it focuses on API portability, resource abstraction, and pipeline management.
-- **vnecrossviz**: the domain-focused visualization layer built on top of vnecrossgl. This is where VertexNova differentiates itself: ECS-style structure, asset handling, multiple renderers, and visualization-specific workflows such as slicing, CSG, and multi-view rendering, plus tight integration with application frameworks including Qt, C#/.NET, and Swift/iOS.
+- **vnecrossviz**: the domain-focused visualization layer built on top of vnecrossgl. This is where VertexNova differentiates itself: ECS-style structure, asset handling, multiple renderers, and visualization-specific workflows such as slicing, volume, CSG and multi-view rendering, plus tight integration with application frameworks including Qt, C#/.NET, and Swift/iOS.
 
 In short: VertexNova combines one cross-API graphics interface (comparable to LLGL, IGL, or Diligent Engine) with one dedicated visualization layer that those libraries do not provide.
 
