@@ -37,11 +37,6 @@ Before any vertex reaches the screen, three matrices transform it from model spa
 
 The **view matrix** moves the world so the camera is at the origin, looking down -Z. The **projection matrix** maps the view frustum into a unit cube (NDC). For OpenGL the Z range is [-1, 1]; for Vulkan it is [0, 1]. Call `camera.setGraphicsApi(vne::math::GraphicsApi::eVulkan)` to get the correct projection — the camera handles the difference internally.
 
-```
-World space  ──── View matrix ────▶  Camera space
-Camera space ── Projection matrix ─▶  Clip / NDC space
-NDC space    ──── Viewport transform ▶  Screen pixels
-```
 
 The camera does not own the viewport transform — that lives in the graphics API (OpenGL `glViewport`, Vulkan `VkViewport`).
 
