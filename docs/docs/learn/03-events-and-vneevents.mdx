@@ -102,6 +102,9 @@ int main() {
 | `TouchMoveEvent` | `eTouchMove` | `touchId()`, `x()`, `y()` |
 | `TouchReleaseEvent` | `eTouchRelease` | `touchId()`, `x()`, `y()` |
 
+<!-- Add static/img/learn/diagrams/03_event_types.png (export from static/img/learn/diagrams/03_event_types.excalidraw) -->
+![vneevents event type taxonomy — Keyboard, Mouse, Window, Touch categories with class names and accessors](/img/learn/diagrams/03_event_types.png)
+
 ## Input polling
 
 Call these anywhere in your frame loop. All methods are static and thread-safe.
@@ -128,6 +131,11 @@ Input::nextFrame();
 `isKeyPressed` is true every frame the key is down. `isKeyJustPressed` fires only on the first frame — use it for actions that should trigger once per press (jump, toggle, shoot).
 
 The `Input` state is updated by your window backend (GLFW callbacks or equivalent) calling `Input::updateKeyState`, `Input::updateMousePosition`, etc. before `processEvents`.
+
+## Per-frame pipeline
+
+<!-- Add static/img/learn/diagrams/03_event_pipeline.png (export from static/img/learn/diagrams/03_event_pipeline.excalidraw) -->
+![vneevents per-frame pipeline — event path (queued) and input path (polled)](/img/learn/diagrams/03_event_pipeline.png)
 
 ## Per-frame loop
 

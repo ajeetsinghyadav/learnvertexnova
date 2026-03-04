@@ -46,6 +46,9 @@ int main() {
 | `VNE_LOG_INFO << "msg" << value` | Stream-style macro. One per log line; no `std::endl` needed. |
 | `Logging::shutdown()` | Flushes and closes all sinks. Call before process exit. |
 
+<!-- Add static/img/learn/diagrams/02_log_pipeline.png (export from static/img/learn/diagrams/02_log_pipeline.excalidraw) -->
+![vnelogging message pipeline — macro → level filter → logger → sinks](/img/learn/diagrams/02_log_pipeline.png)
+
 ## LoggerConfig fields
 
 | Field | Type | Default | Notes |
@@ -71,6 +74,9 @@ int main() {
 | Fatal | `VNE_LOG_FATAL` | Cannot continue |
 
 Set `config.log_level = vne::log::LogLevel::eInfo` in production to suppress Debug and Trace output.
+
+<!-- Add static/img/learn/diagrams/02_log_levels.png (export from static/img/learn/diagrams/02_log_levels.excalidraw) -->
+![Log levels — severity ladder with log_level and flush_level thresholds](/img/learn/diagrams/02_log_levels.png)
 
 ## Named loggers and categories
 

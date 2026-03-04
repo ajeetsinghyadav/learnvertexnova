@@ -299,7 +299,7 @@
     }
   ],
   "appState": {
-    "viewBackgroundColor": "#ffffff",
+    "viewBackgroundColor": "#1C1C1E",
     "gridSize": null
   }
 }

@@ -3,22 +3,22 @@
   "version": 2,
   "source": "https://excalidraw.com",
   "elements": [
-    {"id":"title","type":"text","x":60,"y":12,"width":500,"height":26,"angle":0,"strokeColor":"#1e1e1e","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"DirectionalLight — parallel rays, no position, no attenuation","fontSize":17,"fontFamily":3,"textAlign":"center","verticalAlign":"middle","seed":300},
+    {"id":"title","type":"text","x":60,"y":12,"width":500,"height":26,"angle":0,"strokeColor":"#EBEBF0","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"DirectionalLight — parallel rays, no position, no attenuation","fontSize":17,"fontFamily":3,"textAlign":"center","verticalAlign":"middle","seed":300},
 
-    {"id":"sun","type":"ellipse","x":40,"y":80,"width":60,"height":60,"angle":0,"strokeColor":"#e67700","backgroundColor":"#fff3bf","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"seed":301},
-    {"id":"lbl_sun","type":"text","x":40,"y":148,"width":60,"height":16,"angle":0,"strokeColor":"#e67700","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"∞ (no pos)","fontSize":11,"fontFamily":3,"textAlign":"center","verticalAlign":"middle","seed":302},
+    {"id":"sun","type":"ellipse","x":40,"y":80,"width":60,"height":60,"angle":0,"strokeColor":"#F28C5E","backgroundColor":"#2E1A07","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"seed":301},
+    {"id":"lbl_sun","type":"text","x":40,"y":148,"width":60,"height":16,"angle":0,"strokeColor":"#F28C5E","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"∞ (no pos)","fontSize":11,"fontFamily":3,"textAlign":"center","verticalAlign":"middle","seed":302},
 
-    {"id":"r1","type":"arrow","x":100,"y":95,"width":160,"height":0,"angle":0,"strokeColor":"#1971c2","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"points":[[0,0],[160,0]],"startArrowhead":null,"endArrowhead":"arrow","seed":303},
-    {"id":"r2","type":"arrow","x":100,"y":110,"width":160,"height":0,"angle":0,"strokeColor":"#1971c2","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"points":[[0,0],[160,0]],"startArrowhead":null,"endArrowhead":"arrow","seed":304},
-    {"id":"r3","type":"arrow","x":100,"y":125,"width":160,"height":0,"angle":0,"strokeColor":"#1971c2","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"points":[[0,0],[160,0]],"startArrowhead":null,"endArrowhead":"arrow","seed":305},
+    {"id":"r1","type":"arrow","x":100,"y":95,"width":160,"height":0,"angle":0,"strokeColor":"#E8622A","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"points":[[0,0],[160,0]],"startArrowhead":null,"endArrowhead":"arrow","seed":303},
+    {"id":"r2","type":"arrow","x":100,"y":110,"width":160,"height":0,"angle":0,"strokeColor":"#E8622A","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"points":[[0,0],[160,0]],"startArrowhead":null,"endArrowhead":"arrow","seed":304},
+    {"id":"r3","type":"arrow","x":100,"y":125,"width":160,"height":0,"angle":0,"strokeColor":"#E8622A","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"points":[[0,0],[160,0]],"startArrowhead":null,"endArrowhead":"arrow","seed":305},
 
-    {"id":"obj","type":"rectangle","x":280,"y":80,"width":60,"height":60,"angle":15,"strokeColor":"#495057","backgroundColor":"#dee2e6","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"roundness":{"type":3},"seed":306},
+    {"id":"obj","type":"rectangle","x":280,"y":80,"width":60,"height":60,"angle":15,"strokeColor":"#48484A","backgroundColor":"#dee2e6","fillStyle":"solid","strokeWidth":2,"roughness":0,"opacity":100,"roundness":{"type":3},"seed":306},
 
-    {"id":"lbl_dir","type":"text","x":100,"y":60,"width":160,"height":16,"angle":0,"strokeColor":"#1971c2","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"direction →","fontSize":13,"fontFamily":3,"textAlign":"center","verticalAlign":"middle","seed":307},
+    {"id":"lbl_dir","type":"text","x":100,"y":60,"width":160,"height":16,"angle":0,"strokeColor":"#E8622A","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"direction →","fontSize":13,"fontFamily":3,"textAlign":"center","verticalAlign":"middle","seed":307},
 
-    {"id":"note","type":"text","x":40,"y":180,"width":380,"height":36,"angle":0,"strokeColor":"#495057","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"Same intensity everywhere — no distance falloff.\nAll rays are parallel; direction is set in world space.","fontSize":13,"fontFamily":3,"textAlign":"left","verticalAlign":"middle","seed":308},
+    {"id":"note","type":"text","x":40,"y":180,"width":380,"height":36,"angle":0,"strokeColor":"#48484A","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"Same intensity everywhere — no distance falloff.\nAll rays are parallel; direction is set in world space.","fontSize":13,"fontFamily":3,"textAlign":"left","verticalAlign":"middle","seed":308},
 
-    {"id":"api_note","type":"text","x":40,"y":222,"width":380,"height":16,"angle":0,"strokeColor":"#868e96","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"DirectionalLight( direction, color, intensity )","fontSize":12,"fontFamily":3,"textAlign":"left","verticalAlign":"middle","seed":309}
+    {"id":"api_note","type":"text","x":40,"y":222,"width":380,"height":16,"angle":0,"strokeColor":"#AEAEB2","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":1,"roughness":0,"opacity":100,"text":"DirectionalLight( direction, color, intensity )","fontSize":12,"fontFamily":3,"textAlign":"left","verticalAlign":"middle","seed":309}
   ],
-  "appState": { "viewBackgroundColor": "#ffffff", "gridSize": null }
+  "appState": { "viewBackgroundColor": "#1C1C1E", "gridSize": null }
 }

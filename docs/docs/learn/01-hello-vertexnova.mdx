@@ -7,114 +7,66 @@ slug: 01-hello-vertexnova
 
 # 01: Hello VertexNova
 
-Now that your environment is set up (from [00: Dev Environment Setup](../dev-environment-setup)), you'll get a runnable VertexNova project by cloning the **official project template**. You don't need to know CMake — we'll use a few commands and explain them in one line.
+Every VertexNova project starts from **[vnetemplate](https://github.com/vertexnova/vnetemplate)** — an official project template that already includes the build system, internal dependencies (vnelogging, vnecommon), tests, and CI configuration. Clone it, build, and run. In the next chapter you will use the logging that is already inside this project.
 
-This is the same template used to create new VertexNova libraries (e.g. [vnelogging](https://github.com/vertexnova/vnelogging)). It already includes vnelogging in `deps/internal/`, so in the next chapter we'll use the logging that's already there.
+<!-- Add static/img/learn/diagrams/01_template_structure.png (export from static/img/learn/diagrams/01_template_structure.excalidraw) -->
+![vnetemplate project layout and build pipeline](/img/learn/diagrams/01_template_structure.png)
 
-## What We're Building
-
-You will:
-
-1. Clone [vnetemplate](https://github.com/vertexnova/vnetemplate)
-2. Initialize its submodules (vnelogging, vnecommon, etc.)
-3. Build using the template's scripts or CMake
-4. Run the template's example binary
-
-Outcome: **you have a real VertexNova project that builds and runs.**
-
-## Step 1: Clone the Template
+## Quick Start
 
 ```bash
+# 1. Clone
 git clone https://github.com/vertexnova/vnetemplate.git
 cd vnetemplate
-```
 
-## Step 2: Initialize Submodules
-
-The template uses Git submodules for dependencies (vnelogging, vnecommon, Google Test). Initialize them:
-
-```bash
+# 2. Initialize dependencies
 git submodule update --init --recursive
-```
 
-## Step 3: Build
+# 3. Build (choose one)
+./scripts/build_macos.sh      # macOS
+./scripts/build_linux.sh      # Linux
+./scripts/build_windows.ps1   # Windows (PowerShell)
 
-Use the template's build scripts (recommended) or CMake directly.
-
-**Option A — Scripts (macOS / Linux / Windows):**
-
-```bash
-# macOS
-./scripts/build_macos.sh
-
-# Linux
-./scripts/build_linux.sh
-
-# Windows (PowerShell)
-./scripts/build_windows.ps1
-```
-
-**Option B — CMake directly:**
-
-```bash
+# 3b. Or build with CMake directly
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
-```
 
-- `cmake -B build` configures the project (generates build files).
-- `cmake --build build` compiles the code.
-
-## Step 4: Run the Example
-
-After a successful build, run the example binary. Typical locations:
-
-```bash
-# If the template provides an example executable (path may vary; check build/bin or build/)
+# 4. Run
 ./build/bin/<example_name>
 ```
 
-If the template has a single main example, it might be under `build/bin/` — list the directory to see the exact name, then run it. You should see output from your first VertexNova program.
+| Command | What it does |
+|---------|-------------|
+| `git submodule update --init --recursive` | Pulls all dependencies — vnelogging, vnecommon, googletest, and their transitive submodules. |
+| `cmake -B build` | Configures the project and writes build files into `build/`. |
+| `-DCMAKE_BUILD_TYPE=Release` | Builds optimized. Use `Debug` for a debuggable binary with symbols. |
+| `cmake --build build` | Compiles the project. |
 
-## What's in the Template?
+## Template layout
 
 | Path | Purpose |
 |------|---------|
-| `cmake/vnecmake/` | Shared CMake helpers (vnecmake) |
-| `deps/internal/` | Optional internal deps: vnelogging, vnecommon |
-| `deps/external/` | External deps (e.g. googletest) |
-| `include/`, `src/` | Your library or app code |
-| `tests/`, `examples/` | Tests and example apps |
-| `scripts/` | Build scripts for macOS, Linux, Windows |
-| `.clang-format`, `.clang-tidy` | Code style and static analysis |
+| `cmake/vnecmake/` | Shared CMake helpers (compiler flags, sanitizers, install rules). |
+| `deps/internal/` | Internal VertexNova dependencies: vnelogging, vnecommon. |
+| `deps/external/` | External dependencies: googletest. |
+| `include/` | Public headers for your library or app. |
+| `src/` | Implementation files. |
+| `tests/` | Unit tests using Google Test. |
+| `examples/` | Runnable example programs. |
+| `scripts/` | One-command build scripts for macOS, Linux, and Windows. |
+| `.clang-format` | Code style rules — enforced automatically in CI. |
+| `.clang-tidy` | Static analysis checks — enforced in CI. |
+| `.github/workflows/` | CI pipeline: format check, build, tests on all platforms. |
 
-The template is ready for CI (format, tidy, build/test). When you start a **new** VertexNova library, you clone vnetemplate, rename it to your project, and change the code — no hand-written CMake from zero.
+## Starting a new project
 
-## What's Next?
+vnetemplate is the same structure used to create every VertexNova library. When you start something new: clone it, rename the project and targets in `CMakeLists.txt`, and write your code in `include/` and `src/`. The build system, dependencies, tests, and CI are all already wired up.
 
-In [02: Adding Logging](../02-adding-logging) we'll use the **logging that's already in this project**: where it lives (`deps/internal/vnelogging`), how to call it (`VNE_LOG_*`, `LoggerConfig`), and how to run the hello-logging example.
+## Build from scratch (optional)
 
----
+If you want to understand every line before using the template, a minimal VertexNova project needs three things:
 
-**Checkpoint:** You have a built template project and a runnable binary. Same structure and tools that real VertexNova libraries use.
-
----
-
-## Optional: Build from Scratch
-
-If you prefer to see every line of a minimal project instead of using the template, follow these steps. Each one is self-contained so you can copy and adapt as needed.
-
-:::info Step 1 — Create the project folder and main file
-
-Create a project directory (e.g. `HelloVertexNova`) and a source file at `src/main.cpp`.
-
-**Create the folder:**
-
-```bash
-mkdir -p HelloVertexNova/src
-cd HelloVertexNova
-```
-
-**Add `src/main.cpp`** with a minimal C++ program:
+**`src/main.cpp`**
 
 ```cpp
 #include <iostream>
@@ -125,64 +77,27 @@ int main() {
 }
 ```
 
-:::
-
-:::info Step 2 — Add a minimal CMakeLists.txt
-
-In the project root (same folder as `src/`), create `CMakeLists.txt` with at least:
-
-- `cmake_minimum_required(VERSION 3.16)` — required CMake version
-- `project(HelloVertexNova LANGUAGES CXX)` — project name and C++ only
-- `set(CMAKE_CXX_STANDARD 17)` — use C++17
-- `add_executable(HelloVertexNova src/main.cpp)` — build one executable from `main.cpp`
-
-**Example `CMakeLists.txt`:**
+**`CMakeLists.txt`**
 
 ```cmake
 cmake_minimum_required(VERSION 3.16)
 project(HelloVertexNova LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_executable(HelloVertexNova src/main.cpp)
 ```
 
-Optional: to put the binary in `build/bin/`, add  
-`set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)` before `add_executable`.
-
-:::
-
-:::info Step 3 — Configure and build
-
-From the project root, configure and build in a separate `build` directory:
+**Build and run:**
 
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
-```
-
-- **`cmake -B build`** — configure the project and generate build files into `build/`.
-- **`-DCMAKE_BUILD_TYPE=Release`** — build optimized (use `Debug` for debugging).
-- **`cmake --build build`** — compile the executable.
-
-:::
-
-:::info Step 4 — Run the executable
-
-Run the program. The executable name matches the first argument to `add_executable` (here, `HelloVertexNova`).
-
-**If you did not set `CMAKE_RUNTIME_OUTPUT_DIRECTORY`:**
-
-```bash
-./build/HelloVertexNova
-```
-
-**If you put the binary in `build/bin/`:**
-
-```bash
 ./build/bin/HelloVertexNova
+# Hello, VertexNova!
 ```
 
-You should see: `Hello, VertexNova!`
+Once this works, [02: Adding Logging](../02-adding-logging) shows how to add vnelogging to this project as a submodule or via FetchContent.
 
-:::
+---
 
-If you built from scratch, [02: Adding Logging](../02-adding-logging) has an optional section on adding vnelogging to that project (submodule or FetchContent).
+**Next:** [02: Adding Logging](../02-adding-logging) — use the logging already in the template project: configure a logger, choose a sink, and write your first log messages.
