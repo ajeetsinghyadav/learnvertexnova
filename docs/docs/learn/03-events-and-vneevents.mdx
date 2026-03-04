@@ -1,11 +1,11 @@
 ---
 sidebar_position: 4
-title: "03: Adding Events and Input"
+title: "03: Events and Input"
 description: "Use events and input in your app — where they come from, how to handle them, and how to run the events sample."
 slug: 03-events-and-vneevents
 ---
 
-# 03: Adding Events and Input
+# 03: Events and Input
 
 In [02: Adding Logging](./02-adding-logging) you used logging in your project. Next we add **events and input**: where they come from, how to handle them, and how to run the events sample. By the end you'll know how events and input are added and used, the same way you knew how logging was added from the previous page.
 
@@ -139,7 +139,64 @@ The sample uses both: the **Events** panel shows the event stream; the **Input P
 
 ## Use Events and Input in Your Code
 
-In your own code you use the same flow as the testbed:
+The [vneevents Quick Start](https://github.com/vertexnova/vneevents#quick-start) shows the minimal pieces: a **listener class**, **register and process**, and a **per-frame loop** with input polling. Below is the same pattern you’ll use in your app or in the testbed.
+
+### 1. Include and a listener class
+
+```cpp
+#include <vertexnova/events/events.h>
+
+using namespace vne::events;
+
+class MyListener : public EventListener {
+public:
+    void onEvent(const Event& event) override {
+        if (event.type() == EventType::eKeyPressed) {
+            auto& e = static_cast<const KeyPressedEvent&>(event);
+            std::cout << "Key " << static_cast<int>(e.keyCode())
+                      << " mods=" << static_cast<int>(e.modifiers()) << std::endl;
+        }
+    }
+};
+```
+
+### 2. Register and process events
+
+```cpp
+auto& manager = EventManager::instance();
+
+auto listener = std::make_shared<MyListener>();
+manager.registerListener(EventType::eKeyPressed, listener);
+
+manager.pushEvent(std::make_unique<KeyPressedEvent>(KeyCode::eA));
+manager.pushEvent(std::make_unique<MouseMovedEvent>(100.0, 200.0));
+
+manager.processEvents();
+```
+
+### 3. Per-frame loop with input polling
+
+In a real app you run a loop: each frame you process events, then update game state (often using **polled** input), then call `Input::nextFrame()` so “just pressed” state is correct for the next frame.
+
+```cpp
+while (running) {
+    // 1) Drain the event queue and notify listeners
+    EventManager::instance().processEvents();
+
+    // 2) Use polled input for movement, etc.
+    if (Input::isKeyPressed(static_cast<int>(KeyCode::eW)))
+        ; // move forward
+    if (Input::isMouseButtonJustPressed(0)) {
+        auto [x, y] = Input::mousePosition();
+        ; // handle click at (x, y)
+    }
+
+    // 3) Once per frame: update "just pressed" / "just released" state
+    Input::nextFrame();
+}
+```
+
+Where events come from (e.g. GLFW callbacks) you still **push** into the manager: `EventManager::instance().pushEvent(std::make_unique<KeyPressedEvent>(...));`. The loop only **processes** and **polls**.
 
 ```mermaid
 flowchart LR
@@ -150,13 +207,7 @@ flowchart LR
   E --> B
 ```
 
-1. **Include** the vneevents headers (e.g. `<vertexnova/events/events.h>`).
-2. **Implement** a listener with `onEvent(const Event&)`; switch on `event.type()` and cast to the concrete event class.
-3. **Register** the listener with `EventManager::instance()` for the event types you care about.
-4. **Push** events from your window/input layer (e.g. GLFW callbacks) via `EventManager::instance().pushEvent(...)`.
-5. **Process** once per frame: `EventManager::instance().processEvents()` so every listener receives the queued events.
-
-Same flow as the testbed; your app just plugs in its own window backend and listeners.
+**Summary:** Include the headers, implement a listener (`onEvent`), register it with `EventManager::instance()`, push events from your window/input layer, and each frame call `processEvents()` and `Input::nextFrame()`. Same flow as the testbed; your app plugs in its own window backend and listeners.
 
 ## Summary
 
