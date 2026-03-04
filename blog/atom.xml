@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="atom.xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://learnvertexnova.com/blog/</id>
+    <title>VertexNova Engine Blog</title>
+    <updated>2024-01-10T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://learnvertexnova.com/blog/"/>
+    <subtitle>VertexNova Engine Blog</subtitle>
+    <icon>https://learnvertexnova.com/img/favicon.png</icon>
+    <entry>
+        <title type="html"><![CDATA[Welcome to VertexNova Engine]]></title>
+        <id>https://learnvertexnova.com/blog/welcome-vertexnova/</id>
+        <link href="https://learnvertexnova.com/blog/welcome-vertexnova/"/>
+        <updated>2024-01-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Welcome to VertexNova Engine - a modern, multi-platform rendering and visualization engine designed for clarity, portability, and steady evolution.]]></summary>
+        <content type="html"><![CDATA[<p>Welcome to <strong>VertexNova Engine</strong> - a modern, multi-platform rendering and visualization engine designed for clarity, portability, and steady evolution.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-is-vertexnova">What is VertexNova?<a href="https://learnvertexnova.com/blog/welcome-vertexnova/#what-is-vertexnova" class="hash-link" aria-label="Direct link to What is VertexNova?" title="Direct link to What is VertexNova?" translate="no">​</a></h2>
+<p>VertexNova Engine (VNE) is a personal learning project focused on building a clean, maintainable multi-backend rendering engine. The project provides:</p>
+<ul>
+<li class=""><strong>Multi-backend rendering</strong> - Unified API across OpenGL Desktop, OpenGL ES/WebGL, Metal, and Vulkan (WIP)</li>
+<li class=""><strong>Cross-platform support</strong> - macOS, iOS, Windows, Linux, and Web (Emscripten)</li>
+<li class=""><strong>Modern C++ design</strong> - Clean architecture with strict ownership and predictable lifetimes</li>
+<li class=""><strong>Thin abstractions</strong> - Clear layering with explicit control</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-vertexnova">Why VertexNova?<a href="https://learnvertexnova.com/blog/welcome-vertexnova/#why-vertexnova" class="hash-link" aria-label="Direct link to Why VertexNova?" title="Direct link to Why VertexNova?" translate="no">​</a></h2>
+<p>This project started as a learning journey in computer graphics and engine architecture. After working on 3D visualization projects professionally, I wanted to build my own engine from the ground up, learning from excellent references like:</p>
+<ul>
+<li class=""><a href="https://www.youtube.com/playlist?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT" target="_blank" rel="noopener noreferrer" class="">The Cherno's Game Engine Series</a></li>
+<li class=""><a href="https://learnopengl.com/" target="_blank" rel="noopener noreferrer" class="">LearnOpenGL</a></li>
+<li class=""><a href="https://github.com/facebook/igl" target="_blank" rel="noopener noreferrer" class="">libigl (facebook/igl)</a></li>
+<li class=""><a href="https://github.com/LukasBanana/LLGL" target="_blank" rel="noopener noreferrer" class="">LLGL</a></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="current-status">Current Status<a href="https://learnvertexnova.com/blog/welcome-vertexnova/#current-status" class="hash-link" aria-label="Direct link to Current Status" title="Direct link to Current Status" translate="no">​</a></h2>
+<ul>
+<li class="">Simple demos run on macOS, iOS, OpenGL desktop, and Web (Emscripten/WebGL)</li>
+<li class="">Vulkan backend is in progress</li>
+<li class="">More demos and tests are being added to cover concepts thoroughly</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="whats-next">What's Next?<a href="https://learnvertexnova.com/blog/welcome-vertexnova/#whats-next" class="hash-link" aria-label="Direct link to What's Next?" title="Direct link to What's Next?" translate="no">​</a></h2>
+<p>Check out the <a class="" href="https://learnvertexnova.com/docs/intro/">Getting Started guide</a> to begin learning with VertexNova, or explore the <a class="" href="https://learnvertexnova.com/docs/docs/demos/">Demos</a> to see what's currently working.</p>
+<p>VertexNova is under active development. Several libraries are open source on <a href="https://github.com/vertexnova" target="_blank" rel="noopener noreferrer" class="">GitHub</a>; others remain private for now. Contributions, feedback, and questions are welcome!</p>]]></content>
+        <author>
+            <name>Ajeet Singh Yadav</name>
+            <uri>https://github.com/ajeetsinghyadav</uri>
+        </author>
+        <category label="Announcement" term="Announcement"/>
+        <category label="VertexNova" term="VertexNova"/>
+        <category label="Engine" term="Engine"/>
+    </entry>
+</feed>
