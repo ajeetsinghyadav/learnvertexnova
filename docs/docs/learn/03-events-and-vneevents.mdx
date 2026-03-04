@@ -11,7 +11,7 @@ In [02: Adding Logging](./02-adding-logging) you used logging in your project. N
 
 ## Why events matter
 
-When you press a key or move the mouse, the window library (e.g. GLFW) tells your program “this just happened.” If you handle that in one place with a single, consistent set of event types, you can:
+When you press a key or move the mouse, the window library (e.g. [GLFW](https://github.com/glfw/glfw)) tells your program “this just happened” via [window and input events](https://www.glfw.org/docs/3.3/window_guide.html#window_events). If you handle that in one place with a single, consistent set of event types, you can:
 
 - **Keep input separate from game logic** — different parts of the app listen for what they need.
 - **Test easily** — you can push fake events and check that your handlers run.
@@ -37,7 +37,7 @@ For full architecture, API reference, and examples, see the [vneevents repositor
 
 ## Where you see it: vnetestbed and the events sample
 
-The easiest way to **see events in action** is to run the **vnetestbed** sample that uses a **GLFW** window, **OpenGL**, and **ImGui**. That sample is built to **test and demonstrate** every vneevents event type and input polling.
+The easiest way to **see events in action** is to run the **vnetestbed** sample that uses a [GLFW](https://github.com/glfw/glfw) window, OpenGL, and [Dear ImGui](https://github.com/ocornut/imgui/tree/docking) (docking branch). That sample is built to **test and demonstrate** every vneevents [events](https://github.com/vertexnova/vneevents) and [input](https://github.com/vertexnova/vneevents) API.
 
 | What | Where |
 | ---- | ------ |
@@ -53,9 +53,8 @@ When you run the sample you get a window with:
 
 So you can press keys, move the mouse, scroll, and resize the window and **see exactly what events the library delivers**. That’s how we test that event delivery and polling work correctly.
 
-## What the events sample shows (from its README)
+## What the events sample shows
 
-The sample’s [README](https://github.com/vertexnova/vnetestbed/blob/main/samples/glfw_opengl/01_test_events/README.md) sums up what it’s for:
 
 1. **Event delivery** — Keyboard, mouse button, mouse move, scroll, window resize, window close, and touch (press/move/release) events arrive with the correct type and data.
 2. **Touch emulation** — Left mouse button is treated as touch id `0` (TouchPress, TouchMove, TouchRelease) so you can try touch on desktop; it’s turned on only in this demo.
@@ -63,7 +62,9 @@ The sample’s [README](https://github.com/vertexnova/vnetestbed/blob/main/sampl
 4. **EventManager queue** — The Stats section shows events per second and total events, so you see the queue in use.
 5. **Input polling** — The Input Poll panel shows “key held” and mouse/scroll state **separately** from the stream of one-off events.
 
-So the sample is both a **teaching tool** and a **test**: we use it to verify that calling events from GLFW works end-to-end.
+The sample is both a **teaching tool** and a **test**: we use it to verify that calling events from GLFW works end-to-end.
+
+![vnetestbed 01_test_events sample — Events and Input Poll panels](/img/learn/02_test_events.png)
 
 ## Get vnetestbed and run the events sample
 
@@ -149,7 +150,24 @@ The sample uses both: the **Events** panel shows the event stream; the **Input P
 | WindowCloseEvent | Window closed; time to quit or clean up. |
 | TouchPressEvent / TouchMoveEvent / TouchReleaseEvent | Touch (or emulated from mouse in the sample). |
 
-In your own code you include the vneevents headers, implement a listener, register it with the manager, and push/process events the same way the testbed does.
+In your own code you use the same flow as the testbed:
+
+```mermaid
+flowchart LR
+  A[Include vneevents headers] --> B[Implement a listener\nonEvent]
+  B --> C[Register listener\nwith EventManager]
+  C --> D[Push events\nfrom GLFW callbacks]
+  D --> E[Process events\neach frame]
+  E --> B
+```
+
+1. **Include** the vneevents headers (e.g. `<vertexnova/events/events.h>`).
+2. **Implement** a listener with `onEvent(const Event&)`; switch on `event.type()` and cast to the concrete event class.
+3. **Register** the listener with `EventManager::instance()` for the event types you care about.
+4. **Push** events from your window/input layer (e.g. GLFW callbacks) via `EventManager::instance().pushEvent(...)`.
+5. **Process** once per frame: `EventManager::instance().processEvents()` so every listener receives the queued events.
+
+Same flow as the testbed; your app just plugs in its own window backend and listeners.
 
 ## Summary
 
