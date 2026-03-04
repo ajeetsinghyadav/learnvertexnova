@@ -69,7 +69,7 @@ int main() {
 
 ### Keyboard
 
-| Class | `EventType` | Accessors |
+| Class | EventType | Accessors |
 |-------|-------------|-----------|
 | `KeyPressedEvent` | `eKeyPressed` | `keyCode()`, `modifiers()` |
 | `KeyReleasedEvent` | `eKeyReleased` | `keyCode()`, `modifiers()` |
@@ -80,7 +80,7 @@ int main() {
 
 ### Mouse
 
-| Class | `EventType` | Accessors |
+| Class | EventType | Accessors |
 |-------|-------------|-----------|
 | `MouseButtonPressedEvent` | `eMouseButtonPressed` | `button()` (`MouseButton::eLeft/eRight/eMiddle`), `modifiers()` |
 | `MouseButtonReleasedEvent` | `eMouseButtonReleased` | `button()`, `modifiers()` |
@@ -89,14 +89,14 @@ int main() {
 
 ### Window
 
-| Class | `EventType` | Accessors |
+| Class | EventType | Accessors |
 |-------|-------------|-----------|
 | `WindowResizeEvent` | `eWindowResize` | `width()`, `height()` (`uint32_t`) |
 | `WindowCloseEvent` | `eWindowClose` | none — signals the app should quit |
 
 ### Touch
 
-| Class | `EventType` | Accessors |
+| Class | EventType | Accessors |
 |-------|-------------|-----------|
 | `TouchPressEvent` | `eTouchPress` | `touchId()`, `x()`, `y()` |
 | `TouchMoveEvent` | `eTouchMove` | `touchId()`, `x()`, `y()` |
