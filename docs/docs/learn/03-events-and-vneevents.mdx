@@ -1,41 +1,29 @@
 ---
 sidebar_position: 4
-title: "03: Events and vneevents"
-description: "Why events matter, the vneevents API, and how we test events with GLFW in vnetestbed."
+title: "03: Adding Events and Input"
+description: "Use events and input in your app — where they come from, how to handle them, and how to run the events sample."
 slug: 03-events-and-vneevents
 ---
 
-# 03: Events and vneevents
+# 03: Adding Events and Input
 
-In [02: Adding Logging](./02-adding-logging) you used logging in your project. Next we look at **events** — the way your app learns that something happened: a key was pressed, the mouse moved, or the window was resized. You get a small message (an event) and your code can react.
+In [02: Adding Logging](./02-adding-logging) you used logging in your project. Next we add **events and input**: where they come from, how to handle them, and how to run the events sample. By the end you'll know how events and input are added and used, the same way you knew how logging was added from the previous page.
 
-## Why events matter
+## Where Events and Input Come From
 
-When you press a key or move the mouse, the window library (e.g. [GLFW](https://github.com/glfw/glfw)) tells your program “this just happened” via [window and input events](https://www.glfw.org/docs/3.3/window_guide.html#window_events). If you handle that in one place with a single, consistent set of event types, you can:
+Your app gets **events** when something happens (key pressed, mouse moved, window resized). The window library (e.g. [GLFW](https://github.com/glfw/glfw)) reports these via [window and input callbacks](https://www.glfw.org/docs/3.3/window_guide.html#window_events). You need one place to receive those and turn them into a consistent set of event types. You also need **input polling** — "is this key held right now?" and "where is the mouse?" — once per frame.
 
-- **Keep input separate from game logic** — different parts of the app listen for what they need.
-- **Test easily** — you can push fake events and check that your handlers run.
-- **Use the same API on different platforms** — same events whether the window is from GLFW or something else.
-- **Learn the API** — run a sample, watch events in a panel, then use the same types in your own code.
+In the VertexNova stack we use the [vneevents](https://github.com/vertexnova/vneevents) library for both: it gives you typed events (key, mouse, window, touch), a thread-safe queue, and an `Input` API for polling. The table below is a quick reference; full docs are in the [vneevents repository](https://github.com/vertexnova/vneevents).
 
-The VertexNova event library (**vneevents**) gives you that: one small dependency for keyboard, mouse, touch, and window events.
-
-## What is vneevents?
-
-**[vneevents](https://github.com/vertexnova/vneevents)** is a small, thread-safe C++ event library for games and interactive apps. In short:
-
-| Feature | What you get |
-| ------- | ------------ |
-| **Typed events** | One class per kind of event: key pressed, mouse moved, window resized, touch, etc. |
+| What you get | Purpose |
+| ------------ | ------- |
+| **Typed events** | One class per kind: key pressed, mouse moved, window resized, touch, etc. |
 | **Modifiers** | Shift, Ctrl, Alt, Super on key and mouse events. |
-| **Touch** | Touch press, move, release; on desktop the left mouse button can emulate touch (e.g. touch id 0). |
-| **Thread-safe queue** | One global event queue; you can push from one thread and process on another. |
-| **Input polling** | A simple API to ask “is this key held right now?” and “where is the mouse?” once per frame. |
+| **Touch** | Touch press, move, release; on desktop LMB can emulate touch (e.g. touch id 0). |
+| **Thread-safe queue** | Push events from one thread, process on another. |
+| **Input polling** | `Input::isKeyPressed()`, `Input::mousePosition()`, etc.; call `Input::nextFrame()` once per frame. |
 
-
-For full architecture, API reference, and examples, see the [vneevents repository](https://github.com/vertexnova/vneevents).
-
-## Where you see it: vnetestbed and the events sample
+## Where to See It: vnetestbed and the Events Sample
 
 The easiest way to **see events in action** is to run the **vnetestbed** sample that uses a [GLFW](https://github.com/glfw/glfw) window, OpenGL, and [Dear ImGui](https://github.com/ocornut/imgui/tree/docking) (docking branch). That sample is built to **test and demonstrate** every vneevents [events](https://github.com/vertexnova/vneevents) and [input](https://github.com/vertexnova/vneevents) API.
 
@@ -54,7 +42,6 @@ When you run the sample you get a window with:
 So you can press keys, move the mouse, scroll, and resize the window and **see exactly what events the library delivers**. That’s how we test that event delivery and polling work correctly.
 
 ## What the events sample shows
-
 
 1. **Event delivery** — Keyboard, mouse button, mouse move, scroll, window resize, window close, and touch (press/move/release) events arrive with the correct type and data.
 2. **Touch emulation** — Left mouse button is treated as touch id `0` (TouchPress, TouchMove, TouchRelease) so you can try touch on desktop; it’s turned on only in this demo.
@@ -150,6 +137,8 @@ The sample uses both: the **Events** panel shows the event stream; the **Input P
 | WindowCloseEvent | Window closed; time to quit or clean up. |
 | TouchPressEvent / TouchMoveEvent / TouchReleaseEvent | Touch (or emulated from mouse in the sample). |
 
+## Use Events and Input in Your Code
+
 In your own code you use the same flow as the testbed:
 
 ```mermaid
@@ -171,9 +160,8 @@ Same flow as the testbed; your app just plugs in its own window backend and list
 
 ## Summary
 
-- **Events** = messages that “something happened”; **vneevents** = the library that defines those messages and delivers them to your listeners.
-- **vnetestbed** has an **events sample** (`01_test_events`) that shows every event type and input polling in a GLFW + OpenGL + ImGui window.
-- **How we test calling events from GLFW**: GLFW callbacks create vneevents events and push them into EventManager; each frame we process the queue and listeners get `onEvent()`. So you get the full idea from this page; for more, see the [vneevents docs](https://github.com/vertexnova/vneevents) and the sample’s [README](https://github.com/vertexnova/vnetestbed/blob/main/samples/glfw_opengl/01_test_events/README.md).
+- **Events and input** are added by receiving window/input callbacks (e.g. from [GLFW](https://github.com/glfw/glfw)), turning them into typed events, pushing into a queue, and processing each frame so listeners get `onEvent()`. Polling uses `Input::isKeyPressed()`, `Input::mousePosition()`, and `Input::nextFrame()`.
+- The [vneevents](https://github.com/vertexnova/vneevents) library provides the event types, queue, and Input API; full docs and the sample [README](https://github.com/vertexnova/vnetestbed/blob/main/samples/glfw_opengl/01_test_events/README.md) are in the repos.
 
 ## Next steps
 
