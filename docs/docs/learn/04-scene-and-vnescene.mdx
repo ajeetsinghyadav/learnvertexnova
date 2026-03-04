@@ -79,9 +79,31 @@ A **perspective camera** models a pinhole — parallel lines converge. Depth is 
 
 An **orthographic camera** keeps parallel lines parallel. Scale does not change with depth. Use it for 2D, UI, technical/CAD views, and shadow maps.
 
+### Conventions used here
+
+Before the matrices: a few terms that appear throughout.
+
+**Handedness** — OpenGL, Metal, and vnescene use a **right-handed** coordinate system: $X$ right, $Y$ up, $Z$ toward the viewer. Camera space has the camera looking down $-Z$.
+
+**NDC depth range** — different APIs map the view frustum to different depth intervals:
+
+| API | NDC Z range | Y axis in NDC |
+|-----|------------|---------------|
+| OpenGL | $[-1, 1]$ | up |
+| Vulkan | $[0, 1]$ | **down** (flipped) |
+| Metal | $[0, 1]$ | up |
+
+Call `camera->setGraphicsApi(vne::math::GraphicsApi::eVulkan)` (or `eMetal`) — the library rebuilds the projection to match the chosen convention.
+
+**Matrix layout** — vnescene stores matrices **column-major**, matching GLSL/HLSL `layout(column_major)` and Metal's default. When you read the entries below, column $j$ of the matrix is stored as the $j$-th group of four floats in memory. Row vectors (e.g. DirectX HLSL `row_major`) would be the transpose.
+
+**Transform order** — to combine scale, rotation, and translation into a model matrix use $M = T \times R \times S$ (right to left: scale first, rotate, then translate). Applying scale after rotation produces shear.
+
+---
+
 ### Perspective projection matrix
 
-Let $e = 1/\tan(\text{fov}/2)$ and $a$ = aspect ratio. The matrix maps the frustum to NDC (OpenGL convention, $Z \in [-1, 1]$):
+Let $e = 1/\tan(\text{fov}/2)$ and $a$ = aspect ratio ($a = w/h$). The frustum is defined by $n$ (near), $f$ (far), and the FOV. OpenGL right-handed, $Z \in [-1, 1]$:
 
 $$
 P_{\text{persp}} =
@@ -93,11 +115,29 @@ e/a & 0 & 0 & 0 \\
 \end{bmatrix}
 $$
 
-The $-1$ in the last row causes the perspective divide: after multiplication, $w_\text{clip} = -z_\text{view}$, so depth becomes non-linear in NDC. For Vulkan ($Z \in [0, 1]$), call `camera->setGraphicsApi(eVulkan)` — the library adjusts row 2 and flips Y internally.
+The $-1$ in row 3 col 2 (0-indexed) produces the **perspective divide**: after the matrix multiply, $w_\text{clip} = -z_\text{view}$. Hardware divides $xyz$ by $w$ to get NDC, making depth non-linear (more precision near $n$, less near $f$).
+
+**Frustum form** — if you have explicit frustum bounds $[l, r] \times [b, t]$ at the near plane instead of FOV:
+
+$$
+P_{\text{frustum}} =
+\begin{bmatrix}
+\displaystyle\frac{2n}{r-l} & 0 & \displaystyle\frac{r+l}{r-l} & 0 \\[6pt]
+0 & \displaystyle\frac{2n}{t-b} & \displaystyle\frac{t+b}{t-b} & 0 \\[6pt]
+0 & 0 & \displaystyle-\frac{f+n}{f-n} & \displaystyle-\frac{2fn}{f-n} \\[6pt]
+0 & 0 & -1 & 0
+\end{bmatrix}
+$$
+
+For a symmetric frustum ($l = -r$, $b = -t$) this collapses to the FOV form above.
+
+**Vulkan / Metal variant** — Vulkan flips $Y$ (row 1 negated) and shifts depth to $[0, 1]$ (row 2 changes). Metal shifts depth to $[0, 1]$ but keeps $Y$ up. `setGraphicsApi` handles both.
+
+---
 
 ### Orthographic projection matrix
 
-For bounds $[l, r] \times [b, t] \times [n, f]$ the orthographic matrix is:
+**Explicit bounds form** — for a box $[l, r] \times [b, t] \times [n, f]$. OpenGL, $Z \in [-1, 1]$:
 
 $$
 P_{\text{ortho}} =
@@ -109,7 +149,17 @@ P_{\text{ortho}} =
 \end{bmatrix}
 $$
 
-No perspective divide — $w_\text{clip} = 1$ always, so depth is linear and objects do not shrink with distance.
+No perspective divide — $w_\text{clip} = 1$ always, so depth is linear and objects do not change size with distance.
+
+**Half-extent form** — vnescene's second `OrthographicCamera` constructor takes a half-extent $h$ and viewport size. It computes symmetric bounds from the aspect ratio $a = w/h_\text{px}$:
+
+$$
+l = -a \cdot h,\quad r = +a \cdot h,\quad b = -h,\quad t = +h
+$$
+
+then substitutes into the explicit-bounds matrix above. Useful for 2D cameras where you want to express "show $h$ world units above and below center."
+
+**Vulkan / Metal variant** — the $Z$ row becomes $\tfrac{-1}{f-n}$ and the translation shifts to $\tfrac{-n}{f-n}$ for $[0, 1]$ depth. `setGraphicsApi` handles this.
 
 ## Quick Start
 
