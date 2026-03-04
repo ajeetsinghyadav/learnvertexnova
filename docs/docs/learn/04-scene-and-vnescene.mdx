@@ -1,0 +1,346 @@
+---
+sidebar_position: 5
+title: "04: Scene — Cameras and Lights"
+description: "Use vnescene in your app — perspective and orthographic cameras, four light types, SceneState, and GPU packing."
+slug: 04-scene-and-vnescene
+---
+
+# 04: Scene — Cameras and Lights
+
+**vnescene** is three focused pieces: a **camera** that defines what is in view, **lights** that describe how geometry is illuminated, and a **SceneState** container that holds the active camera and a list of lights. It does not own geometry or GPU resources — its output is GPU-packed structs (`CameraGpu`, `LightGpu`) that you upload to a uniform buffer.
+
+The library providing this is [vnescene](https://github.com/vertexnova/vnescene). The [vnetestbed](https://github.com/vertexnova/vnetestbed) `02_test_scene` sample runs the full pipeline interactively.
+
+## What vnescene gives you
+
+| Component | What it is |
+|-----------|-----------|
+| `PerspectiveCamera` | FOV-based projection. position, target, up, near/far, aspect. |
+| `OrthographicCamera` | Parallel projection. left/right/bottom/top or half-extent + near/far. |
+| `CameraGpu` | Packed struct (view, projection, view-projection, position) for GPU upload. |
+| `camera_utils` | `fitToAabb`, `screenToWorldRay`, `project`, `unproject`, `buildFrustum`. |
+| `AmbientLight` | Non-directional fill; color + intensity. |
+| `DirectionalLight` | Parallel rays (sun); direction, color, intensity. |
+| `PointLight` | Omni; position, color, intensity, range. |
+| `SpotLight` | Cone; position, direction, color, intensity, range, inner/outer angle. |
+| `LightGpu` | Packed struct for all light types. |
+| `SceneState` | Holds one active camera and a list of lights. |
+| `Environment` | Exposure, gamma, clear color, optional HDRI id (data only). |
+
+Full reference: **[vnescene repository](https://github.com/vertexnova/vnescene)**.
+
+## How the camera works
+
+Before any vertex reaches the screen, three matrices transform it from model space to clip space. vnescene cameras compute and cache all three.
+
+![Camera space transformation: World → View → Clip → NDC → Screen](/img/learn/04_camera_spaces.png)
+
+The **view matrix** moves the world so the camera is at the origin, looking down -Z. The **projection matrix** maps the view frustum into a unit cube (NDC). For OpenGL the Z range is [-1, 1]; for Vulkan it is [0, 1]. Call `camera.setGraphicsApi(vne::math::GraphicsApi::eVulkan)` to get the correct projection — the camera handles the difference internally.
+
+```
+World space  ──── View matrix ────▶  Camera space
+Camera space ── Projection matrix ─▶  Clip / NDC space
+NDC space    ──── Viewport transform ▶  Screen pixels
+```
+
+The camera does not own the viewport transform — that lives in the graphics API (OpenGL `glViewport`, Vulkan `VkViewport`).
+
+## Perspective vs orthographic
+
+![Perspective frustum (converging rays) vs orthographic frustum (parallel rays)](/img/learn/04_camera_projection.png)
+
+A **perspective camera** models a pinhole — parallel lines converge. Depth is non-linear in NDC. Use it for 3D scenes where you want depth cues and foreshortening.
+
+An **orthographic camera** keeps parallel lines parallel. Scale does not change with depth. Use it for 2D, UI, technical/CAD views, and shadow maps.
+
+## Quick Start
+
+```cpp
+#include <vertexnova/scene/scene.h>
+
+// --- Camera ---
+auto camera = std::make_shared<vne::scene::PerspectiveCamera>(
+    60.0f,          // FOV (degrees)
+    1280.0f,        // viewport width  →  aspect = width/height
+    720.0f,         // viewport height
+    0.1f,           // near plane
+    1000.0f         // far plane
+);
+camera->setPosition({0.0f, 3.0f, 8.0f});
+camera->setTarget({0.0f, 0.0f, 0.0f});
+
+// --- Lights ---
+auto ambient = std::make_shared<vne::scene::AmbientLight>(
+    vne::math::Vec3f{0.08f, 0.08f, 0.1f},  // color
+    1.0f                                    // intensity
+);
+auto sun = std::make_shared<vne::scene::DirectionalLight>(
+    vne::math::Vec3f{-0.5f, -1.0f, -0.3f},  // direction (world space, not normalized required)
+    vne::math::Vec3f{1.0f, 0.97f, 0.9f},    // color
+    1.0f                                     // intensity
+);
+
+// --- Scene state ---
+vne::scene::SceneState scene;
+scene.setActiveCamera(camera);
+scene.addLight(ambient);
+scene.addLight(sun);
+
+// --- GPU pack ---
+if (scene.hasActiveCamera()) {
+    vne::scene::CameraGpu cam_gpu = scene.getActiveCamera()->toGpu();
+    // upload cam_gpu to a UBO / uniform block
+}
+for (auto& light : scene.getLights()) {
+    vne::scene::LightGpu lg = light->toGpu();
+    // append lg to a light array buffer
+}
+```
+
+| Call | What it does |
+|------|-------------|
+| `PerspectiveCamera(fov, w, h, near, far)` | Computes aspect = w/h; matrices are lazy-computed on first get. |
+| `camera->setPosition / setTarget` | Mark matrices dirty; recomputed on next `getViewMatrix()`. |
+| `camera->toGpu()` | Returns `CameraGpu` — view, projection, viewProj, position. Upload as a UBO. |
+| `scene.addLight(ptr)` | Appends; respects `setMaxLights` cap if set. |
+| `light->toGpu()` | Returns `LightGpu` — type tag + all fields — same struct for all light types. |
+
+## Camera types and construction
+
+### PerspectiveCamera
+
+```cpp
+// From FOV + explicit aspect
+vne::scene::PerspectiveCamera cam(60.0f, 16.0f/9.0f, 0.1f, 1000.0f);
+
+// From FOV + viewport size (aspect computed)
+vne::scene::PerspectiveCamera cam(60.0f, 1280.0f, 720.0f, 0.1f, 1000.0f);
+
+// Common mutations
+cam.setFieldOfView(45.0f);
+cam.setNearPlane(0.01f);
+cam.setFarPlane(500.0f);
+cam.resize(width, height);           // call on window resize
+cam.lookAt({0.0f, 0.0f, 0.0f});     // point at target, keep current up
+
+// First-person / orbit helpers
+cam.moveForward(delta * speed);
+cam.moveRight(delta * speed);
+cam.rotateAroundTarget(yaw_deg, pitch_deg);  // orbit
+
+// Navigation helpers
+cam.getForward();   // normalized forward vector
+cam.getRight();     // normalized right vector
+```
+
+### OrthographicCamera
+
+```cpp
+// From explicit frustum bounds
+vne::scene::OrthographicCamera cam(-8.0f, 8.0f, -4.5f, 4.5f, -100.0f, 100.0f);
+
+// From half-extent (symmetric, aspect from width/height)
+vne::scene::OrthographicCamera cam(6.0f, 1280.0f, 720.0f, -100.0f, 100.0f);
+// → left=-aspect*half, right=+aspect*half, bottom=-half, top=+half
+```
+
+### Via CameraFactory
+
+```cpp
+vne::scene::CameraParameters params;
+params.type         = vne::scene::CameraType::ePerspective;
+params.fov          = 60.0f;
+params.aspect_ratio = 16.0f / 9.0f;
+params.near_plane   = 0.1f;
+params.far_plane    = 1000.0f;
+
+auto camera = vne::scene::CameraFactory::create(params);
+```
+
+### Viewport resize
+
+Call `camera->resize(width, height)` or `camera->setViewport(width, height)` when the window size changes. This recomputes aspect and marks projection dirty.
+
+### Graphics API
+
+```cpp
+// Default is OpenGL. Switch for Vulkan (flips Y in projection, shifts Z range to [0,1])
+camera->setGraphicsApi(vne::math::GraphicsApi::eVulkan);
+```
+
+## Light types
+
+### AmbientLight — fill illumination
+
+No position or direction. Sets a base brightness floor so unlit surfaces are not pure black.
+
+```cpp
+auto ambient = std::make_shared<vne::scene::AmbientLight>(
+    vne::math::Vec3f{0.08f, 0.08f, 0.1f},  // color
+    1.0f                                    // intensity
+);
+```
+
+### DirectionalLight — parallel rays (sun, sky)
+
+![Directional light — parallel rays, no attenuation](/img/learn/04_light_directional.png)
+
+Direction points toward the light source (opposite of light travel). No position, no attenuation — illumination is equal everywhere.
+
+```cpp
+auto sun = std::make_shared<vne::scene::DirectionalLight>(
+    vne::math::Vec3f{-0.5f, -1.0f, -0.3f},  // direction
+    vne::math::Vec3f{1.0f, 0.97f, 0.9f},    // warm white
+    1.0f
+);
+```
+
+### PointLight — omni light with range
+
+![Point light — spherical falloff, range-limited](/img/learn/04_light_point.png)
+
+Illuminates in all directions from a position. Intensity falls off with distance up to `range`.
+
+```cpp
+auto lamp = std::make_shared<vne::scene::PointLight>(
+    vne::math::Vec3f{0.0f, 3.0f, 0.0f},  // position
+    vne::math::Vec3f{1.0f, 0.8f, 0.4f},  // warm color
+    2.0f,                                 // intensity
+    8.0f                                  // range (world units)
+);
+lamp->setPosition({2.0f, 2.0f, 0.0f});   // move it
+lamp->setRange(12.0f);
+```
+
+### SpotLight — cone light
+
+![Spot light — cone with inner (full brightness) and outer (falloff) angles](/img/learn/04_light_spot.png)
+
+Position + direction + two cone angles. From `inner_angle` inward: full intensity. From `inner_angle` to `outer_angle`: smooth falloff. Beyond `outer_angle`: no contribution. **Outer angle must be greater than inner angle** — the library enforces a small epsilon, but keep them separated.
+
+```cpp
+auto spot = std::make_shared<vne::scene::SpotLight>(
+    vne::math::Vec3f{0.0f, 4.0f, 4.0f},   // position
+    vne::math::Vec3f{0.0f, -0.7f, -0.7f}, // direction
+    vne::math::Vec3f{1.0f, 0.9f, 0.7f},   // color
+    2.0f,                                  // intensity
+    10.0f,                                 // range
+    15.0f,                                 // inner angle (degrees)
+    30.0f                                  // outer angle (degrees)
+);
+```
+
+## Light summary
+
+![Four light types — ambient, directional, point, spot](/img/learn/04_light_types.png)
+
+| Type | Position | Direction | Range | Cone | Use |
+|------|----------|-----------|-------|------|-----|
+| Ambient | — | — | — | — | Base fill, prevents total black |
+| Directional | — | yes | — | — | Sun, sky, dominant light source |
+| Point | yes | — | yes | — | Lamp, torch, explosion, any local omni |
+| Spot | yes | yes | yes | yes | Flashlight, stage light, car headlight |
+
+## SceneState
+
+```cpp
+vne::scene::SceneState scene;
+
+// Camera
+scene.setActiveCamera(camera);
+auto* cam = scene.getActiveCamera().get();  // ICamera*
+bool has_cam = scene.hasActiveCamera();
+
+// Lights
+scene.addLight(ambient);
+scene.addLight(sun);
+scene.removeLight(sun);     // by shared_ptr
+scene.clearLights();
+size_t n = scene.getLightCount();
+const auto& lights = scene.getLights();  // std::vector<shared_ptr<ILight>>
+
+// Optional cap: keep at most 8 lights
+scene.setMaxLights(8);
+```
+
+## Camera utilities
+
+```cpp
+#include <vertexnova/scene/camera/camera_utils.h>
+
+// World-space ray from a screen pixel (for picking)
+auto ray = vne::scene::screenToWorldRay(*camera, mouse_x, mouse_y, 1280.0f, 720.0f);
+// ray.origin = camera position, ray.direction = world direction through pixel
+
+// Fit camera to bounding box (model viewer / focus-on-object)
+vne::math::Aabb box = compute_scene_aabb();
+vne::scene::fitToAabb(*persp_camera, box, 1.1f);  // 1.1 = 10% padding
+
+// Project world → screen
+auto screen_pt = vne::scene::project(*camera, world_pos, 1280.0f, 720.0f);
+
+// Unproject screen → world
+auto world_pt = vne::scene::unproject(*camera, {mouse_x, mouse_y, depth}, 1280.0f, 720.0f);
+
+// Frustum for culling
+auto frustum = vne::scene::buildFrustum(*camera);
+```
+
+## Environment
+
+```cpp
+vne::scene::Environment env;
+env.exposure = 1.0f;
+env.gamma    = 2.2f;
+env.setClearColor({0.1f, 0.1f, 0.15f});
+
+// At the start of each frame, use clearColorRgba() to clear the framebuffer
+auto [r, g, b, a] = env.clearColorRgba();
+```
+
+`Environment` is a plain data struct. Use `clearColorRgba()` when clearing the framebuffer and pass `exposure` / `gamma` to your shaders.
+
+## See it in vnetestbed
+
+The `02_test_scene` sample is the interactive reference. It shows: camera type switching (perspective / orthographic), per-parameter controls, orbit/pan/zoom interaction, rotating cubes rendered with Blinn-Phong shading, and all four light types — all driven from a live ImGui settings panel.
+
+```bash
+git clone --recursive https://github.com/vertexnova/vnetestbed.git
+cd vnetestbed
+cmake -B build -DVNE_TESTBED_SAMPLES=ON
+cmake --build build
+./build/bin/samples/sample_02_test_scene
+```
+
+When using a platform script the binary is under `build/Debug/build-<platform>-*/bin/samples/`. See the [repo README](https://github.com/vertexnova/vnetestbed) for details.
+
+Settings panel sections: **[Camera]**, **[Interaction]**, **[Cubes]**, **[Ambient]**, **[Directional Light]**, **[Point Lights]** (add/remove up to 4), **[Spot Light]**, **[Attenuation]**. Exit with ESC.
+
+![vnetestbed 02_test_scene — camera and lighting sample](/img/learn/04_test_scene.png)
+
+## vnescene examples (standalone)
+
+The library ships seven focused examples:
+
+```bash
+cd deps/internal/vnescene   # or your vnescene checkout
+cmake -B build -DBUILD_EXAMPLES=ON
+cmake --build build
+./build/bin/examples/example_01_basic
+```
+
+| Example | What it covers |
+|---------|---------------|
+| `01_basic` | Perspective camera, ambient + directional lights |
+| `02_scene_gpu_pack` | SceneState, pack camera and lights to `CameraGpu` / `LightGpu` |
+| `03_camera_backend` | OpenGL vs Vulkan projection — view/projection matrix output |
+| `04_fit_to_aabb` | `fitToAabb` and `projectAabbCorners` |
+| `05_screen_ray` | `screenToWorldRay` from center pixel |
+| `06_shadow_settings` | `setShadowSettings` round-trip for directional and spot |
+| `07_camera_transform_sync` | `CameraTransformAdapter` — sync camera ↔ transform node |
+
+Full reference: [vnescene README](https://github.com/vertexnova/vnescene) · [vnetestbed sample README](https://github.com/vertexnova/vnetestbed/blob/main/samples/glfw_opengl/02_test_scene/README.md).
+
+---
+
+**Next:** See the [Learn index](./index.md) for what's next.

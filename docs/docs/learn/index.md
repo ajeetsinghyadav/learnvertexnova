@@ -18,6 +18,7 @@ Every chapter maps to working code. Every concept ends with something you can ru
 | [01: Hello VertexNova](./01-hello-vertexnova) | Clone vnetemplate, build, run your first program |
 | [02: Adding Logging](./02-adding-logging) | Use logging (and optional rename) in the template project |
 | [03: Events and Input](./03-events-and-vneevents) | Use events and input — where they come from, how to handle them, run the events sample |
+| [04: Scene — Cameras and Lights](./04-scene-and-vnescene) | Use vnescene — perspective and orthographic cameras, four light types, SceneState, GPU packing |
 
 ## Coming Soon
 
