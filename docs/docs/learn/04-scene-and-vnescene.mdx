@@ -5,7 +5,7 @@ description: "Use vnescene in your app — perspective and orthographic cameras,
 slug: 04-scene-and-vnescene
 ---
 
-# 04: Scene — Cameras and Lights
+# 04: Scene - Cameras and Lights
 
 **vnescene** is three focused pieces: a **camera** that defines what is in view, **lights** that describe how geometry is illuminated, and a **SceneState** container that holds the active camera and a list of lights. It does not own geometry or GPU resources — its output is GPU-packed structs (`CameraGpu`, `LightGpu`) that you upload to a uniform buffer.
 
@@ -33,7 +33,7 @@ Full reference: **[vnescene repository](https://github.com/vertexnova/vnescene)*
 
 Before any vertex reaches the screen, three matrices transform it from model space to clip space. vnescene cameras compute and cache all three.
 
-![Camera space transformation: World → View → Clip → NDC → Screen](/img/learn/04_camera_spaces.png)
+<!-- Add static/img/learn/04_camera_spaces.png (e.g. export from static/img/learn/diagrams/04_camera_spaces.excalidraw) to show the diagram -->
 
 The **view matrix** moves the world so the camera is at the origin, looking down -Z. The **projection matrix** maps the view frustum into a unit cube (NDC). For OpenGL the Z range is [-1, 1]; for Vulkan it is [0, 1]. Call `camera.setGraphicsApi(vne::math::GraphicsApi::eVulkan)` to get the correct projection — the camera handles the difference internally.
 
@@ -47,7 +47,7 @@ The camera does not own the viewport transform — that lives in the graphics AP
 
 ## Perspective vs orthographic
 
-![Perspective frustum (converging rays) vs orthographic frustum (parallel rays)](/img/learn/04_camera_projection.png)
+<!-- Add static/img/learn/04_camera_projection.png (e.g. export from static/img/learn/diagrams/04_camera_projection.excalidraw) to show the diagram -->
 
 A **perspective camera** models a pinhole — parallel lines converge. Depth is non-linear in NDC. Use it for 3D scenes where you want depth cues and foreshortening.
 
@@ -183,7 +183,7 @@ auto ambient = std::make_shared<vne::scene::AmbientLight>(
 
 ### DirectionalLight — parallel rays (sun, sky)
 
-![Directional light — parallel rays, no attenuation](/img/learn/04_light_directional.png)
+<!-- Add static/img/learn/04_light_directional.png (e.g. export from diagrams/04_light_directional.excalidraw) to show the diagram -->
 
 Direction points toward the light source (opposite of light travel). No position, no attenuation — illumination is equal everywhere.
 
@@ -197,7 +197,7 @@ auto sun = std::make_shared<vne::scene::DirectionalLight>(
 
 ### PointLight — omni light with range
 
-![Point light — spherical falloff, range-limited](/img/learn/04_light_point.png)
+<!-- Add static/img/learn/04_light_point.png (e.g. export from diagrams/04_light_point.excalidraw) to show the diagram -->
 
 Illuminates in all directions from a position. Intensity falls off with distance up to `range`.
 
@@ -214,7 +214,7 @@ lamp->setRange(12.0f);
 
 ### SpotLight — cone light
 
-![Spot light — cone with inner (full brightness) and outer (falloff) angles](/img/learn/04_light_spot.png)
+<!-- Add static/img/learn/04_light_spot.png (e.g. export from diagrams/04_light_spot.excalidraw) to show the diagram -->
 
 Position + direction + two cone angles. From `inner_angle` inward: full intensity. From `inner_angle` to `outer_angle`: smooth falloff. Beyond `outer_angle`: no contribution. **Outer angle must be greater than inner angle** — the library enforces a small epsilon, but keep them separated.
 
@@ -232,7 +232,7 @@ auto spot = std::make_shared<vne::scene::SpotLight>(
 
 ## Light summary
 
-![Four light types — ambient, directional, point, spot](/img/learn/04_light_types.png)
+<!-- Add static/img/learn/04_light_types.png (e.g. export from diagrams/04_light_types.excalidraw) to show the diagram -->
 
 | Type | Position | Direction | Range | Cone | Use |
 |------|----------|-----------|-------|------|-----|
@@ -316,7 +316,7 @@ When using a platform script the binary is under `build/Debug/build-<platform>-*
 
 Settings panel sections: **[Camera]**, **[Interaction]**, **[Cubes]**, **[Ambient]**, **[Directional Light]**, **[Point Lights]** (add/remove up to 4), **[Spot Light]**, **[Attenuation]**. Exit with ESC.
 
-![vnetestbed 02_test_scene — camera and lighting sample](/img/learn/04_test_scene.png)
+<!-- Add static/img/learn/04_test_scene.png (screenshot from vnetestbed sample_02_test_scene) to show the sample -->
 
 ## vnescene examples (standalone)
 
