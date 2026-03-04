@@ -33,7 +33,7 @@ Full reference: **[vnescene repository](https://github.com/vertexnova/vnescene)*
 
 Before any vertex reaches the screen, three matrices transform it from model space to clip space. vnescene cameras compute and cache all three.
 
-<!-- Add static/img/learn/04_camera_spaces.png (e.g. export from static/img/learn/diagrams/04_camera_spaces.excalidraw) to show the diagram -->
+![World → camera → clip → screen — camera spaces](/img/learn/diagrams/04_camera_spaces.png)
 
 The **view matrix** moves the world so the camera is at the origin, looking down -Z. The **projection matrix** maps the view frustum into a unit cube (NDC). For OpenGL the Z range is [-1, 1]; for Vulkan it is [0, 1]. Call `camera.setGraphicsApi(vne::math::GraphicsApi::eVulkan)` to get the correct projection — the camera handles the difference internally.
 
@@ -73,7 +73,7 @@ The camera looks down $-Z$ in camera space. The inverse $V^{-1} = R \cdot T(\tex
 
 ## Perspective vs orthographic
 
-<!-- Add static/img/learn/04_camera_projection.png (e.g. export from static/img/learn/diagrams/04_camera_projection.excalidraw) to show the diagram -->
+![Perspective vs orthographic projection](/img/learn/diagrams/04_camera_projection.png)
 
 A **perspective camera** models a pinhole — parallel lines converge. Depth is non-linear in NDC. Use it for 3D scenes where you want depth cues and foreshortening.
 
@@ -301,7 +301,7 @@ auto ambient = std::make_shared<vne::scene::AmbientLight>(
 
 ### DirectionalLight — parallel rays (sun, sky)
 
-<!-- Add static/img/learn/04_light_directional.png (e.g. export from diagrams/04_light_directional.excalidraw) to show the diagram -->
+![Directional light — parallel rays, no position](/img/learn/diagrams/04_light_directional.png)
 
 Direction points toward the light source (opposite of travel). No position, no attenuation — illumination is equal everywhere:
 
@@ -321,7 +321,7 @@ auto sun = std::make_shared<vne::scene::DirectionalLight>(
 
 ### PointLight — omni light with range
 
-<!-- Add static/img/learn/04_light_point.png (e.g. export from diagrams/04_light_point.excalidraw) to show the diagram -->
+![Point light — omni from a position with range](/img/learn/diagrams/04_light_point.png)
 
 Illuminates in all directions from a position. Intensity falls off with distance $d = \lVert \text{lightPos} - \text{fragPos} \rVert$ to zero at `range`:
 
@@ -344,7 +344,7 @@ lamp->setRange(12.0f);
 
 ### SpotLight — cone light
 
-<!-- Add static/img/learn/04_light_spot.png (e.g. export from diagrams/04_light_spot.excalidraw) to show the diagram -->
+![Spot light — cone with inner/outer angles](/img/learn/diagrams/04_light_spot.png)
 
 Position + direction + two cone angles. The library stores the angles as cosines: $c_i = \cos(\theta_\text{inner})$, $c_o = \cos(\theta_\text{outer})$. Inside the inner cone: full intensity. Between inner and outer: smooth falloff. Beyond outer: no contribution. **Outer angle must be greater than inner angle.**
 
@@ -368,7 +368,7 @@ auto spot = std::make_shared<vne::scene::SpotLight>(
 
 ## Light summary
 
-<!-- Add static/img/learn/04_light_types.png (e.g. export from diagrams/04_light_types.excalidraw) to show the diagram -->
+![Light types overview — ambient, directional, point, spot](/img/learn/diagrams/04_light_types.png)
 
 | Type | Position | Direction | Range | Cone | Use |
 |------|----------|-----------|-------|------|-----|
