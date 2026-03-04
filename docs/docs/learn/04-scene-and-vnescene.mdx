@@ -45,6 +45,32 @@ NDC space    ──── Viewport transform ▶  Screen pixels
 
 The camera does not own the viewport transform — that lives in the graphics API (OpenGL `glViewport`, Vulkan `VkViewport`).
 
+### View matrix construction
+
+The view matrix is built from three vectors derived from `position`, `target`, and `up`:
+
+$$
+\mathbf{f} = \text{normalize}(\text{target} - \text{eye})
+\qquad
+\mathbf{r} = \text{normalize}(\mathbf{f} \times \mathbf{up})
+\qquad
+\mathbf{u} = \mathbf{r} \times \mathbf{f}
+$$
+
+These form an orthonormal basis. The view matrix rotates the world into camera space and then translates by the negated eye position:
+
+$$
+V =
+\begin{bmatrix}
+r_x & r_y & r_z & -\mathbf{r}\cdot\text{eye} \\
+u_x & u_y & u_z & -\mathbf{u}\cdot\text{eye} \\
+-f_x & -f_y & -f_z & \mathbf{f}\cdot\text{eye} \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+The camera looks down $-Z$ in camera space. The inverse $V^{-1} = R \cdot T(\text{eye})$ transforms from camera space back to world space — used internally by `screenToWorldRay`.
+
 ## Perspective vs orthographic
 
 <!-- Add static/img/learn/04_camera_projection.png (e.g. export from static/img/learn/diagrams/04_camera_projection.excalidraw) to show the diagram -->
@@ -52,6 +78,38 @@ The camera does not own the viewport transform — that lives in the graphics AP
 A **perspective camera** models a pinhole — parallel lines converge. Depth is non-linear in NDC. Use it for 3D scenes where you want depth cues and foreshortening.
 
 An **orthographic camera** keeps parallel lines parallel. Scale does not change with depth. Use it for 2D, UI, technical/CAD views, and shadow maps.
+
+### Perspective projection matrix
+
+Let $e = 1/\tan(\text{fov}/2)$ and $a$ = aspect ratio. The matrix maps the frustum to NDC (OpenGL convention, $Z \in [-1, 1]$):
+
+$$
+P_{\text{persp}} =
+\begin{bmatrix}
+e/a & 0 & 0 & 0 \\
+0 & e & 0 & 0 \\
+0 & 0 & \displaystyle-\frac{f+n}{f-n} & \displaystyle-\frac{2fn}{f-n} \\
+0 & 0 & -1 & 0
+\end{bmatrix}
+$$
+
+The $-1$ in the last row causes the perspective divide: after multiplication, $w_\text{clip} = -z_\text{view}$, so depth becomes non-linear in NDC. For Vulkan ($Z \in [0, 1]$), call `camera->setGraphicsApi(eVulkan)` — the library adjusts row 2 and flips Y internally.
+
+### Orthographic projection matrix
+
+For bounds $[l, r] \times [b, t] \times [n, f]$ the orthographic matrix is:
+
+$$
+P_{\text{ortho}} =
+\begin{bmatrix}
+\displaystyle\frac{2}{r-l} & 0 & 0 & \displaystyle-\frac{r+l}{r-l} \\[6pt]
+0 & \displaystyle\frac{2}{t-b} & 0 & \displaystyle-\frac{t+b}{t-b} \\[6pt]
+0 & 0 & \displaystyle-\frac{2}{f-n} & \displaystyle-\frac{f+n}{f-n} \\[6pt]
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+No perspective divide — $w_\text{clip} = 1$ always, so depth is linear and objects do not shrink with distance.
 
 ## Quick Start
 
@@ -240,6 +298,89 @@ auto spot = std::make_shared<vne::scene::SpotLight>(
 | Directional | — | yes | — | — | Sun, sky, dominant light source |
 | Point | yes | — | yes | — | Lamp, torch, explosion, any local omni |
 | Spot | yes | yes | yes | yes | Flashlight, stage light, car headlight |
+
+## Light math
+
+These are the shader-side formulas that consume the `LightGpu` values vnescene produces. Understanding them helps when writing your own GLSL/HLSL shaders.
+
+### Diffuse (Lambert)
+
+All light types use the same base diffuse term. $\mathbf{N}$ is the surface normal, $\mathbf{L}$ is the unit vector pointing **toward** the light:
+
+$$
+L_{\text{diffuse}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity}
+$$
+
+### Ambient
+
+No direction, no attenuation. Applied once as a constant base term:
+
+$$
+L_{\text{ambient}} = \text{color} \times \text{intensity}
+$$
+
+The GPU struct packs this as `color_intensity` with type tag $0$.
+
+### Directional light
+
+Direction is stored as a unit vector pointing **toward** the source (opposite to light travel). No distance falloff:
+
+$$
+\mathbf{L} = \text{normalize}(-\text{direction})
+\qquad
+L_{\text{dir}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity}
+$$
+
+GPU type tag = $1$. Position and range fields are zero.
+
+### Point light — distance falloff
+
+$d = \lVert \text{lightPos} - \text{fragPos} \rVert$. Intensity falls to zero at `range`:
+
+$$
+a(d) = \left(1 - \text{clamp}\!\left(\frac{d}{\text{range}},\; 0,\; 1\right)^2\right)^2
+$$
+
+$$
+\mathbf{L} = \text{normalize}(\text{lightPos} - \text{fragPos})
+\qquad
+L_{\text{point}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity} \times a(d)
+$$
+
+GPU type tag = $2$. `position_range.w` = range.
+
+### Spot light — cone falloff
+
+The spot cone is defined by two precomputed cosines stored in the GPU struct: $c_i = \cos(\theta_\text{inner})$ and $c_o = \cos(\theta_\text{outer})$.
+
+$$
+\theta = \mathbf{L} \cdot \text{normalize}(-\text{direction})
+\qquad
+\epsilon = c_i - c_o
+$$
+
+$$
+s = \text{smoothstep}\!\left(0,\; 1,\; \frac{\theta - c_o}{\epsilon}\right)
+$$
+
+Combined with distance falloff $a(d)$ (same formula as point light):
+
+$$
+L_{\text{spot}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity} \times a(d) \times s
+$$
+
+GPU type tag = $3$. `direction_inner_cos.w` = $c_i$, `misc.z` = $c_o$.
+
+### LightGpu layout (64 bytes, std140)
+
+| Field | Type | Content |
+|-------|------|---------|
+| `color_intensity` | Float4 | $(r, g, b,\; \text{intensity})$ |
+| `position_range` | Float4 | $(\text{pos.xyz},\; \text{range})$ |
+| `direction_inner_cos` | Float4 | $(\text{dir.xyz},\; c_i)$ |
+| `misc` | Float4 | $(\text{type},\; \text{enabled},\; c_o,\; 0)$ |
+
+Type values: $0$ = ambient, $1$ = directional, $2$ = point, $3$ = spot.
 
 ## SceneState
 
