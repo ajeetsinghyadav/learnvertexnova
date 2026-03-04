@@ -1,221 +1,212 @@
 ---
 sidebar_position: 4
 title: "03: Events and Input"
-description: "Use events and input in your app — where they come from, how to handle them, and how to run the events sample."
+description: "Use vneevents in your app — typed events, input polling, the EventManager, and the vnetestbed events sample."
 slug: 03-events-and-vneevents
 ---
 
 # 03: Events and Input
 
-In [02: Adding Logging](./02-adding-logging) you used logging in your project. Next we add **events and input**: where they come from, how to handle them, and how to run the events sample. By the end you'll know how events and input are added and used, the same way you knew how logging was added from the previous page.
+Every interactive app needs two things: a stream of **events** ("key pressed", "mouse moved", "window resized") and a way to **poll** current state ("is W held right now?"). The [vneevents](https://github.com/vertexnova/vneevents) library provides both — typed event classes, a thread-safe queue, an `EventManager` singleton, and a static `Input` API.
 
-## Where Events and Input Come From
+The [vnetestbed](https://github.com/vertexnova/vnetestbed) `01_test_events` sample demonstrates the full pipeline with a real GLFW window and ImGui panels. Running it is the fastest way to see everything working before you write any integration code.
 
-Your app gets **events** when something happens (key pressed, mouse moved, window resized). The window library (e.g. [GLFW](https://github.com/glfw/glfw)) reports these via [window and input callbacks](https://www.glfw.org/docs/3.3/window_guide.html#window_events). You need one place to receive those and turn them into a consistent set of event types. You also need **input polling** — "is this key held right now?" and "where is the mouse?" — once per frame.
-
-In the VertexNova stack we use the [vneevents](https://github.com/vertexnova/vneevents) library for both: it gives you typed events (key, mouse, window, touch), a thread-safe queue, and an `Input` API for polling. The table below is a quick reference; full docs are in the [vneevents repository](https://github.com/vertexnova/vneevents).
-
-| What you get | Purpose |
-| ------------ | ------- |
-| **Typed events** | One class per kind: key pressed, mouse moved, window resized, touch, etc. |
-| **Modifiers** | Shift, Ctrl, Alt, Super on key and mouse events. |
-| **Touch** | Touch press, move, release; on desktop LMB can emulate touch (e.g. touch id 0). |
-| **Thread-safe queue** | Push events from one thread, process on another. |
-| **Input polling** | `Input::isKeyPressed()`, `Input::mousePosition()`, etc.; call `Input::nextFrame()` once per frame. |
-
-## Where to See It: vnetestbed and the Events Sample
-
-The easiest way to **see events in action** is to run the **vnetestbed** sample that uses a [GLFW](https://github.com/glfw/glfw) window, OpenGL, and [Dear ImGui](https://github.com/ocornut/imgui/tree/docking) (docking branch). That sample is built to **test and demonstrate** every vneevents [events](https://github.com/vertexnova/vneevents) and [input](https://github.com/vertexnova/vneevents) API.
-
-| What | Where |
-| ---- | ------ |
-| **Event library** | [vertexnova/vneevents](https://github.com/vertexnova/vneevents) |
-| **Test app** | [vertexnova/vnetestbed](https://github.com/vertexnova/vnetestbed) |
-| **Events sample** | `samples/glfw_opengl/01_test_events` — same sample has its own [README](https://github.com/vertexnova/vnetestbed/blob/main/samples/glfw_opengl/01_test_events/README.md) in the repo. |
-
-When you run the sample you get a window with:
-
-- **Events** — Last N events (key, mouse, window resize/close, touch) with type, data, and frame number.
-- **Input Poll** — Live state: keys held (e.g. WASD, Space, Escape), mouse position, scroll, and touch.
-- **Stats** — How many events were received in total and how many per second.
-
-So you can press keys, move the mouse, scroll, and resize the window and **see exactly what events the library delivers**. That’s how we test that event delivery and polling work correctly.
-
-## What the events sample shows
-
-1. **Event delivery** — Keyboard, mouse button, mouse move, scroll, window resize, window close, and touch (press/move/release) events arrive with the correct type and data.
-2. **Touch emulation** — Left mouse button is treated as touch id `0` (TouchPress, TouchMove, TouchRelease) so you can try touch on desktop; it’s turned on only in this demo.
-3. **Event ordering** — You see the order of move vs pressed vs released in the event log.
-4. **EventManager queue** — The Stats section shows events per second and total events, so you see the queue in use.
-5. **Input polling** — The Input Poll panel shows “key held” and mouse/scroll state **separately** from the stream of one-off events.
-
-The sample is both a **teaching tool** and a **test**: we use it to verify that calling events from GLFW works end-to-end.
-
-![vnetestbed 01_test_events sample — Events and Input Poll panels](/img/learn/02_test_events.png)
-
-## Get vnetestbed and run the events sample
-
-On your machine:
-
-```bash
-git clone --recursive https://github.com/vertexnova/vnetestbed.git
-cd vnetestbed
-```
-
-Turn on samples and build:
-
-```bash
-cmake -B build -DVNE_TESTBED_SAMPLES=ON
-cmake --build build
-```
-
-Or use the project’s scripts (see the repo’s `scripts/README.md`):
-
-```bash
-# macOS
-./scripts/build_macos.sh -t Debug -a configure_and_build
-
-# Linux
-./scripts/build_linux.sh -t Debug -a configure_and_build
-
-# Windows
-./scripts/build_windows.sh -t Debug -a configure_and_build
-```
-
-Run the events sample:
-
-```bash
-./build/bin/samples/sample_01_test_events
-```
-
-(If you used a script, the binary may live under `build/Debug/build-*/bin/samples/`.)
-
-Use the window — keys, mouse, scroll, resize — and watch the **Events** and **Input Poll** panels. Exit with **ESC** or by closing the window.
-
-## How we test events: GLFW and vneevents together
-
-This section explains **how the testbed calls events from GLFW** so you get the full picture from this page.
-
-### The flow in one sentence
-
-GLFW tells us “something happened” via **callbacks**; we turn that into a **vneevents event** and push it into a queue; once per frame we **process** the queue and every **listener** gets `onEvent()`.
-
-### Step by step
-
-1. **GLFW callbacks**  
-   When you create the window, we register functions with GLFW (e.g. for key, mouse button, mouse move, scroll, window close, window resize). When you press a key or move the mouse, GLFW calls the right function and passes the data (key code, position, etc.).
-
-2. **Push into EventManager**  
-   Inside each callback we create the matching vneevents event (e.g. `KeyPressedEvent`, `MouseMovedEvent`, `WindowResizeEvent`) and push it into the global **EventManager** queue. We also update the **Input** state (key held, mouse position, scroll) so polling APIs work.
-
-3. **Process once per frame**  
-   Each frame the application calls `EventManager::processEvents()`. That takes all events from the queue and **dispatches** them: every registered listener receives each event.
-
-4. **Listeners handle events**  
-   A listener is any code that implements `onEvent(const Event&)`. It can check `event.type()` and cast to the concrete type (e.g. `KeyPressedEvent`) to read key, position, modifiers, and so on. In the sample, **EventsLayer** does this and writes the last N events into the ImGui **Events** panel.
-
-So: **GLFW (raw input) → callbacks → push vneevents → processEvents() → your onEvent()**. That’s how we test that events are delivered: we use a real GLFW window and see the same events in the UI.
-
-**Touch emulation** (only in this sample): when the left mouse button is down, we also push `TouchPressEvent`, `TouchMoveEvent`, and `TouchReleaseEvent` so you can test touch on desktop without a touch screen.
-
-## Events vs polling
-
-- **Events** — “This just happened once”: key pressed, mouse moved, window resized. You get one event per occurrence.
-- **Polling** — “What is the state right now?”: is key W held? Where is the mouse? You call things like `Input::isKeyPressed()` and `Input::mousePosition()` once per frame (and call `Input::nextFrame()` at the start of each frame).
-
-The sample uses both: the **Events** panel shows the event stream; the **Input Poll** panel shows the current state. Both come from the same library (vneevents).
-
-## Event types you’ll see
-
-| Event class | Typical use |
-| ----------- | ----------- |
-| KeyPressedEvent / KeyReleasedEvent | Keyboard input. |
-| MouseButtonPressedEvent / MouseButtonReleasedEvent | Mouse clicks. |
-| MouseMovedEvent | Cursor position. |
-| MouseScrolledEvent | Scroll wheel. |
-| WindowResizeEvent | Window size changed. |
-| WindowCloseEvent | Window closed; time to quit or clean up. |
-| TouchPressEvent / TouchMoveEvent / TouchReleaseEvent | Touch (or emulated from mouse in the sample). |
-
-## Use Events and Input in Your Code
-
-The [vneevents Quick Start](https://github.com/vertexnova/vneevents#quick-start) shows the minimal pieces: a **listener class**, **register and process**, and a **per-frame loop** with input polling. Below is the same pattern you’ll use in your app or in the testbed.
-
-### 1. Include and a listener class
+## Quick Start
 
 ```cpp
 #include <vertexnova/events/events.h>
 
 using namespace vne::events;
 
+// 1. Implement a listener
 class MyListener : public EventListener {
 public:
     void onEvent(const Event& event) override {
         if (event.type() == EventType::eKeyPressed) {
             auto& e = static_cast<const KeyPressedEvent&>(event);
-            std::cout << "Key " << static_cast<int>(e.keyCode())
-                      << " mods=" << static_cast<int>(e.modifiers()) << std::endl;
+            // e.keyCode(), e.modifiers()
         }
     }
 };
+
+int main() {
+    auto& manager = EventManager::instance();
+
+    // 2. Register
+    auto listener = std::make_shared<MyListener>();
+    manager.registerListener(EventType::eKeyPressed, listener);
+
+    // 3. Push events (typically from window callbacks, not hardcoded)
+    manager.pushEvent(std::make_unique<KeyPressedEvent>(KeyCode::eA));
+    manager.pushEvent(std::make_unique<MouseMovedEvent>(100.0, 200.0));
+
+    // 4. Process — dispatches queued events to all listeners
+    manager.processEvents();
+
+    // 5. Poll input state
+    if (Input::isKeyPressed(static_cast<int>(KeyCode::eW))) { /* move forward */ }
+    auto [mx, my] = Input::mousePosition();
+
+    // 6. Advance frame — updates "just pressed" / "just released" state
+    Input::nextFrame();
+
+    return 0;
+}
 ```
 
-### 2. Register and process events
+| Piece | What it does |
+|-------|-------------|
+| `EventListener` | Interface; override `onEvent(const Event&)` to handle events. |
+| `EventManager::instance()` | Singleton. Owns the queue and dispatcher. |
+| `registerListener(type, ptr)` | Subscribe a listener to one event type. |
+| `pushEvent(unique_ptr<Event>)` | Enqueue an event (thread-safe). Typically called from window/input callbacks. |
+| `processEvents()` | Drain the queue and call `onEvent` on every registered listener. Call once per frame. |
+| `dispatchImmediate(event)` | Bypass the queue — dispatch to listeners right now, synchronously. |
+| `Input::isKeyPressed(int)` | Returns true while the key is held. Pass `static_cast<int>(KeyCode::eW)`. |
+| `Input::nextFrame()` | Resets "just pressed" / "just released" state. Call at the end of each frame. |
+
+## Event types
+
+### Keyboard
+
+| Class | `EventType` | Accessors |
+|-------|-------------|-----------|
+| `KeyPressedEvent` | `eKeyPressed` | `keyCode()`, `modifiers()` |
+| `KeyReleasedEvent` | `eKeyReleased` | `keyCode()`, `modifiers()` |
+| `KeyRepeatEvent` | `eKeyRepeat` | `keyCode()`, `repeatCount()` — fires repeatedly while a key is held |
+| `KeyTypedEvent` | `eKeyTyped` | `keyCode()` — use this for text input, not `KeyPressedEvent` |
+
+`modifiers()` returns a bitmask of `ModifierKey` flags: `eModShift`, `eModCtrl`, `eModAlt`, `eModSuper`, etc.
+
+### Mouse
+
+| Class | `EventType` | Accessors |
+|-------|-------------|-----------|
+| `MouseButtonPressedEvent` | `eMouseButtonPressed` | `button()` (`MouseButton::eLeft/eRight/eMiddle`), `modifiers()` |
+| `MouseButtonReleasedEvent` | `eMouseButtonReleased` | `button()`, `modifiers()` |
+| `MouseMovedEvent` | `eMouseMoved` | `x()`, `y()` (`double`, screen coords), `modifiers()` |
+| `MouseScrolledEvent` | `eMouseScrolled` | `xOffset()`, `yOffset()` |
+
+### Window
+
+| Class | `EventType` | Accessors |
+|-------|-------------|-----------|
+| `WindowResizeEvent` | `eWindowResize` | `width()`, `height()` (`uint32_t`) |
+| `WindowCloseEvent` | `eWindowClose` | none — signals the app should quit |
+
+### Touch
+
+| Class | `EventType` | Accessors |
+|-------|-------------|-----------|
+| `TouchPressEvent` | `eTouchPress` | `touchId()`, `x()`, `y()` |
+| `TouchMoveEvent` | `eTouchMove` | `touchId()`, `x()`, `y()` |
+| `TouchReleaseEvent` | `eTouchRelease` | `touchId()`, `x()`, `y()` |
+
+## Input polling
+
+Call these anywhere in your frame loop. All methods are static and thread-safe.
 
 ```cpp
-auto& manager = EventManager::instance();
+// Keyboard
+Input::isKeyPressed(static_cast<int>(KeyCode::eEscape));      // true every frame the key is held
+Input::isKeyJustPressed(static_cast<int>(KeyCode::eSpace));   // true on the first frame only
+Input::isKeyJustReleased(static_cast<int>(KeyCode::eSpace));  // true on the release frame only
 
-auto listener = std::make_shared<MyListener>();
-manager.registerListener(EventType::eKeyPressed, listener);
+// Mouse buttons
+Input::isMouseButtonPressed(static_cast<int>(MouseButton::eLeft));
+Input::isMouseButtonJustPressed(static_cast<int>(MouseButton::eLeft));
 
-manager.pushEvent(std::make_unique<KeyPressedEvent>(KeyCode::eA));
-manager.pushEvent(std::make_unique<MouseMovedEvent>(100.0, 200.0));
+// Position and scroll
+auto [x, y]          = Input::mousePosition();  // std::pair<int, int>
+auto [sx, sy]        = Input::mouseScroll();    // std::pair<float, float>
+auto [width, height] = Input::windowSize();
 
-manager.processEvents();
+// Call once at the end of each frame
+Input::nextFrame();
 ```
 
-### 3. Per-frame loop with input polling
+`isKeyPressed` is true every frame the key is down. `isKeyJustPressed` fires only on the first frame — use it for actions that should trigger once per press (jump, toggle, shoot).
 
-In a real app you run a loop: each frame you process events, then update game state (often using **polled** input), then call `Input::nextFrame()` so “just pressed” state is correct for the next frame.
+The `Input` state is updated by your window backend (GLFW callbacks or equivalent) calling `Input::updateKeyState`, `Input::updateMousePosition`, etc. before `processEvents`.
+
+## Per-frame loop
 
 ```cpp
 while (running) {
-    // 1) Drain the event queue and notify listeners
+    // Window library polls OS events → GLFW callbacks fire → push into EventManager + update Input state
+    glfwPollEvents();
+
+    // Drain queue → registered listeners get onEvent()
     EventManager::instance().processEvents();
 
-    // 2) Use polled input for movement, etc.
-    if (Input::isKeyPressed(static_cast<int>(KeyCode::eW)))
-        ; // move forward
-    if (Input::isMouseButtonJustPressed(0)) {
-        auto [x, y] = Input::mousePosition();
-        ; // handle click at (x, y)
-    }
+    // Poll current state for movement, camera, etc.
+    if (Input::isKeyPressed(static_cast<int>(KeyCode::eW)))        move_forward();
+    if (Input::isKeyJustPressed(static_cast<int>(KeyCode::eEscape))) running = false;
 
-    // 3) Once per frame: update "just pressed" / "just released" state
+    render();
+
     Input::nextFrame();
 }
 ```
 
-Where events come from (e.g. GLFW callbacks) you still **push** into the manager: `EventManager::instance().pushEvent(std::make_unique<KeyPressedEvent>(...));`. The loop only **processes** and **polls**.
+Events and polling are complementary: **events** tell you what changed this frame (one call per occurrence); **polling** tells you what is true right now (call any time). Use events for reactions (open menu, fire weapon); use polling for continuous state (movement, camera rotation).
 
-```mermaid
-flowchart LR
-  A[Include vneevents headers] --> B[Implement a listener\nonEvent]
-  B --> C[Register listener\nwith EventManager]
-  C --> D[Push events\nfrom GLFW callbacks]
-  D --> E[Process events\neach frame]
-  E --> B
+## EventManager reference
+
+| Method | Notes |
+|--------|-------|
+| `registerListener(EventType, shared_ptr<EventListener>)` | Listeners are held as `shared_ptr` — keep your listener alive as long as it's registered. |
+| `unregisterListener(EventType, const EventListener*)` | Removes the listener for that event type. |
+| `pushEvent(unique_ptr<Event>)` | Thread-safe. Can be called from any thread. |
+| `processEvents()` | Not thread-safe — call from your main/render thread only. |
+| `dispatchImmediate(const Event&)` | Skips the queue; calls `onEvent` synchronously on all listeners for that type. |
+| `pendingEventCount()` | Number of events waiting in the queue. |
+| `clearPendingEvents()` | Discard all queued events without dispatching. |
+
+## Event categories
+
+Every event reports a `categoryFlags()` bitmask. Use it to filter by category without checking individual types:
+
+```cpp
+void onEvent(const Event& event) override {
+    if (event.categoryFlags() & EventCategory::eKeyboard) {
+        // handles KeyPressed, KeyReleased, KeyRepeat, KeyTyped
+    }
+}
 ```
 
-**Summary:** Include the headers, implement a listener (`onEvent`), register it with `EventManager::instance()`, push events from your window/input layer, and each frame call `processEvents()` and `Input::nextFrame()`. Same flow as the testbed; your app plugs in its own window backend and listeners.
+| Flag | Covers |
+|------|--------|
+| `eInput` | All input events (keyboard, mouse, touch) |
+| `eKeyboard` | Key pressed, released, repeat, typed |
+| `eMouse` | Mouse moved, scrolled |
+| `eMouseButton` | Mouse button pressed, released |
+| `eTouchScreen` | Touch press, move, release |
+| `eWindow` | Window resize, close |
 
-## Summary
+## See it in vnetestbed
 
-- **Events and input** are added by receiving window/input callbacks (e.g. from [GLFW](https://github.com/glfw/glfw)), turning them into typed events, pushing into a queue, and processing each frame so listeners get `onEvent()`. Polling uses `Input::isKeyPressed()`, `Input::mousePosition()`, and `Input::nextFrame()`.
-- The [vneevents](https://github.com/vertexnova/vneevents) library provides the event types, queue, and Input API; full docs and the sample [README](https://github.com/vertexnova/vnetestbed/blob/main/samples/glfw_opengl/01_test_events/README.md) are in the repos.
+The `01_test_events` sample is the reference integration: GLFW callbacks push vneevents events into the queue; the app's frame loop calls `processEvents`; ImGui panels show the live event stream and polled input state. It also emulates touch from the left mouse button (touch id `0`) so you can test touch events on desktop.
 
-## Next steps
+```bash
+git clone --recursive https://github.com/vertexnova/vnetestbed.git
+cd vnetestbed
+cmake -B build -DVNE_TESTBED_SAMPLES=ON
+cmake --build build
+```
 
-- **Go deeper on vneevents**: [vneevents README](https://github.com/vertexnova/vneevents) — Quick Start, all event types, building, and examples (including GLFW integration).
-- **Go deeper on vnetestbed**: [vnetestbed README](https://github.com/vertexnova/vnetestbed) — Layout, build, test, and the testbed [docs](https://github.com/vertexnova/vnetestbed/tree/main/docs).
-- **More Learn chapters**: See the [Learn by Building](/docs/docs/learn) index for what’s next.
+Run (see the repo README for the exact binary path on your platform):
+
+```bash
+./build/bin/samples/sample_01_test_events
+```
+
+Press keys, move the mouse, scroll, resize the window. The **Events** panel logs each event with type and data. The **Input Poll** panel shows live held-key and cursor state. Exit with ESC or by closing the window.
+
+![vnetestbed 01_test_events sample — Events and Input Poll panels](/img/learn/02_test_events.png)
+
+Full details: [vneevents README](https://github.com/vertexnova/vneevents) · [vnetestbed README](https://github.com/vertexnova/vnetestbed) · [sample README](https://github.com/vertexnova/vnetestbed/blob/main/samples/glfw_opengl/01_test_events/README.md).
+
+---
+
+**Next:** See the [Learn index](./index.md) for what's coming — windowing, rendering, and more.

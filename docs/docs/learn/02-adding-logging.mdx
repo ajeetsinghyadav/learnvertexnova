@@ -1,30 +1,17 @@
 ---
 sidebar_position: 3
 title: "02: Adding Logging"
-description: "Use vnelogging in the template project — colors, timestamps, levels, and file output."
+description: "Use vnelogging in the template project — configure a logger, pick a sink, and log from your code."
 slug: 02-adding-logging
 ---
 
 # 02: Adding Logging
 
-In [01: Hello VertexNova](./01-hello-vertexnova) you built and ran the **vnetemplate** project. That template already includes **vnelogging** in `deps/internal/vnelogging`. Here we use it: where it lives, how to call it, and how to run the hello-logging example.
+The **vnetemplate** project (from [01: Hello VertexNova](./01-hello-vertexnova)) already includes **vnelogging** at `deps/internal/vnelogging` and links your app to `vne::logging`. Nothing to add — just include the header and call the API.
 
-No need to add vnelogging as a new dependency — your template already builds with it.
+Full reference: **[vnelogging repository](https://github.com/vertexnova/vnelogging)**.
 
-## Where Logging Lives in the Template
-
-In your vnetemplate checkout:
-
-| Path | Purpose |
-|------|---------|
-| `deps/internal/vnelogging/` | The vnelogging library (submodule) |
-| Include in code | `#include <vertexnova/logging/logging.h>` |
-
-The template's CMake already links your app or examples to `vne::logging`. You only need to configure and use the API.
-
-## Quick Start (Same as vnelogging README)
-
-The [vnelogging Quick Start](https://github.com/vertexnova/vnelogging#quick-start) looks like this. In your template project's `main.cpp` or an example:
+## Quick Start
 
 ```cpp
 #include <vertexnova/logging/logging.h>
@@ -34,17 +21,15 @@ CREATE_VNE_LOGGER_CATEGORY("app")
 }  // namespace
 
 int main() {
-    // Configure logger
     vne::log::LoggerConfig config;
-    config.name = vne::log::kDefaultLoggerName;
-    config.sink = vne::log::LogSinkType::eBoth;
-    config.file_path = "app.log";
-    config.log_level = vne::log::LogLevel::eDebug;
+    config.name       = vne::log::kDefaultLoggerName;
+    config.sink       = vne::log::LogSinkType::eBoth;
+    config.file_path  = "app.log";
+    config.log_level  = vne::log::LogLevel::eDebug;
 
     vne::log::Logging::configureLogger(config);
 
-    // Log messages
-    VNE_LOG_INFO << "Application started";
+    VNE_LOG_INFO  << "Application started";
     VNE_LOG_DEBUG << "Processing items";
     VNE_LOG_ERROR << "Failed to load file";
 
@@ -53,17 +38,86 @@ int main() {
 }
 ```
 
-| Piece | Meaning |
-|--------|--------|
-| `CREATE_VNE_LOGGER_CATEGORY("app")` | Category label for this file (shows up in file logs) |
-| `LoggerConfig` | name, sink (console/file/both), file_path, log_level |
-| `Logging::configureLogger(config)` | Apply config before logging |
-| `VNE_LOG_INFO` / `VNE_LOG_DEBUG` / `VNE_LOG_ERROR` | Stream-style macros: `VNE_LOG_INFO << "msg" << value;` |
-| `Logging::shutdown()` | Flush and close; call before exit |
+| Piece | What it does |
+|-------|-------------|
+| `CREATE_VNE_LOGGER_CATEGORY("app")` | Sets the category label for this translation unit (appears in file logs). Put it in an anonymous namespace in each `.cpp`. |
+| `LoggerConfig` | Bundles name, sink, file path, log level, and other options into one struct. |
+| `Logging::configureLogger(config)` | Creates the logger and applies the config. Call once at startup before any log macros. |
+| `VNE_LOG_INFO << "msg" << value` | Stream-style macro. One per log line; no `std::endl` needed. |
+| `Logging::shutdown()` | Flushes and closes all sinks. Call before process exit. |
 
-## Run the vnelogging Hello Example (Optional)
+## LoggerConfig fields
 
-To see a full example without editing the template yet, you can build and run **vnelogging's own** examples:
+| Field | Type | Default | Notes |
+|-------|------|---------|-------|
+| `name` | `std::string` | — | Use `vne::log::kDefaultLoggerName` (`"vertexnova"`) for the default logger. |
+| `sink` | `LogSinkType` | `eConsole` | `eConsole`, `eFile`, or `eBoth`. |
+| `file_path` | `std::string` | `""` | Required when sink includes `eFile`. |
+| `log_level` | `LogLevel` | `eInfo` | Messages below this level are dropped. |
+| `flush_level` | `LogLevel` | `eError` | Messages at or above this level flush immediately. Defaults to `eError` — errors always flush, debug output may be buffered. |
+| `console_pattern` | `std::string` | `""` | spdlog pattern string for console output. Empty = library default (timestamp, level, category, message). |
+| `file_pattern` | `std::string` | `""` | spdlog pattern string for file output. |
+| `async` | `bool` | `false` | `true` = non-blocking background thread. Useful for high-frequency logging. |
+
+## Log levels
+
+| Level | Macro | When to use |
+|-------|-------|-------------|
+| Trace | `VNE_LOG_TRACE` | Function entry/exit, very verbose |
+| Debug | `VNE_LOG_DEBUG` | Development diagnostics |
+| Info  | `VNE_LOG_INFO`  | Normal operation |
+| Warn  | `VNE_LOG_WARN`  | Unexpected but recoverable |
+| Error | `VNE_LOG_ERROR` | Operation failed |
+| Fatal | `VNE_LOG_FATAL` | Cannot continue |
+
+Set `config.log_level = vne::log::LogLevel::eInfo` in production to suppress Debug and Trace output.
+
+## Named loggers and categories
+
+The default macros (`VNE_LOG_INFO`, etc.) write to `kDefaultLoggerName`. For separate loggers per subsystem, configure each one at startup and then use the `_L` or `_LC` variants:
+
+```cpp
+// Configure a second logger at startup
+vne::log::LoggerConfig render_cfg;
+render_cfg.name      = "render";
+render_cfg.sink      = vne::log::LogSinkType::eFile;
+render_cfg.file_path = "render.log";
+render_cfg.log_level = vne::log::LogLevel::eTrace;
+render_cfg.async     = true;
+vne::log::Logging::configureLogger(render_cfg);
+
+// Write to the named logger (category comes from CREATE_VNE_LOGGER_CATEGORY)
+VNE_LOG_INFO_L("render") << "Frame " << frame_idx;
+
+// Or specify both logger and category inline
+VNE_LOG_DEBUG_LC("render", "mesh") << "Uploading " << vertex_count << " vertices";
+```
+
+| Macro family | When to use |
+|---|---|
+| `VNE_LOG_*` | Single logger for the whole app |
+| `VNE_LOG_*_L(logger)` | Named logger; category from `CREATE_VNE_LOGGER_CATEGORY` in this file |
+| `VNE_LOG_*_LC(logger, category)` | Named logger with an explicit category override |
+
+## RAII shutdown with LoggingGuard
+
+If you're using the testbed framework, `vne::testbed::LoggingGuard` handles configure and shutdown for you:
+
+```cpp
+#include <vertexnova/testbed/logging_guard.h>
+
+int main() {
+    vne::testbed::LoggingGuard logging_guard;
+    VNE_LOG_INFO << "Application started";
+    return 0;
+}  // shutdown() called automatically when logging_guard goes out of scope
+```
+
+In your own projects, configure in a constructor and call `Logging::shutdown()` in the destructor for the same effect, or configure/shutdown explicitly in `main()`.
+
+## Run the vnelogging examples (optional)
+
+The library ships five examples you can run from the submodule:
 
 ```bash
 cd deps/internal/vnelogging
@@ -72,187 +126,20 @@ cmake --build build
 ./build/bin/01_HelloLogging
 ```
 
-This runs the [01_hello_logging](https://github.com/vertexnova/vnelogging/tree/main/examples/01_hello_logging) example from the vnelogging repo. Other examples: 02_subsystem_logging, 03_spdlog_integration, 04_benchmark, 05_multithreaded — see [vnelogging examples](https://github.com/vertexnova/vnelogging#examples).
+| Example | What it covers |
+|---------|---------------|
+| `01_HelloLogging` | Basic setup — all log levels, console + file |
+| `02_SubsystemLogging` | Separate loggers for app, physics, render |
+| `03_SpdlogIntegration` | vnelogging and spdlog in the same process |
+| `04_Benchmark` | Sync vs async throughput and latency |
+| `05_Multithreaded` | Four threads logging concurrently |
 
-## Use Logging in Your Template Code
+Full details: [vnelogging README](https://github.com/vertexnova/vnelogging) · [Wiki](https://github.com/vertexnova/vnelogging/wiki).
 
-In the template's main app or an example target that already links `vne::logging`:
+## If you're not using vnetemplate
 
-1. **Include** the header and **create a category** (in one .cpp or per file):
-
-```cpp
-#include <vertexnova/logging/logging.h>
-
-namespace {
-CREATE_VNE_LOGGER_CATEGORY("hello")
-}  // namespace
-```
-
-2. **Configure once** (e.g. at startup):
-
-```cpp
-vne::log::LoggerConfig config;
-config.name = vne::log::kDefaultLoggerName;
-config.sink = vne::log::LogSinkType::eBoth;  // Console + file
-config.file_path = "logs/hello.log";
-config.log_level = vne::log::LogLevel::eDebug;
-vne::log::Logging::configureLogger(config);
-```
-
-3. **Log with the stream API**:
-
-```cpp
-VNE_LOG_INFO << "Welcome to VertexNova";
-VNE_LOG_DEBUG << "Arguments: " << argc;
-VNE_LOG_WARN << "No config file found, using defaults";
-VNE_LOG_ERROR << "Failed to open " << path;
-```
-
-4. **Shutdown before exit**:
-
-```cpp
-vne::log::Logging::shutdown();
-```
-
-Or you can use a **LoggingGuard** to configure logging in its constructor and call `Logging::shutdown()` in its destructor, so you don't have to do it in main.
-
-### Alternatively: LoggingGuard
-
-Define a guard that configures on construction and shuts down on destruction:
-
-```cpp
-class LoggingGuard {
- public:
-  LoggingGuard() {
-    vne::log::LoggerConfig config;
-    config.name = vne::log::kDefaultLoggerName;
-    config.sink = vne::log::LogSinkType::eConsole;
-    config.console_pattern = "[%l] [%n] %v";
-    config.log_level = vne::log::LogLevel::eInfo;
-    config.async = false;
-
-    vne::log::Logging::configureLogger(config);
-  }
-
-  ~LoggingGuard() { vne::log::Logging::shutdown(); }
-
-  LoggingGuard(const LoggingGuard&) = delete;
-  LoggingGuard& operator=(const LoggingGuard&) = delete;
-};
-```
-
-Then in `main()` create a guard at scope and use logging as usual; shutdown runs automatically when the guard goes out of scope:
-
-```cpp
-int main() {
-  LoggingGuard guard;
-  VNE_LOG_INFO << "Application started";
-  // ... rest of app; shutdown() called when guard is destroyed
-  return 0;
-}
-```
-
-Rebuild your template project and run — you'll get timestamps, colors in the console, and the same messages in the log file.
-
-## Log Levels
-
-| Level | Macro | When to use |
-|-------|--------|-------------|
-| Trace | `VNE_LOG_TRACE` | Very verbose (e.g. function entry/exit) |
-| Debug | `VNE_LOG_DEBUG` | Development debugging |
-| Info | `VNE_LOG_INFO` | Normal operation |
-| Warn | `VNE_LOG_WARN` | Something unusual but not broken |
-| Error | `VNE_LOG_ERROR` | Something failed |
-| Fatal | `VNE_LOG_FATAL` | Cannot continue |
-
-Set `config.log_level = vne::log::LogLevel::eInfo` in production to hide DEBUG/TRACE.
-
-## More in vnelogging
-
-| Feature | Description |
-|---------|-------------|
-| **Async logging** | `config.async = true` — non-blocking |
-| **Multiple loggers** | Separate loggers for physics, render, audio |
-| **Patterns** | Customize timestamp/level/category format |
-| **Cross-platform** | Linux, macOS, Windows, iOS, Android, Web |
-
-Full API and design: **[vnelogging repository](https://github.com/vertexnova/vnelogging)** (README, Wiki, examples).
-
-## Creating Your Own Library from the Template
-
-When you're ready to start a **new** VertexNova library:
-
-1. Clone vnetemplate and rename the folder to your project name.
-2. Update project name in CMake and any docs (see [vnetemplate README](https://github.com/vertexnova/vnetemplate)).
-3. Logging is already there — use `VNE_LOG_*` and `LoggerConfig` as above.
-
-Same template and logging will carry through to later chapters (windowing, rendering).
-
-## What's Next?
-
-Next chapters will add **windowing** and then **rendering**. You'll keep using this template and the same logging.
+Add vnelogging as a git submodule or via CMake FetchContent, then link `vne::logging` to your target. The API above is identical. See [vnelogging README — installation](https://github.com/vertexnova/vnelogging#installation) for the CMake steps.
 
 ---
 
-**Checkpoint:** You can log from your code and know where to learn more ([vnelogging wiki](https://github.com/vertexnova/vnelogging/wiki), [repo and examples](https://github.com/vertexnova/vnelogging)).
-
----
-
-## If You Built from Scratch Instead
-
-If you followed the optional [Build from scratch](./01-hello-vertexnova#optional-build-from-scratch) path in 01 and have a minimal project **without** vnetemplate, you can add vnelogging in a few steps. Each step below is in its own box so you can follow them in order.
-
-:::info Step 1 — Add vnelogging to your project
-
-Choose one way to bring vnelogging into your repo.
-
-**Option A — Git submodule (clone lives in your repo):**
-
-From your project root:
-
-```bash
-mkdir -p external
-git submodule add https://github.com/vertexnova/vnelogging.git external/vnelogging
-git submodule update --init --recursive
-```
-
-Then in your **`CMakeLists.txt`**, before `add_executable`, add:
-
-```cmake
-add_subdirectory(external/vnelogging)
-```
-
-**Option B — FetchContent (CMake downloads at configure time):**
-
-See the [vnelogging README — FetchContent](https://github.com/vertexnova/vnelogging#option-2-fetchcontent) section. You add a `FetchContent_Declare` / `FetchContent_MakeAvailable` block and then `add_subdirectory` on the populated source dir. No git submodule required.
-
-:::
-
-:::info Step 2 — Link your executable to vnelogging
-
-After `add_executable(YourTargetName src/main.cpp)` (or whatever your target is), link the logging library:
-
-```cmake
-add_executable(HelloVertexNova src/main.cpp)
-target_link_libraries(HelloVertexNova PRIVATE vne::logging)
-```
-
-Use your actual target name in place of `HelloVertexNova`. Re-run CMake and build; your target will have the vnelogging headers and library.
-
-:::
-
-:::info Step 3 — Use the logging API in your code
-
-From here on, use the same API as in the rest of this chapter:
-
-1. **Include** the header and **create a category** (e.g. in `main.cpp`):  
-   `#include <vertexnova/logging/logging.h>` and `CREATE_VNE_LOGGER_CATEGORY("app")` in an anonymous namespace.
-2. **Configure** once at startup: set up `vne::log::LoggerConfig` (name, sink, log_level, etc.) and call `vne::log::Logging::configureLogger(config)`.
-3. **Log** with the stream macros: `VNE_LOG_INFO << "message";`, `VNE_LOG_DEBUG`, `VNE_LOG_ERROR`, etc.
-4. **Shutdown** before exit: `vne::log::Logging::shutdown();` — or use a [LoggingGuard](#alternatively-loggingguard) so shutdown runs automatically.
-
-Rebuild and run; you should see the same colored, timestamped output (and optional file logging) as in the template.
-
-:::
-
-For full details, options, and advanced usage, see the [vnelogging README](https://github.com/vertexnova/vnelogging).
+**Next:** [03: Events and Input](./03-events-and-vneevents) — typed events, input polling, and the vnetestbed events sample.
