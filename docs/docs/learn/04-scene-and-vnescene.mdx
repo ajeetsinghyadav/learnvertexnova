@@ -278,9 +278,19 @@ camera->setGraphicsApi(vne::math::GraphicsApi::eVulkan);
 
 ## Light types
 
+All light types share the same base diffuse term — $\mathbf{N}$ is the surface normal, $\mathbf{L}$ points toward the light:
+
+$$
+L_{\text{diffuse}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity}
+$$
+
 ### AmbientLight — fill illumination
 
-No position or direction. Sets a base brightness floor so unlit surfaces are not pure black.
+No position or direction. Applied as a constant base term so unlit surfaces are never pure black:
+
+$$
+L_{\text{ambient}} = \text{color} \times \text{intensity}
+$$
 
 ```cpp
 auto ambient = std::make_shared<vne::scene::AmbientLight>(
@@ -293,7 +303,13 @@ auto ambient = std::make_shared<vne::scene::AmbientLight>(
 
 <!-- Add static/img/learn/04_light_directional.png (e.g. export from diagrams/04_light_directional.excalidraw) to show the diagram -->
 
-Direction points toward the light source (opposite of light travel). No position, no attenuation — illumination is equal everywhere.
+Direction points toward the light source (opposite of travel). No position, no attenuation — illumination is equal everywhere:
+
+$$
+\mathbf{L} = \text{normalize}(-\text{direction})
+\qquad
+L_{\text{dir}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity}
+$$
 
 ```cpp
 auto sun = std::make_shared<vne::scene::DirectionalLight>(
@@ -307,7 +323,13 @@ auto sun = std::make_shared<vne::scene::DirectionalLight>(
 
 <!-- Add static/img/learn/04_light_point.png (e.g. export from diagrams/04_light_point.excalidraw) to show the diagram -->
 
-Illuminates in all directions from a position. Intensity falls off with distance up to `range`.
+Illuminates in all directions from a position. Intensity falls off with distance $d = \lVert \text{lightPos} - \text{fragPos} \rVert$ to zero at `range`:
+
+$$
+a(d) = \left(1 - \text{clamp}\!\left(\frac{d}{\text{range}},\; 0,\; 1\right)^2\right)^2
+\qquad
+L_{\text{point}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity} \times a(d)
+$$
 
 ```cpp
 auto lamp = std::make_shared<vne::scene::PointLight>(
@@ -324,7 +346,13 @@ lamp->setRange(12.0f);
 
 <!-- Add static/img/learn/04_light_spot.png (e.g. export from diagrams/04_light_spot.excalidraw) to show the diagram -->
 
-Position + direction + two cone angles. From `inner_angle` inward: full intensity. From `inner_angle` to `outer_angle`: smooth falloff. Beyond `outer_angle`: no contribution. **Outer angle must be greater than inner angle** — the library enforces a small epsilon, but keep them separated.
+Position + direction + two cone angles. The library stores the angles as cosines: $c_i = \cos(\theta_\text{inner})$, $c_o = \cos(\theta_\text{outer})$. Inside the inner cone: full intensity. Between inner and outer: smooth falloff. Beyond outer: no contribution. **Outer angle must be greater than inner angle.**
+
+$$
+s = \text{smoothstep}\!\left(0,\; 1,\; \frac{\mathbf{L}\cdot\text{normalize}(-\text{dir}) - c_o}{c_i - c_o}\right)
+\qquad
+L_{\text{spot}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity} \times a(d) \times s
+$$
 
 ```cpp
 auto spot = std::make_shared<vne::scene::SpotLight>(
@@ -349,88 +377,14 @@ auto spot = std::make_shared<vne::scene::SpotLight>(
 | Point | yes | — | yes | — | Lamp, torch, explosion, any local omni |
 | Spot | yes | yes | yes | yes | Flashlight, stage light, car headlight |
 
-## Light math
+`LightGpu` is a 64-byte std140-compatible struct. All four types share the same layout — the type tag in `misc.x` tells the shader which fields are active:
 
-These are the shader-side formulas that consume the `LightGpu` values vnescene produces. Understanding them helps when writing your own GLSL/HLSL shaders.
-
-### Diffuse (Lambert)
-
-All light types use the same base diffuse term. $\mathbf{N}$ is the surface normal, $\mathbf{L}$ is the unit vector pointing **toward** the light:
-
-$$
-L_{\text{diffuse}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity}
-$$
-
-### Ambient
-
-No direction, no attenuation. Applied once as a constant base term:
-
-$$
-L_{\text{ambient}} = \text{color} \times \text{intensity}
-$$
-
-The GPU struct packs this as `color_intensity` with type tag $0$.
-
-### Directional light
-
-Direction is stored as a unit vector pointing **toward** the source (opposite to light travel). No distance falloff:
-
-$$
-\mathbf{L} = \text{normalize}(-\text{direction})
-\qquad
-L_{\text{dir}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity}
-$$
-
-GPU type tag = $1$. Position and range fields are zero.
-
-### Point light — distance falloff
-
-$d = \lVert \text{lightPos} - \text{fragPos} \rVert$. Intensity falls to zero at `range`:
-
-$$
-a(d) = \left(1 - \text{clamp}\!\left(\frac{d}{\text{range}},\; 0,\; 1\right)^2\right)^2
-$$
-
-$$
-\mathbf{L} = \text{normalize}(\text{lightPos} - \text{fragPos})
-\qquad
-L_{\text{point}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity} \times a(d)
-$$
-
-GPU type tag = $2$. `position_range.w` = range.
-
-### Spot light — cone falloff
-
-The spot cone is defined by two precomputed cosines stored in the GPU struct: $c_i = \cos(\theta_\text{inner})$ and $c_o = \cos(\theta_\text{outer})$.
-
-$$
-\theta = \mathbf{L} \cdot \text{normalize}(-\text{direction})
-\qquad
-\epsilon = c_i - c_o
-$$
-
-$$
-s = \text{smoothstep}\!\left(0,\; 1,\; \frac{\theta - c_o}{\epsilon}\right)
-$$
-
-Combined with distance falloff $a(d)$ (same formula as point light):
-
-$$
-L_{\text{spot}} = \max(\mathbf{N} \cdot \mathbf{L},\; 0) \times \text{color} \times \text{intensity} \times a(d) \times s
-$$
-
-GPU type tag = $3$. `direction_inner_cos.w` = $c_i$, `misc.z` = $c_o$.
-
-### LightGpu layout (64 bytes, std140)
-
-| Field | Type | Content |
-|-------|------|---------|
-| `color_intensity` | Float4 | $(r, g, b,\; \text{intensity})$ |
-| `position_range` | Float4 | $(\text{pos.xyz},\; \text{range})$ |
-| `direction_inner_cos` | Float4 | $(\text{dir.xyz},\; c_i)$ |
-| `misc` | Float4 | $(\text{type},\; \text{enabled},\; c_o,\; 0)$ |
-
-Type values: $0$ = ambient, $1$ = directional, $2$ = point, $3$ = spot.
+| Field | Content |
+|-------|---------|
+| `color_intensity` | $(r, g, b,\; \text{intensity})$ |
+| `position_range` | $(\text{pos.xyz},\; \text{range})$ |
+| `direction_inner_cos` | $(\text{dir.xyz},\; c_i)$ |
+| `misc` | $(\text{type},\; \text{enabled},\; c_o,\; 0)$ — type: $0$=ambient $1$=dir $2$=pt $3$=spot |
 
 ## SceneState
 
