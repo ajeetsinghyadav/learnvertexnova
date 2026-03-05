@@ -758,6 +758,14 @@ article blockquote {
   line-height: 1.85;
 }
 
+/* Mobile: horizontal scroll so equations/matrices don't overflow off the right */
+@media screen and (max-width: 996px) {
+  .theme-doc-markdown {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 .theme-doc-markdown h1 {
   font-size: clamp(2rem, 5vw, 2.75rem);
   margin-top: 0;
