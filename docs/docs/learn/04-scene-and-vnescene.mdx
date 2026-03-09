@@ -447,6 +447,11 @@ auto [r, g, b, a] = env.clearColorRgba();
 
 The `02_test_scene` sample is the interactive reference. It shows: camera type switching (perspective / orthographic), per-parameter controls, orbit/pan/zoom interaction, rotating cubes rendered with Blinn-Phong shading, and all four light types — all driven from a live ImGui settings panel.
 
+<video controls width="100%" style={{ maxWidth: '800px' }}>
+  <source src="/img/learn/03_test_scene.mov" type="video/quicktime" />
+  Your browser does not support the video tag.
+</video>
+
 ```bash
 git clone --recursive https://github.com/vertexnova/vnetestbed.git
 cd vnetestbed
@@ -459,30 +464,9 @@ When using a platform script the binary is under `build/Debug/build-<platform>-*
 
 Settings panel sections: **[Camera]**, **[Interaction]**, **[Cubes]**, **[Ambient]**, **[Directional Light]**, **[Point Lights]** (add/remove up to 4), **[Spot Light]**, **[Attenuation]**. Exit with ESC.
 
-<!-- Add static/img/learn/04_test_scene.png (screenshot from vnetestbed sample_02_test_scene) to show the sample -->
-
 ## vnescene examples (standalone)
 
-The library ships seven focused examples:
-
-```bash
-cd deps/internal/vnescene   # or your vnescene checkout
-cmake -B build -DBUILD_EXAMPLES=ON
-cmake --build build
-./build/bin/examples/example_01_basic
-```
-
-| Example | What it covers |
-|---------|---------------|
-| `01_basic` | Perspective camera, ambient + directional lights |
-| `02_scene_gpu_pack` | SceneState, pack camera and lights to `CameraGpu` / `LightGpu` |
-| `03_camera_backend` | OpenGL vs Vulkan projection — view/projection matrix output |
-| `04_fit_to_aabb` | `fitToAabb` and `projectAabbCorners` |
-| `05_screen_ray` | `screenToWorldRay` from center pixel |
-| `06_shadow_settings` | `setShadowSettings` round-trip for directional and spot |
-| `07_camera_transform_sync` | `CameraTransformAdapter` — sync camera ↔ transform node |
-
-Full reference: [vnescene README](https://github.com/vertexnova/vnescene) · [vnetestbed sample README](https://github.com/vertexnova/vnetestbed/blob/main/samples/glfw_opengl/02_test_scene/README.md).
+The library ships seven focused examples (camera, scene GPU pack, projection backends, `fitToAabb`, screen ray, shadow settings, camera transform sync). See the [vnescene README](https://github.com/vertexnova/vnescene) for building and running them.
 
 ---
 
