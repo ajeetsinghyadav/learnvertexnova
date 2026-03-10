@@ -36,16 +36,7 @@ Full reference: **[vneinteraction repository](https://github.com/vertexnova/vnei
 
 Three responsibilities are kept separate so each piece can be tested and swapped independently.
 
-<!-- TODO: Add diagram static/img/learn/diagrams/05_interaction_architecture.png
-     Draw in tldraw or excalidraw. Three horizontal layers, left to right:
-     [Raw Input (mouse / keyboard / touch)]
-       → [CameraSystemController] with nested sub-box [CameraInputAdapter → CameraActionType]
-       → [ICameraManipulator  (Orbit | Arcball | FPS | Fly | Ortho | Follow)]
-       → [ICamera (PerspectiveCamera / OrthographicCamera)]
-     Arrow back from ICamera to renderer labeled "getViewMatrix() / getProjectionMatrix()"
-     Color-code: input layer grey, controller+adapter blue, manipulator green, camera orange (match ch04 palette).
-     Export as static/img/learn/diagrams/05_interaction_architecture.png
--->
+![vneinteraction three-layer architecture](/img/learn/diagrams/05_interaction_architecture.png)
 
 **1. `CameraSystemController`** owns the active camera and the active manipulator. Each frame you call `controller.update(delta_time)`. When input arrives you call `controller.handleMouseMove(...)`, `handleMouseButton(...)`, `handleMouseScroll(...)`, `handleKeyboard(...)`, `handleTouchPan(...)`, or `handleTouchPinch(...)`. The controller forwards each call to the manipulator.
 
@@ -57,22 +48,7 @@ Three responsibilities are kept separate so each piece can be tested and swapped
 
 ## Manipulator hierarchy
 
-<!-- TODO: Add diagram static/img/learn/diagrams/05_manipulator_hierarchy.png
-     Draw a class hierarchy tree in tldraw or excalidraw.
-     ICameraManipulator (dashed border, interface)
-       └── CameraManipulatorBase (solid, internal base — holds camera_, viewport_, scene_scale_, zoom_method_)
-             ├── OrbitStyleBase (shared orbit/pan/zoom/inertia logic, fitToAABB, getWorldUnitsPerPixel)
-             │     ├── OrbitManipulator   (yaw/pitch/distance)
-             │     └── ArcballManipulator (quaternion rotation)
-             ├── FreeCameraBase (shared WASD/look logic, syncAnglesFromCamera)
-             │     ├── FpsManipulator  (world_up_ locked → no roll)
-             │     └── FlyManipulator  (camera-local up → 6-DOF)
-             ├── OrthoPanZoomManipulator  (ortho-only; supportsPerspective() = false)
-             └── FollowManipulator        (also implements ICameraBehavior)
-     Color: orbit family = teal, free family = purple, standalone = blue, interfaces/bases = grey.
-     Dashed borders for ICameraManipulator. All others solid.
-     Export as static/img/learn/diagrams/05_manipulator_hierarchy.png
--->
+![Manipulator class hierarchy](/img/learn/diagrams/05_manipulator_hierarchy.png)
 
 `OrbitStyleBase` shares the orbit/pan/zoom/inertia machinery used by both `OrbitManipulator` and `ArcballManipulator` — that is why `setRotationDamping()` and `setPanDamping()` appear on both. `FreeCameraBase` shares the WASD/look logic between `FpsManipulator` and `FlyManipulator`. The only behavioral difference between them is what `upVector()` returns (see [§ FPS and Fly](#free-camera-movement--fps-and-fly)).
 
@@ -86,19 +62,7 @@ Both `OrbitManipulator` and `ArcballManipulator` rotate around a **center of int
 
 ### Spherical coordinates and COI
 
-<!-- TODO: Add diagram static/img/learn/diagrams/05_orbit_spherical.png
-     Draw in tldraw or excalidraw. World-space scene:
-     - A dot labeled "COI" at the center.
-     - A sphere wireframe centered on COI (draw just a few arcs, not a solid ball).
-     - A camera icon on the sphere surface.
-     - A dashed line from COI to the camera labeled "distance (r)".
-     - A horizontal arc near the equator of the sphere labeled "yaw φ (azimuth around Y)".
-     - A vertical arc on the sphere labeled "pitch θ (elevation)".
-     - An upward arrow from COI labeled "world-up Y".
-     - Three colored arrows at the camera position: forward (blue, pointing toward COI), right (red), up (green).
-     - Formula annotation: position = COI + r·d(φ,θ)
-     Export as static/img/learn/diagrams/05_orbit_spherical.png
--->
+![Orbit — spherical coordinates around COI](/img/learn/diagrams/05_orbit_spherical.png)
 
 `OrbitManipulator` stores `yaw_deg` (azimuth, rotation around world-up Y) and `pitch_deg` (elevation above the equatorial plane). The camera position is derived from spherical coordinates:
 
