@@ -11,6 +11,20 @@ slug: 05-camera-interaction-and-vneinteraction
 
 The library is at [vneinteraction](https://github.com/vertexnova/vneinteraction). The [vnetestbed](https://github.com/vertexnova/vnetestbed) `03_test_interaction` sample runs all six manipulator types interactively.
 
+## Camera degrees of freedom
+
+Before diving into the API, it helps to see the full motion space a camera can occupy. A camera in 3D has up to **7 degrees of freedom (DOF)**:
+
+- **3 translation DOF** — move along X (pan left/right), Y (pan up/down), Z (dolly in/out)
+- **3 rotation DOF** — yaw (around world-up Y), pitch (elevation), roll (around view axis)
+- **1 zoom DOF** — independent of translation: dolly moves the camera, zoom changes FOV or a virtual scale
+
+Most manipulators expose a subset: `OrbitManipulator` and `ArcballManipulator` give you rotation + zoom (no direct position input from the user). `FpsManipulator` locks roll (5 DOF). `FlyManipulator` allows all 6 movement DOF plus zoom (7 DOF total). `OrthoPanZoomManipulator` gives 2D pan + zoom only.
+
+![Camera degrees of freedom — translation, rotation, zoom](/img/learn/diagrams/05_camera_dof.png)
+
+---
+
 ## What vneinteraction gives you
 
 | Component | What it is |
@@ -96,18 +110,7 @@ struct OrbitCameraState {
 
 ### Arcball — quaternion virtual trackball
 
-<!-- TODO: Add diagram static/img/learn/diagrams/05_arcball_projection.png
-     Draw in tldraw or excalidraw:
-     - A viewport rectangle labeled "screen (W × H)".
-     - Inside it, a circle touching all four edges labeled "virtual sphere (unit radius)".
-     - A point inside the circle labeled "p₀ (drag start)" with a small dot.
-     - A second point labeled "p₁ (current)" with a small dot.
-     - A curved arc on the sphere surface between p₀ and p₁.
-     - An axis arrow through the center, perpendicular to the arc labeled "axis = p₀ × p₁".
-     - Outside the circle, a point with a "hyperbolic sheet" label and a note "normalize to equator".
-     - Small formula on the side: q = (sin(α/2)·axiŝ, cos(α/2))
-     Export as static/img/learn/diagrams/05_arcball_projection.png
--->
+![Arcball — virtual trackball projection](/img/learn/diagrams/05_arcball_projection.png)
 
 `ArcballManipulator` projects mouse pixel positions onto a virtual unit sphere overlaid on the viewport, then derives a quaternion rotation from the arc swept between drag-start and drag-end.
 
@@ -151,16 +154,7 @@ The `ArcballCameraState` stores `coi_world`, `distance`, and the accumulated `ro
 
 ## Zoom methods
 
-<!-- TODO: Add diagram static/img/learn/diagrams/05_zoom_methods.png
-     Draw three side-by-side sub-diagrams, one per ZoomMethod. Label each.
-     1. eDollyToCoi: a camera frustum with an arrow showing the camera body translating along
-        the view ray toward the COI dot. Label "camera moves, FOV unchanged".
-     2. eSceneScale: camera frustum stays fixed; scene objects drawn smaller/larger inside the
-        frustum with a scale multiplier annotation "scene_scale × scene". Label "virtual zoom".
-     3. eChangeFov: same camera position, but the frustum angle shown narrow vs wide with an
-        arc labeled "FOV ↓ or ↑". Label "lens zoom".
-     Export as static/img/learn/diagrams/05_zoom_methods.png
--->
+![Zoom methods comparison](/img/learn/diagrams/05_zoom_methods.png)
 
 All orbit-family and free-camera manipulators support three zoom strategies via `setZoomMethod(ZoomMethod)`:
 
@@ -184,18 +178,7 @@ Call `getWorldUnitsPerPixel()` on any manipulator when you need to convert pixel
 
 ## Free-camera movement — FPS and Fly
 
-<!-- TODO: Add diagram static/img/learn/diagrams/05_free_camera_look.png
-     Draw in tldraw or excalidraw:
-     - A camera icon at a position in world space.
-     - A horizontal circular arc around the camera labeled "yaw φ (rotation around world-up Y)".
-     - A vertical arc labeled "pitch θ (elevation, clamped to ±89° in FPS, unclamped in Fly)".
-     - A forward arrow from the camera labeled "f (forward)".
-     - A right arrow labeled "r" and an up arrow labeled "u".
-     - Two annotation boxes side by side:
-         FpsManipulator: world_up_ locked → right = normalize(f × worldUp) → no roll
-         FlyManipulator: camera-local up → right = normalize(f × camera_up) → can roll
-     Export as static/img/learn/diagrams/05_free_camera_look.png
--->
+![Free camera — yaw/pitch look model](/img/learn/diagrams/05_free_camera_look.png)
 
 Both `FpsManipulator` and `FlyManipulator` represent camera orientation as a yaw angle $\phi$ and a pitch angle $\theta$. The forward vector is:
 
