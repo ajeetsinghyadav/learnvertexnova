@@ -50,7 +50,7 @@ Full reference: **[vneinteraction repository](https://github.com/vertexnova/vnei
 
 Three responsibilities are kept separate so each piece can be tested and swapped independently.
 
-![vneinteraction three-layer architecture](/img/learn/diagrams/05_interaction_architecture.png)
+<!-- ![vneinteraction three-layer architecture](/img/learn/diagrams/05_interaction_architecture.png) -->
 
 **1. `CameraSystemController`** owns the active camera and the active manipulator. Each frame you call `controller.update(delta_time)`. When input arrives you call `controller.handleMouseMove(...)`, `handleMouseButton(...)`, `handleMouseScroll(...)`, `handleKeyboard(...)`, `handleTouchPan(...)`, or `handleTouchPinch(...)`. The controller forwards each call to the manipulator.
 
@@ -62,7 +62,7 @@ Three responsibilities are kept separate so each piece can be tested and swapped
 
 ## Manipulator hierarchy
 
-![Manipulator class hierarchy](/img/learn/diagrams/05_manipulator_hierarchy.png)
+<!-- ![Manipulator class hierarchy](/img/learn/diagrams/05_manipulator_hierarchy.png) -->
 
 `OrbitStyleBase` shares the orbit/pan/zoom/inertia machinery used by both `OrbitManipulator` and `ArcballManipulator` — that is why `setRotationDamping()` and `setPanDamping()` appear on both. `FreeCameraBase` shares the WASD/look logic between `FpsManipulator` and `FlyManipulator`. The only behavioral difference between them is what `upVector()` returns (see [§ FPS and Fly](#free-camera-movement--fps-and-fly)).
 
