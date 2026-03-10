@@ -92,8 +92,8 @@
       "textAlign": "center",
       "verticalAlign": "middle",
       "seed": 3,
-      "version": 10,
-      "versionNonce": 3,
+      "version": 11,
+      "versionNonce": 219669302,
       "index": "a2",
       "isDeleted": false,
       "strokeStyle": "solid",
@@ -102,8 +102,13 @@
       ],
       "frameId": null,
       "roundness": null,
-      "boundElements": [],
-      "updated": 1,
+      "boundElements": [
+        {
+          "id": "arr_z_dolly",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1773116343288,
       "link": null,
       "locked": false,
       "containerId": null,
@@ -464,10 +469,10 @@
     {
       "id": "arr_z_dolly",
       "type": "arrow",
-      "x": 617,
-      "y": 200,
-      "width": 160,
-      "height": 120,
+      "x": 516.1953125,
+      "y": 238.87109375,
+      "width": 260.8046875,
+      "height": 158.87109375,
       "angle": 0,
       "strokeColor": "#0c8599",
       "backgroundColor": "transparent",
@@ -481,15 +486,15 @@
           0
         ],
         [
-          160,
-          -120
+          260.8046875,
+          -158.87109375
         ]
       ],
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "seed": 30,
-      "version": 10,
-      "versionNonce": 30,
+      "version": 64,
+      "versionNonce": 1151965238,
       "index": "aC",
       "isDeleted": false,
       "strokeStyle": "solid",
@@ -497,11 +502,19 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1,
+      "updated": 1773116343855,
       "link": null,
       "locked": false,
-      "startBinding": null,
-      "endBinding": null,
+      "startBinding": {
+        "elementId": "cam_lbl",
+        "focus": 0.07037492219175016,
+        "gap": 10.87109375
+      },
+      "endBinding": {
+        "elementId": "lbl_z_dolly",
+        "focus": 0.79034184506148,
+        "gap": 8.00390625
+      },
       "lastCommittedPoint": null
     },
     {
@@ -524,16 +537,21 @@
       "textAlign": "left",
       "verticalAlign": "middle",
       "seed": 31,
-      "version": 15,
-      "versionNonce": 1365540723,
+      "version": 16,
+      "versionNonce": 383117046,
       "index": "aD",
       "isDeleted": false,
       "strokeStyle": "solid",
       "groupIds": [],
       "frameId": null,
       "roundness": null,
-      "boundElements": [],
-      "updated": 1773114862254,
+      "boundElements": [
+        {
+          "id": "arr_z_dolly",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1773116343289,
       "link": null,
       "locked": false,
       "containerId": null,
@@ -819,9 +837,9 @@
     {
       "id": "lbl_legend_zoom",
       "type": "text",
-      "x": 713.4720611572266,
-      "y": 520,
-      "width": 153.05587768554688,
+      "x": 740.9717636108398,
+      "y": 519.76953125,
+      "width": 98.07991027832031,
       "height": 40,
       "angle": 0,
       "strokeColor": "#2f9e44",
@@ -830,14 +848,14 @@
       "strokeWidth": 1,
       "roughness": 0,
       "opacity": 100,
-      "text": "1 Zoom DOF\nDolly / FOV / Scale",
+      "text": "1 Zoom DOF\nFOV",
       "fontSize": 16,
       "fontFamily": 5,
       "textAlign": "center",
       "verticalAlign": "middle",
       "seed": 75,
-      "version": 13,
-      "versionNonce": 815812029,
+      "version": 30,
+      "versionNonce": 1640123318,
       "index": "aP",
       "isDeleted": false,
       "strokeStyle": "solid",
@@ -845,11 +863,11 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1773114954280,
+      "updated": 1773116364638,
       "link": null,
       "locked": false,
       "containerId": null,
-      "originalText": "1 Zoom DOF\nDolly / FOV / Scale",
+      "originalText": "1 Zoom DOF\nFOV",
       "autoResize": true,
       "lineHeight": 1.25
     },
